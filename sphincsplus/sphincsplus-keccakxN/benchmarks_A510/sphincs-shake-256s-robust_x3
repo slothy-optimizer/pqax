@@ -1,0 +1,16 @@
+Parameters: n = 32, h = 64, d = 8, b = 14, k = 22, w = 16, way=3, tree height=8, wots_len=67
+Running 10 iterations.
+thash                       avg.        2.13 us (0.00 sec); median          2,817 cycles,      1x:          2,817 cycles
+f1600x                      avg.        3.48 us (0.00 sec); median          4,622 cycles,      1x:          4,622 cycles
+thashx                      avg.        7.14 us (0.00 sec); median          9,517 cycles,      1x:          9,517 cycles
+Generating keypair..        avg.   735890.85 us (0.74 sec); median    860,447,868 cycles,      1x:    860,447,868 cycles
+  - WOTS pk gen x (ideal).. avg.     8739.24 us (0.01 sec); median      9,976,383 cycles,     85x:    847,992,555 cycles
+  - WOTS pk gen x (real)..  avg.     8764.78 us (0.01 sec); median      9,976,141 cycles,     86x:    857,948,126 cycles
+Signing..                   avg.  8154417.01 us (8.15 sec); median  9,599,740,659 cycles,      1x:  9,599,740,659 cycles
+  - FORS signing..          avg.  2351110.00 us (2.35 sec); median  2,730,265,827 cycles,      1x:  2,730,265,827 cycles
+  - WOTS pk gen x (ideal).. avg.     8743.02 us (0.01 sec); median      9,977,691 cycles,    682x:  6,804,785,262 cycles
+  - WOTS pk gen x (real)..  avg.     8764.14 us (0.01 sec); median      9,976,856 cycles,    688x:  6,864,076,928 cycles
+Verifying..                 avg.    13196.21 us (0.01 sec); median     14,940,822 cycles,      1x:     14,940,822 cycles
+Signature size: 29792 (29.09 KiB)
+Public key size: 64 (0.06 KiB)
+Secret key size: 128 (0.12 KiB)

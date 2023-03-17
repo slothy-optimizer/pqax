@@ -1,0 +1,5 @@
+**/*.pyc
+**/*.o
+**/*~
+
+envs/qemu_v8a/build

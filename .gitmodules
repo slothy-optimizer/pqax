@@ -1,0 +1,3 @@
+[submodule "nelight"]
+	path = nelight
+	url = https://github.com/slothy-optimizer/slothy
