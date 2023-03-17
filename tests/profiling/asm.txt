@@ -1,0 +1,260 @@
+        trn2_d v24, v20, v4
+        ldr x19, [x1, #112]
+        vmul v25, v12, v2
+        ldr x21, [x3]
+        vmul v21, v24, v2
+        ldr x7, [x1, #120]
+        vqrdmulh v16, v12, v19
+        ldr x9, [x3, #-8]
+        vqrdmulh v30, v24, v19
+        vins v29, x19, 0
+        trn1_d v15, v3, v22
+        vins v14, x21, 0
+        trn1_d v1, v20, v4
+        vins v29, x7, 1
+        vmlsq v25, v16, v7, 0
+        vins v14, x9, 1
+        vmlsq v21, v30, v7, 0
+        ldr x24, [x4, #-16]
+        vmulq v0, v29, v14, 0
+        vins v13, x10, 1
+        vqrdmulhq v16, v29, v14, 1
+        ldr x9, [x1, #80]
+        vsub v22, v15, v25
+        ldr x27, [x1, #88]
+        vadd v18, v1, v21
+        vins v6, x24, 0
+        vsub v5, v1, v21
+        ldr x24, [x1, #96]
+        vmlsq v0, v16, v7, 0
+        vins v23, x9, 0
+        vqrdmulh v10, v18, v9
+        ldr x9, [x1, #104]
+        vmul v18, v18, v13
+        vins v23, x27, 1
+        vadd v12, v15, v25
+        vins v3, x24, 0
+        vadd v24, v23, v0
+        ldr x16, [x4, #64]
+        vsub v20, v23, v0
+        vins v3, x9, 1
+        vmlsq v18, v10, v7, 0
+        ldr x10, [x4, #40]
+        vqrdmulhq v23, v24, v14, 3
+        ldr x24, [x4, #56]
+        vmulq v27, v20, v14, 4
+        ldr x9, [x4, #-8]
+        vmulq v30, v3, v14, 0
+        ldr x26, [x4, #24]
+        vadd v10, v12, v18
+        ldr x14, [x4]
+        vmulq v8, v24, v14, 2
+        ldr x7, [x1, #64]
+        vqrdmulhq v19, v3, v14, 1
+        vins v6, x9, 1
+        vqrdmulhq v31, v20, v14, 5
+        ldr x9, [x4, #-88]
+        vqrdmulh v21, v5, v6
+        ldr x12, [x1, #72]
+        vmul v4, v5, v28
+        vins v2, x14, 0
+        vmlsq v30, v19, v7, 0
+        vins v26, x7, 0
+        vsub v11, v12, v18
+        vins v2, x9, 1
+        vmlsq v27, v31, v7, 0
+        vins v26, x12, 1
+        vmlsq v4, v21, v7, 0
+        // gap
+        vsub v0, v26, v30
+        // gap
+        vadd v5, v26, v30
+        // gap
+        vqdmulhq v21, v10, v7, 1
+        // gap
+        vsub v30, v0, v27
+        // gap
+        vsub v13, v22, v4
+        // gap
+        vadd v12, v22, v4
+        // gap
+        srshr v21.8H, v21.8H, #11
+        // gap
+        vqdmulhq v3, v11, v7, 1
+        // gap
+        vqdmulhq v4, v12, v7, 1
+        // gap
+        vmlsq v10, v21, v7, 0
+        // gap
+        vqdmulhq v28, v13, v7, 1
+        // gap
+        srshr v3.8H, v3.8H, #11
+        // gap
+        srshr v4.8H, v4.8H, #11
+        // gap
+        vmlsq v8, v23, v7, 0
+        // gap
+        vmlsq v11, v3, v7, 0
+        // gap
+        vmlsq v12, v4, v7, 0
+        ldr x11, [x4, #-24]
+        srshr v21.8H, v28.8H, #11
+        ldr x9, [x4, #-80]
+        vadd v31, v5, v8
+        ldr x14, [x4, #-48]
+        vsub v18, v5, v8
+        vins v28, x16, 0
+        vmlsq v13, v21, v7, 0
+        // gap
+        vadd v8, v0, v27
+        vins v19, x9, 0
+        trn1_s v3, v31, v18
+        vins v9, x14, 0
+        trn2_s v20, v31, v18
+        vins v28, x11, 1
+        trn1_s v22, v8, v30
+        vins v9, x24, 1
+        trn2_s v4, v8, v30
+        ldr x24, [x4, #-64]
+        st4 {v10.4S,v11.4S,v12.4S,v13.4S}, [x1]
+        // gap
+        // gap
+        // gap
+        // gap
+        // gap
+        // gap
+        // gap
+        // gap
+        vins v19, x26, 1
+        trn2_d v12, v3, v22
+        vins v13, x24, 0
+        trn2_d v24, v20, v4
+        ldr x19, [x1, #112]
+        vmul v25, v12, v2
+        ldr x21, [x3]
+        vmul v21, v24, v2
+        ldr x7, [x1, #120]
+        vqrdmulh v16, v12, v19
+        ldr x9, [x3, #-8]
+        vqrdmulh v30, v24, v19
+        vins v29, x19, 0
+        trn1_d v15, v3, v22
+        vins v14, x21, 0
+        trn1_d v1, v20, v4
+        vins v29, x7, 1
+        vmlsq v25, v16, v7, 0
+        vins v14, x9, 1
+        vmlsq v21, v30, v7, 0
+        ldr x24, [x4, #-16]
+        vmulq v0, v29, v14, 0
+        vins v13, x10, 1
+        vqrdmulhq v16, v29, v14, 1
+        ldr x9, [x1, #80]
+        vsub v22, v15, v25
+        ldr x27, [x1, #88]
+        vadd v18, v1, v21
+        vins v6, x24, 0
+        vsub v5, v1, v21
+        ldr x24, [x1, #96]
+        vmlsq v0, v16, v7, 0
+        vins v23, x9, 0
+        vqrdmulh v10, v18, v9
+        ldr x9, [x1, #104]
+        vmul v18, v18, v13
+        vins v23, x27, 1
+        vadd v12, v15, v25
+        vins v3, x24, 0
+        vadd v24, v23, v0
+        ldr x16, [x4, #64]
+        vsub v20, v23, v0
+        vins v3, x9, 1
+        vmlsq v18, v10, v7, 0
+        ldr x10, [x4, #40]
+        vqrdmulhq v23, v24, v14, 3
+        ldr x24, [x4, #56]
+        vmulq v27, v20, v14, 4
+        ldr x9, [x4, #-8]
+        vmulq v30, v3, v14, 0
+        ldr x26, [x4, #24]
+        vadd v10, v12, v18
+        ldr x14, [x4]
+        vmulq v8, v24, v14, 2
+        ldr x7, [x1, #64]
+        vqrdmulhq v19, v3, v14, 1
+        vins v6, x9, 1
+        vqrdmulhq v31, v20, v14, 5
+        ldr x9, [x4, #-88]
+        vqrdmulh v21, v5, v6
+        ldr x12, [x1, #72]
+        vmul v4, v5, v28
+        vins v2, x14, 0
+        vmlsq v30, v19, v7, 0
+        vins v26, x7, 0
+        vsub v11, v12, v18
+        vins v2, x9, 1
+        vmlsq v27, v31, v7, 0
+        vins v26, x12, 1
+        vmlsq v4, v21, v7, 0
+        // gap
+        vsub v0, v26, v30
+        // gap
+        vadd v5, v26, v30
+        // gap
+        vqdmulhq v21, v10, v7, 1
+        // gap
+        vsub v30, v0, v27
+        // gap
+        vsub v13, v22, v4
+        // gap
+        vadd v12, v22, v4
+        // gap
+        srshr v21.8H, v21.8H, #11
+        // gap
+        vqdmulhq v3, v11, v7, 1
+        // gap
+        vqdmulhq v4, v12, v7, 1
+        // gap
+        vmlsq v10, v21, v7, 0
+        // gap
+        vqdmulhq v28, v13, v7, 1
+        // gap
+        srshr v3.8H, v3.8H, #11
+        // gap
+        srshr v4.8H, v4.8H, #11
+        // gap
+        vmlsq v8, v23, v7, 0
+        // gap
+        vmlsq v11, v3, v7, 0
+        // gap
+        vmlsq v12, v4, v7, 0
+        ldr x11, [x4, #-24]
+        srshr v21.8H, v28.8H, #11
+        ldr x9, [x4, #-80]
+        vadd v31, v5, v8
+        ldr x14, [x4, #-48]
+        vsub v18, v5, v8
+        vins v28, x16, 0
+        vmlsq v13, v21, v7, 0
+        // gap
+        vadd v8, v0, v27
+        vins v19, x9, 0
+        trn1_s v3, v31, v18
+        vins v9, x14, 0
+        trn2_s v20, v31, v18
+        vins v28, x11, 1
+        trn1_s v22, v8, v30
+        vins v9, x24, 1
+        trn2_s v4, v8, v30
+        ldr x24, [x4, #-64]
+        st4 {v10.4S,v11.4S,v12.4S,v13.4S}, [x1]
+        // gap
+        // gap
+        // gap
+        // gap
+        // gap
+        // gap
+        // gap
+        // gap
+        vins v19, x26, 1
+        trn2_d v12, v3, v22
+        vins v13, x24, 0

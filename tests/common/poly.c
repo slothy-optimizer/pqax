@@ -197,7 +197,7 @@ void mod_reduce_buf_s32_signed( int32_t *src, unsigned size, int32_t mod )
     mod_reduce_buf_s32( src, size, mod );
     for( unsigned i=0; i < size; i++ )
     {
-        if( src[i] >= ( mod / 2 ) )
+        if( src[i] > ( mod / 2 ) )
             src[i] -= mod;
     }
 }
@@ -242,7 +242,7 @@ void mod_reduce_buf_s16_signed( int16_t *src, unsigned size, int16_t mod )
     mod_reduce_buf_s16( src, size, mod );
     for( unsigned i=0; i < size; i++ )
     {
-        if( src[i] >= ( mod / 2 ) )
+        if( src[i] > ( mod / 2 ) )
             src[i] -= mod;
     }
 }

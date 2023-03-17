@@ -4,6 +4,8 @@ CODEGEN_DIR=asm
 MANUAL_SRCS_DIR=$(CODEGEN_DIR)/manual
 MANUAL_SRCS_KECCAK_NEON_DIR=$(MANUAL_SRCS_DIR)/keccak_f1600
 MANUAL_SRCS_NTT_KYBER_DIR=$(MANUAL_SRCS_DIR)/ntt_kyber/
+MANUAL_SRCS_NTT_DILITHIUM_DIR=$(MANUAL_SRCS_DIR)/ntt_dilithium/
+MANUAL_SRCS_X25519_DIR=$(MANUAL_SRCS_DIR)/x25519/
 MANUAL_SRCS_BASEMUL_S64_DIR=$(MANUAL_SRCS_DIR)/basemul_s64
 
 AUTOGEN_SRCS_DIR=$(CODEGEN_DIR)/auto
@@ -42,6 +44,16 @@ MANUAL_SRCS_NTT_KYBER_ALL=$(wildcard $(MANUAL_SRCS_NTT_KYBER_DIR)/*.[sch])     \
                       $(wildcard $(MANUAL_SRCS_NTT_KYBER_DIR)/*/*/*.[sch]) \
                       $(wildcard $(MANUAL_SRCS_NTT_KYBER_DIR)/*/*/*/*.[sch])
 
+MANUAL_SRCS_NTT_DILITHIUM_ALL=$(wildcard $(MANUAL_SRCS_NTT_DILITHIUM_DIR)/*.[sch])\
+                      $(wildcard $(MANUAL_SRCS_NTT_DILITHIUM_DIR)/*/*.[sch])   \
+                      $(wildcard $(MANUAL_SRCS_NTT_DILITHIUM_DIR)/*/*/*.[sch]) \
+                      $(wildcard $(MANUAL_SRCS_NTT_DILITHIUM_DIR)/*/*/*/*.[sch])
+
+MANUAL_SRCS_X25519_ALL=$(wildcard $(MANUAL_SRCS_X25519_DIR)/*.[schi])     \
+                      $(wildcard $(MANUAL_SRCS_X25519_DIR)/*/*.[schi])   \
+                      $(wildcard $(MANUAL_SRCS_X25519_DIR)/*/*/*.[schi]) \
+                      $(wildcard $(MANUAL_SRCS_X25519_DIR)/*/*/*/*.[schi])
+
 TEST_BASE_DIR=tests
 
 # Directory and sources for Helloworld dummy test
@@ -50,6 +62,12 @@ TEST_HELLOWORLD_SOURCES_AUTO_DIR=$(TEST_HELLOWORLD_DIR)/auto
 TEST_HELLOWORLD_SRC_C=$(wildcard $(TEST_HELLOWORLD_DIR)/*.c) \
                       $(wildcard $(TEST_HELLOWORLD_DIR)/*/*.c)
 TEST_HELLOWORLD_SRC_ALL=$(TEST_HELLOWORLD_SRC_C)
+
+# Directory and sources for Profiling dummy test
+TEST_PROFILING_DIR=$(TEST_BASE_DIR)/profiling
+TEST_PROFILING_SRC_C=$(wildcard $(TEST_PROFILING_DIR)/*.c) \
+                      $(wildcard $(TEST_PROFILING_DIR)/*/*.c)
+TEST_PROFILING_SRC_ALL=$(TEST_PROFILING_SRC_C)
 
 # Directory and sources for Neon-NTT test
 TEST_NTT_NEON_DIR=$(TEST_BASE_DIR)/ntt_neon
@@ -92,7 +110,6 @@ TEST_KECCAK_NEON_SRC_MANUAL=$(patsubst $(MANUAL_SRCS_KECCAK_NEON_DIR)/%.h,    \
 
 TEST_KECCAK_NEON_SRC_ALL=$(TEST_KECCAK_NEON_SRC_C) $(TEST_KECCAK_NEON_SRC_MANUAL)
 
-# Directory and sources for KECCAK test
 TEST_NTT_KYBER_DIR=$(TEST_BASE_DIR)/ntt_kyber
 TEST_NTT_KYBER_SRC_C=$(wildcard $(TEST_NTT_KYBER_DIR)/*.c) \
                        $(wildcard $(TEST_NTT_KYBER_DIR)/*/*.c)
@@ -109,9 +126,44 @@ TEST_NTT_KYBER_SRC_MANUAL=$(patsubst $(MANUAL_SRCS_NTT_KYBER_DIR)/%.h,    \
 
 TEST_NTT_KYBER_SRC_ALL=$(TEST_NTT_KYBER_SRC_C) $(TEST_NTT_KYBER_SRC_MANUAL)
 
+TEST_NTT_DILITHIUM_DIR=$(TEST_BASE_DIR)/ntt_dilithium
+TEST_NTT_DILITHIUM_SRC_C=$(wildcard $(TEST_NTT_DILITHIUM_DIR)/*.c) \
+                       $(wildcard $(TEST_NTT_DILITHIUM_DIR)/*/*.c)
+TEST_NTT_DILITHIUM_SOURCES_MANUAL_DIR=$(TEST_NTT_DILITHIUM_DIR)/manual
+TEST_NTT_DILITHIUM_SRC_MANUAL__=$(patsubst $(MANUAL_SRCS_NTT_DILITHIUM_DIR)/%.s,    \
+                                  $(TEST_NTT_DILITHIUM_SOURCES_MANUAL_DIR)/%.s, \
+                                  $(MANUAL_SRCS_NTT_DILITHIUM_ALL))
+TEST_NTT_DILITHIUM_SRC_MANUAL_=$(patsubst $(MANUAL_SRCS_NTT_DILITHIUM_DIR)/%.c,    \
+                                  $(TEST_NTT_DILITHIUM_SOURCES_MANUAL_DIR)/%.c, \
+                                  $(TEST_NTT_DILITHIUM_SRC_MANUAL__))
+TEST_NTT_DILITHIUM_SRC_MANUAL=$(patsubst $(MANUAL_SRCS_NTT_DILITHIUM_DIR)/%.h,    \
+                                  $(TEST_NTT_DILITHIUM_SOURCES_MANUAL_DIR)/%.h, \
+                                  $(TEST_NTT_DILITHIUM_SRC_MANUAL_))
+
+TEST_NTT_DILITHIUM_SRC_ALL=$(TEST_NTT_DILITHIUM_SRC_C) $(TEST_NTT_DILITHIUM_SRC_MANUAL)
+
+TEST_X25519_DIR=$(TEST_BASE_DIR)/x25519
+TEST_X25519_SRC_C=$(wildcard $(TEST_X25519_DIR)/*.c) \
+                       $(wildcard $(TEST_X25519_DIR)/*/*.c)
+TEST_X25519_SOURCES_MANUAL_DIR=$(TEST_X25519_DIR)/manual
+TEST_X25519_SRC_MANUAL___=$(patsubst $(MANUAL_SRCS_X25519_DIR)/%.i,    \
+                                  $(TEST_X25519_SOURCES_MANUAL_DIR)/%.i, \
+                                  $(MANUAL_SRCS_X25519_ALL))
+TEST_X25519_SRC_MANUAL__=$(patsubst $(MANUAL_SRCS_X25519_DIR)/%.s,    \
+                                  $(TEST_X25519_SOURCES_MANUAL_DIR)/%.s, \
+                                  $(TEST_X25519_SRC_MANUAL___))
+TEST_X25519_SRC_MANUAL_=$(patsubst $(MANUAL_SRCS_X25519_DIR)/%.c,    \
+                                  $(TEST_X25519_SOURCES_MANUAL_DIR)/%.c, \
+                                  $(TEST_X25519_SRC_MANUAL__))
+TEST_X25519_SRC_MANUAL=$(patsubst $(MANUAL_SRCS_X25519_DIR)/%.h,    \
+                                  $(TEST_X25519_SOURCES_MANUAL_DIR)/%.h, \
+                                  $(TEST_X25519_SRC_MANUAL_))
+
+TEST_X25519_SRC_ALL=$(TEST_X25519_SRC_C) $(TEST_X25519_SRC_MANUAL)
+
 
 # All sources
-TEST_SRC_AUTO_ALL= $(TEST_NTT_NEON_SRC_AUTO) $(TEST_KECCAK_NEON_SRC_MANUAL) $(TEST_NTT_KYBER_SRC_MANUAL)
+TEST_SRC_AUTO_ALL= $(TEST_NTT_NEON_SRC_AUTO) $(TEST_KECCAK_NEON_SRC_MANUAL) $(TEST_NTT_KYBER_SRC_MANUAL) $(TEST_NTT_DILITHIUM_SRC_MANUAL) $(TEST_X25519_SRC_MANUAL)
 
 #
 # Test environments
@@ -199,6 +251,29 @@ $(TEST_NTT_KYBER_SRC_MANUAL): $(TEST_NTT_KYBER_SOURCES_MANUAL_DIR)/%.h: $(MANUAL
 	mkdir -p $(@D)
 	cp $< $@
 
+$(TEST_NTT_DILITHIUM_SRC_MANUAL): $(TEST_NTT_DILITHIUM_SOURCES_MANUAL_DIR)/%.c: $(MANUAL_SRCS_NTT_DILITHIUM_DIR)/%.c
+	mkdir -p $(@D)
+	cp $< $@
+$(TEST_NTT_DILITHIUM_SRC_MANUAL): $(TEST_NTT_DILITHIUM_SOURCES_MANUAL_DIR)/%.s: $(MANUAL_SRCS_NTT_DILITHIUM_DIR)/%.s
+	mkdir -p $(@D)
+	cp $< $@
+$(TEST_NTT_DILITHIUM_SRC_MANUAL): $(TEST_NTT_DILITHIUM_SOURCES_MANUAL_DIR)/%.h: $(MANUAL_SRCS_NTT_DILITHIUM_DIR)/%.h
+	mkdir -p $(@D)
+	cp $< $@
+
+$(TEST_X25519_SRC_MANUAL): $(TEST_X25519_SOURCES_MANUAL_DIR)/%.i: $(MANUAL_SRCS_X25519_DIR)/%.i
+	mkdir -p $(@D)
+	cp $< $@
+$(TEST_X25519_SRC_MANUAL): $(TEST_X25519_SOURCES_MANUAL_DIR)/%.c: $(MANUAL_SRCS_X25519_DIR)/%.c
+	mkdir -p $(@D)
+	cp $< $@
+$(TEST_X25519_SRC_MANUAL): $(TEST_X25519_SOURCES_MANUAL_DIR)/%.s: $(MANUAL_SRCS_X25519_DIR)/%.s
+	mkdir -p $(@D)
+	cp $< $@
+$(TEST_X25519_SRC_MANUAL): $(TEST_X25519_SOURCES_MANUAL_DIR)/%.h: $(MANUAL_SRCS_X25519_DIR)/%.h
+	mkdir -p $(@D)
+	cp $< $@
+
 .PHONY: codegen
 codegen:
 	make codegen -C $(CODEGEN_DIR)
@@ -219,6 +294,24 @@ build-cross-helloworld: $(TEST_ENV_CROSS_LINK_HELLOWORLD)
 
 .PHONY: run-cross-helloworld
 run-cross-helloworld: $(TEST_ENV_CROSS_LINK_HELLOWORLD)
+	make run -C $(TEST_ENV_CROSS_BASE)
+
+# Profiling on CROSS
+
+TEST_ENV_CROSS_LINK_PROFILING = $(TEST_ENV_CROSS_BASE)/test_loaded_profiling
+$(TEST_ENV_CROSS_LINK_PROFILING):
+	rm -f $(TEST_ENV_CROSS_SYMLINK)
+	ln -s ../../../$(TEST_PROFILING_DIR) $(TEST_ENV_CROSS_SYMLINK)
+	rm -f $(TEST_ENV_CROSS_BASE)/test_loaded_*
+	make -C $(TEST_ENV_CROSS_BASE) clean
+	touch $@
+
+.PHONY: build-cross-profiling
+build-cross-profiling: $(TEST_ENV_CROSS_LINK_PROFILING)
+	make -C $(TEST_ENV_CROSS_BASE)
+
+.PHONY: run-cross-profiling
+run-cross-profiling: $(TEST_ENV_CROSS_LINK_PROFILING)
 	make run -C $(TEST_ENV_CROSS_BASE)
 
 # NTT test on cross
@@ -279,6 +372,42 @@ build-cross-ntt_kyber: $(TEST_ENV_CROSS_LINK_NTT_KYBER)
 run-cross-ntt_kyber: $(TEST_ENV_CROSS_LINK_NTT_KYBER)
 	make run -C $(TEST_ENV_CROSS_BASE)
 
+# Dilithium NTT on CROSS
+
+TEST_ENV_CROSS_LINK_NTT_DILITHIUM = $(TEST_ENV_CROSS_BASE)/test_loaded_ntt_dilithium
+$(TEST_ENV_CROSS_LINK_NTT_DILITHIUM): $(TEST_NTT_DILITHIUM_SRC_MANUAL)
+	rm -f $(TEST_ENV_CROSS_SYMLINK)
+	ln -s ../../../$(TEST_NTT_DILITHIUM_DIR) $(TEST_ENV_CROSS_SYMLINK)
+	rm -f $(TEST_ENV_CROSS_BASE)/test_loaded_*
+	make -C $(TEST_ENV_CROSS_BASE) clean
+	touch $@
+
+.PHONY: build-cross-ntt_dilithium
+build-cross-ntt_dilithium: $(TEST_ENV_CROSS_LINK_NTT_DILITHIUM)
+	make -C $(TEST_ENV_CROSS_BASE)
+
+.PHONY: run-cross-ntt_dilithium
+run-cross-ntt_dilithium: $(TEST_ENV_CROSS_LINK_NTT_DILITHIUM)
+	make run -C $(TEST_ENV_CROSS_BASE)
+
+# X25519 on CROSS
+
+TEST_ENV_CROSS_LINK_X25519 = $(TEST_ENV_CROSS_BASE)/test_loaded_x25519
+$(TEST_ENV_CROSS_LINK_X25519): $(TEST_X25519_SRC_MANUAL)
+	rm -f $(TEST_ENV_CROSS_SYMLINK)
+	ln -s ../../../$(TEST_X25519_DIR) $(TEST_ENV_CROSS_SYMLINK)
+	rm -f $(TEST_ENV_CROSS_BASE)/test_loaded_*
+	make -C $(TEST_ENV_CROSS_BASE) clean
+	touch $@
+
+.PHONY: build-cross-x25519
+build-cross-x25519: $(TEST_ENV_CROSS_LINK_X25519)
+	make -C $(TEST_ENV_CROSS_BASE)
+
+.PHONY: run-cross-x25519
+run-cross-x25519: $(TEST_ENV_CROSS_LINK_X25519)
+	make run -C $(TEST_ENV_CROSS_BASE)
+
 # NTT-SVE2 test on CROSS
 
 TEST_ENV_CROSS_LINK_NTT_SVE2 = $(TEST_ENV_CROSS_BASE)/test_loaded_ntt_sve2
@@ -303,21 +432,39 @@ debug-cross-ntt_sve2: $(TEST_ENV_CROSS_LINK_NTT_SVE2)
 
 # HelloWorld native
 
-TEST_ENV_NATIVE_LINK_HELLOWORLD = $(TEST_ENV_NATIVE_BASE)/test_loaded_helloworld
-$(TEST_ENV_NATIVE_LINK_HELLOWORLD):
-	rm -f $(TEST_ENV_NATIVE_SYMLINK)
-	ln -s ../../../$(TEST_HELLOWORLD_DIR) $(TEST_ENV_NATIVE_SYMLINK)
-	rm -f $(TEST_ENV_NATIVE_BASE)/test_loaded_*
-	make -C $(TEST_ENV_NATIVE_BASE) clean
+TEST_ENV_NATIVE_MAC_LINK_HELLOWORLD = $(TEST_ENV_NATIVE_MAC_BASE)/test_loaded_helloworld
+$(TEST_ENV_NATIVE_MAC_LINK_HELLOWORLD):
+	rm -f $(TEST_ENV_NATIVE_MAC_SYMLINK)
+	ln -s ../../../$(TEST_HELLOWORLD_DIR) $(TEST_ENV_NATIVE_MAC_SYMLINK)
+	rm -f $(TEST_ENV_NATIVE_MAC_BASE)/test_loaded_*
+	make -C $(TEST_ENV_NATIVE_MAC_BASE) clean
 	touch $@
 
-.PHONY: build-native-helloworld
-build-native-helloworld: $(TEST_ENV_NATIVE_LINK_HELLOWORLD)
-	make -C $(TEST_ENV_NATIVE_BASE)
+.PHONY: build-native_mac-helloworld
+build-native_mac-helloworld: $(TEST_ENV_NATIVE_MAC_LINK_HELLOWORLD)
+	make -C $(TEST_ENV_NATIVE_MAC_BASE)
 
-.PHONY: run-native-helloworld
-run-native-helloworld: $(TEST_ENV_NATIVE_LINK_HELLOWORLD)
-	make run -C $(TEST_ENV_NATIVE_BASE)
+.PHONY: run-native_mac-helloworld
+run-native_mac-helloworld: $(TEST_ENV_NATIVE_MAC_LINK_HELLOWORLD)
+	make run -C $(TEST_ENV_NATIVE_MAC_BASE)
+
+# Profiling native
+
+TEST_ENV_NATIVE_MAC_LINK_PROFILING = $(TEST_ENV_NATIVE_MAC_BASE)/test_loaded_profiling
+$(TEST_ENV_NATIVE_MAC_LINK_PROFILING):
+	rm -f $(TEST_ENV_NATIVE_MAC_SYMLINK)
+	ln -s ../../../$(TEST_PROFILING_DIR) $(TEST_ENV_NATIVE_MAC_SYMLINK)
+	rm -f $(TEST_ENV_NATIVE_MAC_BASE)/test_loaded_*
+	make -C $(TEST_ENV_NATIVE_MAC_BASE) clean
+	touch $@
+
+.PHONY: build-native_mac-profiling
+build-native_mac-profiling: $(TEST_ENV_NATIVE_MAC_LINK_PROFILING)
+	make -C $(TEST_ENV_NATIVE_MAC_BASE)
+
+.PHONY: run-native_mac-profiling
+run-native_mac-profiling: $(TEST_ENV_NATIVE_MAC_LINK_PROFILING)
+	make run -C $(TEST_ENV_NATIVE_MAC_BASE)
 
 # Keccak native_mac
 TEST_ENV_NATIVE_MAC_LINK_KECCAK_NEON = $(TEST_ENV_NATIVE_MAC_BASE)/test_loaded_keccak_neon
@@ -351,6 +498,40 @@ build-native_mac-ntt_kyber: $(TEST_ENV_NATIVE_MAC_LINK_NTT_KYBER)
 
 .PHONY: run-native_mac-ntt_kyber
 run-native_mac-ntt_kyber: $(TEST_ENV_NATIVE_MAC_LINK_NTT_KYBER)
+	make run -C $(TEST_ENV_NATIVE_MAC_BASE)
+
+# Dilithium NTT native_mac
+TEST_ENV_NATIVE_MAC_LINK_NTT_DILITHIUM = $(TEST_ENV_NATIVE_MAC_BASE)/test_loaded_ntt_dilithium
+$(TEST_ENV_NATIVE_MAC_LINK_NTT_DILITHIUM): $(TEST_NTT_DILITHIUM_SRC_MANUAL)
+	rm -f $(TEST_ENV_NATIVE_MAC_SYMLINK)
+	ln -s ../../../$(TEST_NTT_DILITHIUM_DIR) $(TEST_ENV_NATIVE_MAC_SYMLINK)
+	rm -f $(TEST_ENV_NATIVE_MAC_BASE)/test_loaded_*
+	make -C $(TEST_ENV_NATIVE_MAC_BASE) clean
+	touch $@
+
+.PHONY: build-native_mac-ntt_dilithium
+build-native_mac-ntt_dilithium: $(TEST_ENV_NATIVE_MAC_LINK_NTT_DILITHIUM)
+	make -C $(TEST_ENV_NATIVE_MAC_BASE)
+
+.PHONY: run-native_mac-ntt_dilithium
+run-native_mac-ntt_dilithium: $(TEST_ENV_NATIVE_MAC_LINK_NTT_DILITHIUM)
+	make run -C $(TEST_ENV_NATIVE_MAC_BASE)
+
+# X25519 native_mac
+TEST_ENV_NATIVE_MAC_LINK_X25519 = $(TEST_ENV_NATIVE_MAC_BASE)/test_loaded_x25519
+$(TEST_ENV_NATIVE_MAC_LINK_X25519): $(TEST_X25519_SRC_MANUAL)
+	rm -f $(TEST_ENV_NATIVE_MAC_SYMLINK)
+	ln -s ../../../$(TEST_X25519_DIR) $(TEST_ENV_NATIVE_MAC_SYMLINK)
+	rm -f $(TEST_ENV_NATIVE_MAC_BASE)/test_loaded_*
+	make -C $(TEST_ENV_NATIVE_MAC_BASE) clean
+	touch $@
+
+.PHONY: build-native_mac-x25519
+build-native_mac-x25519: $(TEST_ENV_NATIVE_MAC_LINK_X25519)
+	make -C $(TEST_ENV_NATIVE_MAC_BASE)
+
+.PHONY: run-native_mac-x25519
+run-native_mac-x25519: $(TEST_ENV_NATIVE_MAC_LINK_X25519)
 	make run -C $(TEST_ENV_NATIVE_MAC_BASE)
 
 # NTT Neon native_mac
@@ -422,6 +603,40 @@ build-native_linux-ntt_kyber: $(TEST_ENV_NATIVE_LINUX_LINK_NTT_KYBER)
 
 .PHONY: run-native_linux-ntt_kyber
 run-native_linux-ntt_kyber: $(TEST_ENV_NATIVE_LINUX_LINK_NTT_KYBER)
+	make run -C $(TEST_ENV_NATIVE_LINUX_BASE)
+
+# Dilithium NTT native_linux
+TEST_ENV_NATIVE_LINUX_LINK_NTT_DILITHIUM = $(TEST_ENV_NATIVE_LINUX_BASE)/test_loaded_ntt_dilithium
+$(TEST_ENV_NATIVE_LINUX_LINK_NTT_DILITHIUM): $(TEST_NTT_DILITHIUM_SRC_MANUAL)
+	rm -f $(TEST_ENV_NATIVE_LINUX_SYMLINK)
+	ln -s ../../../$(TEST_NTT_DILITHIUM_DIR) $(TEST_ENV_NATIVE_LINUX_SYMLINK)
+	rm -f $(TEST_ENV_NATIVE_LINUX_BASE)/test_loaded_*
+	make -C $(TEST_ENV_NATIVE_LINUX_BASE) clean
+	touch $@
+
+.PHONY: build-native_linux-ntt_dilithium
+build-native_linux-ntt_dilithium: $(TEST_ENV_NATIVE_LINUX_LINK_NTT_DILITHIUM)
+	make -C $(TEST_ENV_NATIVE_LINUX_BASE)
+
+.PHONY: run-native_linux-ntt_dilithium
+run-native_linux-ntt_dilithium: $(TEST_ENV_NATIVE_LINUX_LINK_NTT_DILITHIUM)
+	make run -C $(TEST_ENV_NATIVE_LINUX_BASE)
+
+# X25519 on native_linux
+TEST_ENV_NATIVE_LINUX_LINK_X25519 = $(TEST_ENV_NATIVE_LINUX_BASE)/test_loaded_x25519
+$(TEST_ENV_NATIVE_LINUX_LINK_X25519): $(TEST_X25519_SRC_MANUAL)
+	rm -f $(TEST_ENV_NATIVE_LINUX_SYMLINK)
+	ln -s ../../../$(TEST_X25519_DIR) $(TEST_ENV_NATIVE_LINUX_SYMLINK)
+	rm -f $(TEST_ENV_NATIVE_LINUX_BASE)/test_loaded_*
+	make -C $(TEST_ENV_NATIVE_LINUX_BASE) clean
+	touch $@
+
+.PHONY: build-native_linux-x25519
+build-native_linux-x25519: $(TEST_ENV_NATIVE_LINUX_LINK_X25519)
+	make -C $(TEST_ENV_NATIVE_LINUX_BASE)
+
+.PHONY: run-native_linux-x25519
+run-native_linux-x25519: $(TEST_ENV_NATIVE_LINUX_LINK_X25519)
 	make run -C $(TEST_ENV_NATIVE_LINUX_BASE)
 
 # NTT Neon native_linux

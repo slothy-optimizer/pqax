@@ -1,10 +1,12 @@
 # pqax: Post-Quantum Cryptography on A-profile Arm CPUs
 
-## Overview
+This repository is a fork of the [pqax](https://gitlab.com/arm-research/security/pqax) repository,
+adding further examples from public-key cryptography (both classical and post-quantum).
+Along with [pqmx](https://github.com/slothy-optimizer/pqmx) and [SLOTHY](https://github.com/slothy-optimizer/slothy), it
+accompanies the paper [Fast and Clean: Auditable high-performance assembly via
+constraint-solving](https://eprint.iacr.org/2022/1303) by Abdulrahman, Becker, Kannwischer and Klein.
 
-### Scope
-
-This repository provides implementations of known Post-Quantum Cryptography (PQC) on A-profile Arm CPUs.
+It contains implementations of SPHINCS+ described in [Hybrid scalar/vector implementations of Keccak and SPHINCS+ on AArch64](https://eprint.iacr.org/2022/1243). See [sphincsplus](sphincsplus) for more details.
 
 ## Structure
 
@@ -12,7 +14,9 @@ The main components of the repository are the following:
 * [`asm`](asm): Core primitives in optimized assembly, auto-generated or handwritten.
 * [`tests`](tests): C-based tests for core primitives using a minimal hardware abstraction layer (HAL).
 * [`envs`](envs): Test environments implementing the HAL.
-* [`sphincsplus`](sphincsplus): Supporting material for the paper "Hybrid scalar/vector implementations of Keccak on AArch64"
+* [`sphincsplus`](sphincsplus): Supporting material for the paper "Hybrid scalar/vector implementations of Keccak on
+  AArch64"
+* [`nelight`](nelight): Submodule for the [SLOTHY superoptimizer](https://github.com/slothy-optimizer/slothy).
 
 The following sections explain each component in greater detail.
 
@@ -47,10 +51,6 @@ builds on an Arm host, and `cross` for cross-compilation. For the `cross` test e
 environment variable `CYCLES` as one of `NO, PMU, PERF` to indicate the source of cycle counts, and `PLATFORM` as one of
 `v8a` or `v84a` to control the compilation target.
 
-### SPHINCS+
-
-See [sphincsplus](sphincsplus) for more details.
-
 ## License
 
 pqax is licensed under the MIT license. See [LICENSE](LICENSE) for details.
@@ -62,6 +62,7 @@ pqax contains some third party sources, some of which are licensed differently:
 * [asm/manual/keccak_f1600/third_party/keccakx2_bas.s](asm/manual/keccak_f1600/third_party/keccakx2_bas.c): MIT
 * [asm/manual/keccak_f1600/third_party/keccakx2_C.s](asm/manual/keccak_f1600/third_party/keccakx2_bas.c): CC0 1.0 Universal Public Domain
   Dedication
+* [asm/manual/x25519/X25519-AArch64.s](X25519-AArch64.s): CC0 1.0 Universal Public Domain
 
 ## Usage
 

@@ -1,0 +1,1 @@
+../../../nelight/examples/opt/aarch64/ntt_kyber_123_4567_scalar_store_opt_x1.s
