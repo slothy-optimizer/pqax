@@ -1,1 +1,0 @@
-../../../nelight/examples/opt/aarch64/ntt_dilithium_123_45678_manual_st4_opt_x1.s
