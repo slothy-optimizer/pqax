@@ -1,1 +1,1 @@
-../../../nelight/examples/naive/aarch64/ntt_dilithium_123_45678_w_scalar.s
+../../../slothy/paper/clean/neon/ntt_dilithium_123_45678_w_scalar.s

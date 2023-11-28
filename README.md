@@ -26,7 +26,8 @@ The heart of the repository are optimized assembly routines for core components 
 consideration, such as the NTT or Keccak. All optimized assembly is contained in the [`asm`](asm) directory, which is structured
 as follows:
 
-* [`asm/manual`](asm/manual) contains assembly that has been written by hand.
+* [`asm/manual`](asm/manual) contains assembly files that have been written by hand, or auto-optimized from such
+  through [SLOTHY](https://github.com/slothy-optimizer/slothy).
 * [`asm/scripts`](asm/scripts) contains code generation scripts for various
   algorithms around polynomial multiplication or the PQC schemes they're relevant for, as well as other tests and
   examples.

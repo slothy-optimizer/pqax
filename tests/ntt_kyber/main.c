@@ -58,13 +58,6 @@ void ntt_kyber_123_4567_opt_a72(int16_t *);
 void ntt_kyber_123_4567_scalar_load_opt_a72(int16_t *);
 void ntt_kyber_123_4567_scalar_load_store_opt_a72(int16_t *);
 void ntt_kyber_123_4567_scalar_store_opt_a72(int16_t *);
-// X1
-void ntt_kyber_123_4567_manual_st4_opt_x1(int16_t *);
-void ntt_kyber_123_4567_opt_x1(int16_t *);
-void ntt_kyber_123_4567_scalar_load_opt_x1(int16_t *);
-void ntt_kyber_123_4567_scalar_load_store_opt_x1(int16_t *);
-void ntt_kyber_123_4567_scalar_store_opt_x1(int16_t *);
-void ntt_kyber_1234_567_opt_x1(int16_t *);
 
 #define NTT_LAYERS             8
 #define NTT_SIZE               (1u << NTT_LAYERS)
@@ -222,13 +215,6 @@ MAKE_TEST_FWD(asm_123_4567_opt_a72, ntt_kyber_123_4567_opt_a72,0,1)
 MAKE_TEST_FWD(asm_123_4567_scalar_load_opt_a72, ntt_kyber_123_4567_scalar_load_opt_a72,0,1)
 MAKE_TEST_FWD(asm_123_4567_scalar_load_store_opt_a72, ntt_kyber_123_4567_scalar_load_store_opt_a72,0,1)
 MAKE_TEST_FWD(asm_123_4567_scalar_store_opt_a72, ntt_kyber_123_4567_scalar_store_opt_a72,0,1)
-// X1
-MAKE_TEST_FWD(asm_123_4567_manual_st4_opt_x1, ntt_kyber_123_4567_manual_st4_opt_x1,0,1)
-MAKE_TEST_FWD(asm_123_4567_opt_x1, ntt_kyber_123_4567_opt_x1,0,1)
-MAKE_TEST_FWD(asm_123_4567_scalar_load_opt_x1, ntt_kyber_123_4567_scalar_load_opt_x1,0,1)
-MAKE_TEST_FWD(asm_123_4567_scalar_load_store_opt_x1, ntt_kyber_123_4567_scalar_load_store_opt_x1,0,1)
-MAKE_TEST_FWD(asm_123_4567_scalar_store_opt_x1, ntt_kyber_123_4567_scalar_store_opt_x1,0,1)
-MAKE_TEST_FWD(asm_1234_567_opt_x1, ntt_kyber_1234_567_opt_x1,0,1)
 // other
 MAKE_TEST_FWD(neonntt,ntt,0,1)
 
@@ -278,13 +264,6 @@ MAKE_BENCH(asm_123_4567_opt_a72, ntt_kyber_123_4567_opt_a72)
 MAKE_BENCH(asm_123_4567_scalar_load_opt_a72, ntt_kyber_123_4567_scalar_load_opt_a72)
 MAKE_BENCH(asm_123_4567_scalar_load_store_opt_a72, ntt_kyber_123_4567_scalar_load_store_opt_a72)
 MAKE_BENCH(asm_123_4567_scalar_store_opt_a72, ntt_kyber_123_4567_scalar_store_opt_a72)
-// X1
-MAKE_BENCH(asm_123_4567_manual_st4_opt_x1, ntt_kyber_123_4567_manual_st4_opt_x1)
-MAKE_BENCH(asm_123_4567_opt_x1, ntt_kyber_123_4567_opt_x1)
-MAKE_BENCH(asm_123_4567_scalar_load_opt_x1, ntt_kyber_123_4567_scalar_load_opt_x1)
-MAKE_BENCH(asm_123_4567_scalar_load_store_opt_x1, ntt_kyber_123_4567_scalar_load_store_opt_x1)
-MAKE_BENCH(asm_123_4567_scalar_store_opt_x1, ntt_kyber_123_4567_scalar_store_opt_x1)
-MAKE_BENCH(asm_1234_567_opt_x1, ntt_kyber_1234_567_opt_x1)
 // other
 MAKE_BENCH(neonntt,ntt)
 
@@ -372,36 +351,6 @@ int main( void )
         return (1);
     }
 
-    if (test_ntt_asm_123_4567_manual_st4_opt_x1() != 0)
-    {
-        return (1);
-    }
-
-    if (test_ntt_asm_123_4567_opt_x1() != 0)
-    {
-        return (1);
-    }
-
-    if (test_ntt_asm_123_4567_scalar_load_opt_x1() != 0)
-    {
-        return (1);
-    }
-
-    if (test_ntt_asm_123_4567_scalar_load_store_opt_x1() != 0)
-    {
-        return (1);
-    }
-
-    if (test_ntt_asm_123_4567_scalar_store_opt_x1() != 0)
-    {
-        return (1);
-    }
-
-    if (test_ntt_asm_1234_567_opt_x1() != 0)
-    {
-        return (1);
-    }
-
     if( test_ntt_neonntt()!= 0 )
         return(1);
 #endif /* DO_TEST */
@@ -423,12 +372,6 @@ int main( void )
     bench_ntt_asm_123_4567_scalar_load_opt_a72();
     bench_ntt_asm_123_4567_scalar_load_store_opt_a72();
     bench_ntt_asm_123_4567_scalar_store_opt_a72();
-    bench_ntt_asm_123_4567_manual_st4_opt_x1();
-    bench_ntt_asm_123_4567_opt_x1();
-    bench_ntt_asm_123_4567_scalar_load_opt_x1();
-    bench_ntt_asm_123_4567_scalar_load_store_opt_x1();
-    bench_ntt_asm_123_4567_scalar_store_opt_x1();
-    bench_ntt_asm_1234_567_opt_x1();
     bench_ntt_neonntt();
 #endif /* DO_BENCH */
 
