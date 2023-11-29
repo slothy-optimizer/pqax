@@ -1,1 +1,1 @@
-../../../nelight/examples/naive/aarch64/ntt_dilithium_123_456_78_twiddles.s
+../../../slothy/paper/clean/neon/ntt_dilithium_123_456_78_twiddles.s

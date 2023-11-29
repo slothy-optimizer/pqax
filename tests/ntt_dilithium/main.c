@@ -24,9 +24,6 @@
  * Author: Hanno Becker <hannobecker@posteo.de>
  */
 
-#define TEST_FOO
-#define BENCH_FOO
-
 /*
  * Some external references to auto-generated assembly.
  */
@@ -47,7 +44,6 @@ void ntt_dilithium_123_45678(int32_t *);
 void ntt_dilithium_123_45678_w_scalar(int32_t *);
 void ntt_dilithium_123_45678_manual_st4(int32_t *);
 void ntt_dilithium_1234_5678(int32_t *);
-void ntt_dilithium_1234_5678_manual_st4(int32_t *);
 // A55
 void ntt_dilithium_123_45678_opt_a55(int32_t *);
 void ntt_dilithium_123_45678_manual_st4_opt_a55(int32_t *);
@@ -56,10 +52,6 @@ void ntt_dilithium_123_45678_w_scalar_opt_a55(int32_t *);
 void ntt_dilithium_123_45678_opt_a72(int32_t *);
 void ntt_dilithium_123_45678_manual_st4_opt_a72(int32_t *);
 void ntt_dilithium_1234_5678_opt_a72(int32_t *);
-// X1
-/* void ntt_dilithium_123_45678_opt_x1(int32_t *); */
-void ntt_dilithium_123_45678_manual_st4_opt_x1(int32_t *);
-void ntt_dilithium_1234_5678_opt_x1(int32_t *);
 
 #define NTT_LAYERS             8
 #define NTT_SIZE               (1u << NTT_LAYERS)
@@ -326,7 +318,6 @@ MAKE_TEST(asm_123_45678,0,ntt_dilithium_123_45678,ntt_u32_C,0,0)
 MAKE_TEST(asm_123_45678_w_scalar,0,ntt_dilithium_123_45678_w_scalar,ntt_u32_C,0,0)
 MAKE_TEST(asm_123_45678_manual_st4,0,ntt_dilithium_123_45678_manual_st4,ntt_u32_C,0,0)
 MAKE_TEST(asm_1234_5678,0,ntt_dilithium_1234_5678,ntt_u32_C,0,0)
-MAKE_TEST(asm_1234_5678_manual_st4,0,ntt_dilithium_1234_5678_manual_st4,ntt_u32_C,0,0)
 // A55
 MAKE_TEST(asm_123_45678_opt_a55,0,ntt_dilithium_123_45678_opt_a55,ntt_u32_C,0,0)
 MAKE_TEST(asm_123_45678_manual_st4_opt_a55,0,ntt_dilithium_123_45678_manual_st4_opt_a55,ntt_u32_C,0,0)
@@ -335,10 +326,6 @@ MAKE_TEST(asm_123_45678_w_scalar_opt_a55,0,ntt_dilithium_123_45678_w_scalar_opt_
 MAKE_TEST(asm_123_45678_opt_a72,0,ntt_dilithium_123_45678_opt_a72,ntt_u32_C,0,0)
 MAKE_TEST(asm_123_45678_manual_st4_opt_a72,0,ntt_dilithium_123_45678_manual_st4_opt_a72,ntt_u32_C,0,0)
 MAKE_TEST(asm_1234_5678_opt_a72,0,ntt_dilithium_1234_5678_opt_a72,ntt_u32_C,0,0)
-// X1
-/* MAKE_TEST(asm_123_45678_opt_x1,0,ntt_dilithium_123_45678_opt_x1,ntt_u32_C,0,0) */
-MAKE_TEST(asm_123_45678_manual_st4_opt_x1,0,ntt_dilithium_123_45678_manual_st4_opt_x1,ntt_u32_C,0,0)
-MAKE_TEST(asm_1234_5678_opt_x1,0,ntt_dilithium_1234_5678_opt_x1,ntt_u32_C,0,0)
 // Other
 MAKE_TEST(neonntt_fwd,0,ntt,ntt_u32_C,0,0)
 
@@ -376,7 +363,6 @@ MAKE_BENCH(asm_123_45678,ntt_dilithium_123_45678)
 MAKE_BENCH(asm_123_45678_w_scalar,ntt_dilithium_123_45678_w_scalar)
 MAKE_BENCH(asm_123_45678_manual_st4,ntt_dilithium_123_45678_manual_st4)
 MAKE_BENCH(asm_1234_5678,ntt_dilithium_1234_5678)
-MAKE_BENCH(asm_1234_5678_manual_st4,ntt_dilithium_1234_5678_manual_st4)
 // A55
 MAKE_BENCH(asm_123_45678_opt_a55,ntt_dilithium_123_45678_opt_a55)
 MAKE_BENCH(asm_123_45678_manual_st4_opt_a55,ntt_dilithium_123_45678_manual_st4_opt_a55)
@@ -385,10 +371,6 @@ MAKE_BENCH(asm_123_45678_w_scalar_opt_a55,ntt_dilithium_123_45678_w_scalar_opt_a
 MAKE_BENCH(asm_123_45678_opt_a72,ntt_dilithium_123_45678_opt_a72)
 MAKE_BENCH(asm_123_45678_manual_st4_opt_a72,ntt_dilithium_123_45678_manual_st4_opt_a72)
 MAKE_BENCH(asm_1234_5678_opt_a72,ntt_dilithium_1234_5678_opt_a72)
-// X1
-/* MAKE_BENCH(asm_123_45678_opt_x1,ntt_dilithium_123_45678_opt_x1) */
-MAKE_BENCH(asm_123_45678_manual_st4_opt_x1,ntt_dilithium_123_45678_manual_st4_opt_x1)
-MAKE_BENCH(asm_1234_5678_opt_x1,ntt_dilithium_1234_5678_opt_x1)
 // Other
 MAKE_BENCH(neonntt_fwd,ntt)
 
@@ -404,7 +386,6 @@ int main( void )
     bench_ntt_asm_123_45678_w_scalar();
     bench_ntt_asm_123_45678_manual_st4();
     bench_ntt_asm_1234_5678();
-    bench_ntt_asm_1234_5678_manual_st4();
     // A55
     bench_ntt_asm_123_45678_opt_a55();
     bench_ntt_asm_123_45678_manual_st4_opt_a55();
@@ -413,10 +394,6 @@ int main( void )
     bench_ntt_asm_123_45678_opt_a72();
     bench_ntt_asm_123_45678_manual_st4_opt_a72();
     bench_ntt_asm_1234_5678_opt_a72();
-    // X1
-    /* bench_ntt_asm_123_45678_opt_x1(); */
-    bench_ntt_asm_123_45678_manual_st4_opt_x1();
-    bench_ntt_asm_1234_5678_opt_x1();
     // other
     bench_ntt_neonntt_fwd();
     disable_cyclecounter();
@@ -437,10 +414,6 @@ int main( void )
         return 1;
     }
     if (test_ntt_asm_1234_5678() != 0)
-    {
-        return 1;
-    }
-    if (test_ntt_asm_1234_5678_manual_st4() != 0)
     {
         return 1;
     }
@@ -467,19 +440,6 @@ int main( void )
         return 1;
     }
     if (test_ntt_asm_1234_5678_opt_a72() != 0)
-    {
-        return 1;
-    }
-    // X1
-    /*if (test_ntt_asm_123_45678_opt_a72() != 0)
-    {
-        return 1;
-    }*/
-    if (test_ntt_asm_123_45678_manual_st4_opt_x1() != 0)
-    {
-        return 1;
-    }
-    if (test_ntt_asm_1234_5678_opt_x1() != 0)
     {
         return 1;
     }

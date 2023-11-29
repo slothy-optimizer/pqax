@@ -1,6 +1,7 @@
 ///
 /// Copyright (c) 2022 Arm Limited
 /// Copyright (c) 2022 Hanno Becker
+/// Copyright (c) 2023 Amin Abdulrahman, Matthias Kannwischer
 /// SPDX-License-Identifier: MIT
 ///
 /// Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -40,17 +41,17 @@
 .macro trn2_s d,a,b
         trn2 \d\().4s, \a\().4s, \b\().4s
 .endm
-.macro ldr_vo vec, base, offset                    // slothy:no-unfold
-        ldr qform_\vec, [\base, \offset]
+.macro ldr_vo vec, base, offset
+        ldr qform_\vec, [\base, #\offset]
 .endm
-.macro ldr_vi vec, base, inc                        // slothy:no-unfold
-        ldr qform_\vec, [\base], \inc
+.macro ldr_vi vec, base, inc
+        ldr qform_\vec, [\base], #\inc
 .endm
-.macro str_vo vec, base, offset                     // slothy:no-unfold
-        str qform_\vec, [\base, \offset]
+.macro str_vo vec, base, offset
+        str qform_\vec, [\base, #\offset]
 .endm
-.macro str_vi vec, base, inc                        // slothy:no-unfold
-        str qform_\vec, [\base], \inc
+.macro str_vi vec, base, inc
+        str qform_\vec, [\base], #\inc
 .endm
 .macro vqrdmulh d,a,b
         sqrdmulh \d\().8h, \a\().8h, \b\().8h

@@ -1,1 +1,1 @@
-../../../nelight/examples/opt/aarch64/ntt_kyber_123_4567_opt_a72.s
+../../../slothy/paper/opt/neon/ntt_kyber_123_4567_opt_a72.s

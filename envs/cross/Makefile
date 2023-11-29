@@ -17,7 +17,7 @@
 #
 
 QEMU=qemu-aarch64
-CC=aarch64-none-linux-gnu-gcc
+CC=aarch64-linux-gnu-gcc
 LD=$(CC)
 
 PLATFORM ?= v84a
