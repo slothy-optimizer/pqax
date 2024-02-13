@@ -11,6 +11,8 @@
 #include <stdarg.h>
 #include <time.h>
 
+#include "m1cycles.h"
+
 void rand_init( unsigned long seed )
 {
     ((void) seed);
@@ -42,11 +44,11 @@ void debug_test_ok()   { printf( "Ok\n"    ); }
 void debug_test_fail() { printf( "FAIL!\n" ); }
 
 void enable_cyclecounter() {
-    return;
+    setup_rdtsc();
 }
 void disable_cyclecounter() {
     return;
 }
 uint64_t get_cyclecounter() {
-    return(0);
+    return(rdtsc());
 }
