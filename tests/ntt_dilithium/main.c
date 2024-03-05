@@ -109,7 +109,7 @@ static int cmp_uint64_t(const void *a, const void *b)
  * @param src array
  * @param n length of array
  */
-void bitreverse(int32_t *src, size_t n){
+void bitreverse(T *src, size_t n){
     for(size_t i = 0, j = 0; i < n; i++){
         if(i < j){
             src[i] += src[j];
@@ -133,12 +133,12 @@ void bitreverse(int32_t *src, size_t n){
  * @param q modulus
  * @return int 1 if there is an error, 0 otherwise
  */
-static int precomp_ct_negacyclic(int32_t *twiddles, size_t n, int32_t root, int32_t q){
+static int precomp_ct_negacyclic(T *twiddles, size_t n, T root, T q){
 
-    int32_t powers[n];
+    T powers[n];
     powers[0] = 1;
     for(size_t i=1;i<n;i++){
-        powers[i] = ((int64_t) powers[i-1]*root) % q;
+        powers[i] = ((T2) powers[i-1]*root) % q;
     }
     bitreverse(powers, n);
 
@@ -162,22 +162,22 @@ static int precomp_ct_negacyclic(int32_t *twiddles, size_t n, int32_t root, int3
  *
  * @param a polynomial with n coefficients to be transformed to NTT domain
  */
-static void ntt_u32_C(int32_t *a){
+static void ntt_u32_C(T *a){
     precomp_ct_negacyclic(roots, NTT_SIZE, base_root, modulus);
     size_t logn = log2(NTT_SIZE);
-    int32_t *twiddles = roots;
+    T *twiddles = roots;
     for(size_t i=0; i < logn; i++){
         size_t distance = 1U<< (logn - 1 -i);
         for(size_t j=0; j<(1U<<i); j++){
-            int32_t twiddle = *twiddles;
+            T twiddle = *twiddles;
             twiddles++;
             // Note: in the cyclic case many of the twiddles are 1;
             // could optimize those multiplications away
             for(size_t k =0; k<distance; k++){
                 size_t idx0 = 2*j*distance + k;
                 size_t idx1 = idx0 + distance;
-                int32_t a0  = a[idx0];
-                int32_t a1  = ((int64_t) a[idx1] * twiddle) % modulus;
+                T a0  = a[idx0];
+                T a1  = ((T2) a[idx1] * twiddle) % modulus;
                 a[idx0] = (a0 + a1) % modulus;
                 a[idx1] = (a0 + modulus - a1) % modulus;
             }
