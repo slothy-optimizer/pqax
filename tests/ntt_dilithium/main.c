@@ -46,7 +46,9 @@ void ntt_dilithium_123_45678_manual_st4(int32_t *);
 void ntt_dilithium_1234_5678(int32_t *);
 void ntt_dilithium_1234_5678_manual_st4(int32_t *);
 void intt_dilithium_1234_5678(int32_t *);
+void intt_dilithium_1234_5678_manual_ld4(int32_t *);
 void intt_dilithium_123_45678(int32_t *);
+void intt_dilithium_123_45678_manual_ld4(int32_t *);
 // A55
 void ntt_dilithium_123_45678_opt_a55(int32_t *);
 void ntt_dilithium_123_45678_manual_st4_opt_a55(int32_t *);
@@ -335,7 +337,9 @@ MAKE_TEST(asm_123_45678_manual_st4,0,ntt_dilithium_123_45678_manual_st4,ntt_u32_
 MAKE_TEST(asm_1234_5678,0,ntt_dilithium_1234_5678,ntt_u32_C,0,0)
 MAKE_TEST(asm_1234_5678_manual_st4,0,ntt_dilithium_1234_5678_manual_st4,ntt_u32_C,0,0)
 MAKE_TEST(asm_1234_5678_inv,0,intt_dilithium_1234_5678,invntt_u32_tomont_C,0,1)
+MAKE_TEST(asm_1234_5678_inv_manual_ld4,0,intt_dilithium_1234_5678_manual_ld4,invntt_u32_tomont_C,0,1)
 MAKE_TEST(asm_123_45678_inv,0,intt_dilithium_123_45678,invntt_u32_tomont_C,0,1)
+MAKE_TEST(asm_123_45678_inv_manual_ld4,0,intt_dilithium_123_45678_manual_ld4,invntt_u32_tomont_C,0,1)
 // A55
 MAKE_TEST(asm_123_45678_opt_a55,0,ntt_dilithium_123_45678_opt_a55,ntt_u32_C,0,0)
 MAKE_TEST(asm_123_45678_manual_st4_opt_a55,0,ntt_dilithium_123_45678_manual_st4_opt_a55,ntt_u32_C,0,0)
@@ -395,6 +399,10 @@ MAKE_BENCH(asm_123_45678_w_scalar,ntt_dilithium_123_45678_w_scalar)
 MAKE_BENCH(asm_123_45678_manual_st4,ntt_dilithium_123_45678_manual_st4)
 MAKE_BENCH(asm_1234_5678,ntt_dilithium_1234_5678)
 MAKE_BENCH(asm_1234_5678_manual_st4,ntt_dilithium_1234_5678_manual_st4)
+MAKE_BENCH(asm_1234_5678_inv,intt_dilithium_1234_5678)
+MAKE_BENCH(asm_1234_5678_inv_manual_ld4,intt_dilithium_1234_5678_manual_ld4)
+MAKE_BENCH(asm_123_45678_inv,intt_dilithium_123_45678)
+MAKE_BENCH(asm_123_45678_inv_manual_ld4,intt_dilithium_123_45678_manual_ld4)
 // A55
 MAKE_BENCH(asm_123_45678_opt_a55,ntt_dilithium_123_45678_opt_a55)
 MAKE_BENCH(asm_123_45678_manual_st4_opt_a55,ntt_dilithium_123_45678_manual_st4_opt_a55)
@@ -432,6 +440,10 @@ int main( void )
     bench_ntt_asm_123_45678_manual_st4();
     bench_ntt_asm_1234_5678();
     bench_ntt_asm_1234_5678_manual_st4();
+    bench_ntt_asm_1234_5678_inv();
+    bench_ntt_asm_1234_5678_inv_manual_ld4();
+    bench_ntt_asm_123_45678_inv();
+    bench_ntt_asm_123_45678_inv_manual_ld4();
     // A55
     bench_ntt_asm_123_45678_opt_a55();
     bench_ntt_asm_123_45678_manual_st4_opt_a55();
@@ -485,7 +497,15 @@ int main( void )
     {
         return 1;
     }
+    if (test_ntt_asm_1234_5678_inv_manual_ld4() != 0)
+    {
+        return 1;
+    }
     if (test_ntt_asm_123_45678_inv() != 0)
+    {
+        return 1;
+    }
+    if (test_ntt_asm_123_45678_inv_manual_ld4() != 0)
     {
         return 1;
     }
