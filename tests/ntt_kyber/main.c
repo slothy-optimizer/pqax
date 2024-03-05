@@ -34,6 +34,7 @@
 #include <stdint.h>
 #include <stdio.h>
 #include <string.h>
+#include <math.h>
 
 #define WARMUP_ITERATIONS  1000
 #define ITER_PER_TEST      1000
@@ -89,25 +90,31 @@ void ntt_kyber_123_4567_scalar_store_opt_m1_icestorm(int16_t *);
 #include <poly.h>
 #include "neonntt.h"
 #include "pqclean.h"
+
+#define T int16_t
+#define T2 int32_t
+
 /*
  * Test cases
- */
+*/
 
 int16_t base_root        = 17;
 int16_t modulus          = 3329;
 uint16_t modulus_inv_u16 = 62209;
+int16_t  ninvR            = 2285; // TODO FIX
+int16_t  base_root_inv    = 1175;
 
 int16_t  roots        [NTT_ROOT_ORDER / 2] __attribute__((aligned(16))) = { 0 };
 uint16_t roots_twisted[NTT_ROOT_ORDER / 2] __attribute__((aligned(16))) = { 0 };
 
-void build_roots()
-{
-    for( unsigned i=0; i < NTT_ROOT_ORDER / 2; i++ )
-    {
-        roots[i]         = mod_pow_s16( base_root, i, modulus );
-        roots_twisted[i] = roots[i] * modulus_inv_u16;
-    }
-}
+// void build_roots()
+// {
+//     for( unsigned i=0; i < NTT_ROOT_ORDER / 2; i++ )
+//     {
+//         roots[i]         = mod_pow_s16( base_root, i, modulus );
+//         roots_twisted[i] = roots[i] * modulus_inv_u16;
+//     }
+// }
 
 unsigned bit_reverse( unsigned in, unsigned width )
 {
@@ -126,45 +133,172 @@ static int cmp_uint64_t(const void *a, const void *b)
     return (int)((*((const uint64_t *)a)) - (*((const uint64_t *)b)));
 }
 
-void ntt_s16_C( int16_t *src )
-{
-    int16_t res[NTT_SIZE];
-    build_roots();
+// NTT FFT reference code form
+// https://github.com/mkannwischer/polymul/blob/072248095f5ef14f874e73772525cab68fb9d454/C/07incomplete.c
+// slightly modified
 
-    for( unsigned t=0; t<NTT_LAYER_STRIDE; t++ )
-    {
-        for( unsigned i=0; i<NTT_INCOMPLETE_SIZE; i++ )
-        {
-            int16_t tmp = 0;
-            /* A negacyclic FFT is half of a full FFT, where we've 'chosen -1'
-             * in the first layer. That explains the corrections by NTT_INCOMPLETE_SIZE
-             * and +1 here. In a normal FFT, this would just be bit_rev( i, layers ) * stride. */
-            unsigned const multiplier =
-                bit_reverse( i + NTT_INCOMPLETE_SIZE, NTT_INCOMPLETE_LAYERS + 1 ) * NTT_LAYER_STRIDE;
+/**
+ * @brief Bitreverse an array of length n inplace
+ *
+ * @param src array
+ * @param n length of array
+ */
+void bitreverse(T *src, size_t n){
+    for(size_t i = 0, j = 0; i < n; i++){
+        if(i < j){
+            src[i] += src[j];
+            src[i] -= (src[j] = (src[i] - src[j]));
+        }
+        for(size_t k = n >> 1; (j ^= k) < k; k >>=1);
+    }
+}
 
-            for( unsigned j=0; j<NTT_INCOMPLETE_SIZE; j++ )
-            {
-                int16_t cur;
-                unsigned exp = ( ( multiplier * j ) % NTT_ROOT_ORDER ) / 2;
-                unsigned sub = ( exp >= ( NTT_ROOT_ORDER / 2 ) );
-                exp = exp % ( NTT_ROOT_ORDER / 2 );
+/**
+ * @brief Precompute the required twiddle factors for a incomplete negacyclic Cooley--Tukey FFT
+ *
+ * First layer: [-1] = [root^(n/2)]
+ * Second layer: [sqrt(-1), -sqrt(-1)] = [root^(n/4), root^(3n/4)]
+ * Third layer: [sqrt(root^(n/4)), -sqrt(root^(n/4)), sqrt(root^(3n/4)), -sqrt(root^(3n/4))]
+                =[root^(n/8), root^(5n/8), root^(3n/8), root^(7n/8)]
+ * ...
+ *
+ * @param twiddles output buffer for the twiddles. needs to hold (2^numLayers)-1 twiddles
+ * @param n number of coefficients in polynomials (not size of the NTT)
+ * @param root 2*(2^numLayers)-th primitive root of unity modulo q
+ * @param q modulus
+ * @param numLayers number of layers in the NTT. Needs to be <= log n
+ * @return int 1 if there is an error, 0 otherwise
+ */
+static int precomp_ct_negacyclic(T *twiddles, size_t n, T root, T q, size_t numLayers){
+    //powers = [pow(root, i, q) for i in range(2**numLayers//2)]
+    T powers[(1<<numLayers)];
+    powers[0] = 1;
+    for(size_t i=1;i<(1U<<numLayers);i++){
+        powers[i] = ((T2) powers[i-1]*root) % q;
+    }
+    bitreverse(powers, 1<<numLayers);
 
-                cur = mod_mul_s16( src[NTT_LAYER_STRIDE*j+t],
-                                   roots[exp],
-                                   modulus );
+    for(size_t i = 0; i < (1U<<numLayers)-1; i++){
+        twiddles[i] = powers[i+1];
+    }
+    return 0;
+}
 
-                if( !sub )
-                    tmp = mod_add_s16( tmp, cur, modulus );
-                else
-                    tmp = mod_sub_s16( tmp, cur, modulus );
+/**
+ * @brief Precompute the required twiddle factors for a incomplete negacyclic Gentleman--Sande inverse FFT
+ *
+ * The twiddles correspond to the inverses of the ones computed in `precomp_ct_negacyclic`.
+ *
+ * @param twiddles output buffer for the twiddles. needs to hold (2^numLayers) twiddles
+ * @param n number of coefficients in polynomials (not size of the NTT)
+ * @param root 2*(2^numLayers)-th primitive root of unity modulo q
+ * @param q modulus
+ * @param numLayers number of layers in the NTT. Needs to be <= log n
+ * @return int 1 if there is an error, 0 otherwise
+ */
+// static int precomp_gs_negacyclic(T *twiddles, size_t n, T root, T q, size_t numLayers){
+//     //powers = [pow(root, -(i+1), q) for i in range(2**numLayers)]
+//     T powers[(1<<numLayers)];
+//     T rootInverse = base_root_inv;
+//     powers[0] = rootInverse;
+//     for(size_t i=1;i< 1U<<numLayers;i++){
+//         powers[i] = ((T2) powers[i-1]*rootInverse) % q;
+//     }
+//     bitreverse(powers, 1<<numLayers);
+//     for(size_t i=0;i<(1U<<numLayers)-1;i++){
+//         twiddles[i] = powers[i];
+//     }
+//     return 0;
+// }
+
+/**
+ * @brief Compute a Cooley--Tukey FFT. Stop after numLayers
+ *
+ * Expects twiddles to be computed by `precomp_ct_cyclic` or `precomp_ct_negacyclic`
+ * Each layer computes a split of
+ * `Z_q[x]/(x^n - c^2)` to `Z_q[x]/(x^(n/2) - c) x Z_q[x]/(x^(n/2) + c)`
+ * using the CT butterfly:
+ * ```
+ * a_i' = a_i + c*a_j
+ * a_j' = a_i - c*a_j
+ * ```
+ * @param a polynomial with n coefficients to be transformed to NTT domain
+ * @param twiddles twiddle factors computed by `precomp_ct_cyclic` or `precomp_ct_negacyclic`
+ * @param n number of coefficients in a
+ * @param q modulus
+ * @param numLayers number of layers in the NTT. Needs to be <= log n
+ */
+static void ntt_ct(T *a){
+    precomp_ct_negacyclic(roots, NTT_SIZE, base_root, modulus, NTT_INCOMPLETE_LAYERS);
+    size_t logn = log2(NTT_SIZE);
+    T *twiddles = roots;
+
+    for(size_t i=0; i < NTT_INCOMPLETE_LAYERS; i++){
+        size_t distance = 1U<< (logn - 1 -i);
+        for(size_t j=0; j<(1U<<i); j++){
+            T twiddle = *twiddles;
+            twiddles++;
+            // Note: in the cyclic case many of the twiddles are 1;
+            // could optimize those multiplications away
+            for(size_t k =0; k<distance; k++){
+                size_t idx0 = 2*j*distance + k;
+                size_t idx1 = idx0 + distance;
+                T a0  = a[idx0];
+                T a1  = ((T2) a[idx1] * twiddle) % modulus;
+                a[idx0] = (a0 + a1) % modulus;
+                a[idx1] = (a0 + modulus - a1) % modulus;
             }
-            res[NTT_LAYER_STRIDE*i+t] = tmp;
         }
     }
-
-    mod_reduce_buf_s16_signed( res, NTT_SIZE, modulus );
-    memcpy( src, res, sizeof( res ) );
 }
+
+/**
+ * @brief Compute a Gentleman--Sande inverse FFT. Stop after numLayers
+ *
+ * Expects twiddles to be computed by `precomp_gs_cyclic` or `precomp_gs_negacyclic`
+ * Each layer computes the CRT of
+ * Z_q[x]/(x^(n/2) - c) x Z_q[x]/(x^(n/2) + c) to recover an element in Z_q[x]/(x^n - c^2)
+ * using the GS butterfly:
+ * ```
+ * a_i' = 1/2 * (a_i + a_j)
+ * a_j' = 1/2 * 1/c * (a_i - a_j)
+ * ```
+ * The scaling by 1/2 is usually delayed until the very end, i.e., multiplication by 1/(2^numLayers).
+ *
+ * @param a input in NTT domain. To be transformed back to normal domain
+ * @param twiddles twiddle factors computed by `precomp_gs_cyclic` or `precomp_gs_negacyclic`
+ * @param n number of coefficients in a
+ * @param q modulus
+ * @param numLayers number of layers in the NTT. Needs to be <= log n
+ */
+// static void invntt_gs(T *a){
+//     size_t logn = log2(NTT_SIZE);
+//     precomp_gs_negacyclic(roots, NTT_SIZE, base_root, modulus, NTT_INCOMPLETE_LAYERS);
+//     int32_t *twiddles = roots;
+//     for(size_t i=logn-NTT_INCOMPLETE_LAYERS; i < logn; i++){
+//         size_t distance = 1<<i;
+//         for(size_t j=0; j<(1U<<(logn - 1 -i)); j++){
+//             T twiddle = *twiddles;
+//             twiddles++;
+//             // Note: in the cyclic case many of the twiddles are 1;
+//             // could optimize those multiplications away
+//             for(size_t k =0; k<distance; k++){
+//                 size_t idx0 = 2*j*distance + k;
+//                 size_t idx1 = idx0 + distance;
+//                 T a0  = (a[idx0] + a[idx1]) % modulus;
+//                 T a1  = (a[idx0] + modulus - a[idx1]) % modulus;
+//                 a[idx0] = a0;
+//                 a[idx1] = ((T2)a1*twiddle) % modulus;
+//             }
+//         }
+//     }
+
+//     // Note: Half of these multiplications can be merged into the last
+//     // layer of butterflies by pre-computing (twiddle*ninv)%q
+//     for(size_t i=0;i<NTT_SIZE;i++){
+//         a[i] = ((T2)a[i]*ninvR)%modulus;
+//     }
+// }
 
 void buf_bitrev_4( int16_t *src )
 {
@@ -181,7 +315,7 @@ void buf_bitrev_4( int16_t *src )
     }
 }
 
-#define MAKE_TEST_FWD(var,func,rev4,reduction_included)                 \
+#define MAKE_TEST_FWD(var,func,ref_func,rev4,reduction_included)                 \
 int test_ntt_ ## var ()                                                 \
 {                                                                       \
     debug_printf( "test ntt_kyber %-50s ", #func "\0");                 \
@@ -194,7 +328,8 @@ int test_ntt_ ## var ()                                                 \
                                                                         \
     /* Step 1: Reference NTT */                                         \
     memcpy( src_copy, src, sizeof( src ) );                             \
-    ntt_s16_C( src_copy );                                              \
+    (ref_func)( src_copy );                                                 \
+    mod_reduce_buf_s16_signed( src_copy, NTT_SIZE, modulus );           \
                                                                         \
     if( rev4 )                                                          \
         buf_bitrev_4( src_copy );                                       \
@@ -216,23 +351,23 @@ int test_ntt_ ## var ()                                                 \
     return( 0 );                                                        \
 }
 
-MAKE_TEST_FWD(asm, ntt_kyber_123_4567,0,1)
-MAKE_TEST_FWD(asm_123_4567_scalar_load, ntt_kyber_123_4567_scalar_load,0,1)
-MAKE_TEST_FWD(asm_123_4567_scalar_load_store, ntt_kyber_123_4567_scalar_load_store,0,1)
-MAKE_TEST_FWD(asm_123_4567_scalar_store, ntt_kyber_123_4567_scalar_store,0,1)
-MAKE_TEST_FWD(asm_1234_567, ntt_kyber_1234_567,0,1)
+MAKE_TEST_FWD(asm, ntt_kyber_123_4567, ntt_ct,0,1)
+MAKE_TEST_FWD(asm_123_4567_scalar_load, ntt_kyber_123_4567_scalar_load, ntt_ct,0,1)
+MAKE_TEST_FWD(asm_123_4567_scalar_load_store, ntt_kyber_123_4567_scalar_load_store, ntt_ct,0,1)
+MAKE_TEST_FWD(asm_123_4567_scalar_store, ntt_kyber_123_4567_scalar_store, ntt_ct,0,1)
+MAKE_TEST_FWD(asm_1234_567, ntt_kyber_1234_567, ntt_ct,0,1)
 // A55
-MAKE_TEST_FWD(asm_123_4567_manual_st4_opt_a55, ntt_kyber_123_4567_manual_st4_opt_a55,0,1)
-MAKE_TEST_FWD(asm_123_4567_opt_a55, ntt_kyber_123_4567_opt_a55,0,1)
-MAKE_TEST_FWD(asm_123_4567_scalar_load_opt_a55, ntt_kyber_123_4567_scalar_load_opt_a55,0,1)
-MAKE_TEST_FWD(asm_123_4567_scalar_load_store_opt_a55, ntt_kyber_123_4567_scalar_load_store_opt_a55,0,1)
-MAKE_TEST_FWD(asm_123_4567_scalar_store_opt_a55, ntt_kyber_123_4567_scalar_store_opt_a55,0,1)
+MAKE_TEST_FWD(asm_123_4567_manual_st4_opt_a55, ntt_kyber_123_4567_manual_st4_opt_a55, ntt_ct,0,1)
+MAKE_TEST_FWD(asm_123_4567_opt_a55, ntt_kyber_123_4567_opt_a55, ntt_ct,0,1)
+MAKE_TEST_FWD(asm_123_4567_scalar_load_opt_a55, ntt_kyber_123_4567_scalar_load_opt_a55, ntt_ct,0,1)
+MAKE_TEST_FWD(asm_123_4567_scalar_load_store_opt_a55, ntt_kyber_123_4567_scalar_load_store_opt_a55, ntt_ct,0,1)
+MAKE_TEST_FWD(asm_123_4567_scalar_store_opt_a55, ntt_kyber_123_4567_scalar_store_opt_a55, ntt_ct,0,1)
 // A72
-MAKE_TEST_FWD(asm_123_4567_manual_st4_opt_a72, ntt_kyber_123_4567_manual_st4_opt_a72,0,1)
-MAKE_TEST_FWD(asm_123_4567_opt_a72, ntt_kyber_123_4567_opt_a72,0,1)
-MAKE_TEST_FWD(asm_123_4567_scalar_load_opt_a72, ntt_kyber_123_4567_scalar_load_opt_a72,0,1)
-MAKE_TEST_FWD(asm_123_4567_scalar_load_store_opt_a72, ntt_kyber_123_4567_scalar_load_store_opt_a72,0,1)
-MAKE_TEST_FWD(asm_123_4567_scalar_store_opt_a72, ntt_kyber_123_4567_scalar_store_opt_a72,0,1)
+MAKE_TEST_FWD(asm_123_4567_manual_st4_opt_a72, ntt_kyber_123_4567_manual_st4_opt_a72, ntt_ct,0,1)
+MAKE_TEST_FWD(asm_123_4567_opt_a72, ntt_kyber_123_4567_opt_a72, ntt_ct,0,1)
+MAKE_TEST_FWD(asm_123_4567_scalar_load_opt_a72, ntt_kyber_123_4567_scalar_load_opt_a72, ntt_ct,0,1)
+MAKE_TEST_FWD(asm_123_4567_scalar_load_store_opt_a72, ntt_kyber_123_4567_scalar_load_store_opt_a72, ntt_ct,0,1)
+MAKE_TEST_FWD(asm_123_4567_scalar_store_opt_a72, ntt_kyber_123_4567_scalar_store_opt_a72, ntt_ct,0,1)
 // M1 Firestorm
 MAKE_TEST_FWD(asm_123_4567_opt_m1_firestorm, ntt_kyber_123_4567_opt_m1_firestorm,0,1)
 MAKE_TEST_FWD(asm_123_4567_scalar_load_opt_m1_firestorm, ntt_kyber_123_4567_scalar_load_opt_m1_firestorm,0,1)
@@ -250,7 +385,7 @@ MAKE_TEST_FWD(asm_123_4567_scalar_store_opt_m1_icestorm, ntt_kyber_123_4567_scal
 /* MAKE_TEST_FWD(asm_1234_567_opt_m1_icestorm, ntt_kyber_1234_567_opt_m1_icestorm,0,1) */
 /* MAKE_TEST_FWD(asm_1234_567_manual_st4_opt_m1_icestorm, ntt_kyber_1234_567_manual_st4_opt_m1_icestorm,0,1) */
 // other
-MAKE_TEST_FWD(neonntt,ntt,0,1)
+MAKE_TEST_FWD(neonntt,ntt, ntt_ct,0,1)
 MAKE_TEST_FWD(pqclean,pqclean_ntt,0,1)
 
 uint64_t t0, t1;
