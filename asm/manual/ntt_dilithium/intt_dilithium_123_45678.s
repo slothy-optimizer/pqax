@@ -1,0 +1,1 @@
+../../../slothy/examples/naive/aarch64/intt_dilithium_123_45678.s

@@ -45,6 +45,8 @@ void ntt_dilithium_123_45678_w_scalar(int32_t *);
 void ntt_dilithium_123_45678_manual_st4(int32_t *);
 void ntt_dilithium_1234_5678(int32_t *);
 void ntt_dilithium_1234_5678_manual_st4(int32_t *);
+void intt_dilithium_1234_5678(int32_t *);
+void intt_dilithium_123_45678(int32_t *);
 // A55
 void ntt_dilithium_123_45678_opt_a55(int32_t *);
 void ntt_dilithium_123_45678_manual_st4_opt_a55(int32_t *);
@@ -197,7 +199,7 @@ static void ntt_u32_C(int32_t *a){
  * @param q modulus
  * @return int 1 if there is an error, 0 otherwise
  */
-/*static int precomp_gs_negacyclic(T *twiddles, size_t n, T root, T q){
+static int precomp_gs_negacyclic(T *twiddles, size_t n, T root, T q){
     //powers = [pow(root, -(i+1), q) for i in range(n)]
     T powers[n];
     T rootInverse = base_root_inv;
@@ -210,7 +212,7 @@ static void ntt_u32_C(int32_t *a){
         twiddles[i] = powers[i];
     }
     return 0;
-}*/
+}
 
 /**
  * @brief Computes a Gentleman--Sande inverse FFT
@@ -231,13 +233,13 @@ static void ntt_u32_C(int32_t *a){
  * @param n size of the input
  * @param q modulus
  */
-/*static void invntt_u32_tomont_C(T *a){
+static void invntt_u32_tomont_C(T *a){
     size_t logn = log2(NTT_SIZE);
     precomp_gs_negacyclic(roots, NTT_SIZE, base_root, modulus);
     int32_t *twiddles = roots;
     // printf("\n");
     for(size_t i=0; i < logn; i++){
-        // printf("layer: %ld\n", i+1);
+        // printf("layer: %ld\n", i+1);        
         size_t distance = 1<<i;
         for(size_t j=0; j<(1U<<(logn - 1 -i)); j++){
             T twiddle = *twiddles;
@@ -258,14 +260,13 @@ static void ntt_u32_C(int32_t *a){
         }
 
     }
-
     // Note: Half of these multiplications can be merged into the last
     // layer of butterflies by pre-computing (twiddle*ninv)%q
     // includes multiplication by Montgomery factor
     for(size_t i=0;i<NTT_SIZE;i++){
         a[i] = ((T2)a[i]*ninvR)%modulus;
     }
-}*/
+}
 
 void buf_bitrev_4( int32_t *src, size_t size )
 {
@@ -333,6 +334,8 @@ MAKE_TEST(asm_123_45678_w_scalar,0,ntt_dilithium_123_45678_w_scalar,ntt_u32_C,0,
 MAKE_TEST(asm_123_45678_manual_st4,0,ntt_dilithium_123_45678_manual_st4,ntt_u32_C,0,0)
 MAKE_TEST(asm_1234_5678,0,ntt_dilithium_1234_5678,ntt_u32_C,0,0)
 MAKE_TEST(asm_1234_5678_manual_st4,0,ntt_dilithium_1234_5678_manual_st4,ntt_u32_C,0,0)
+MAKE_TEST(asm_1234_5678_inv,0,intt_dilithium_1234_5678,invntt_u32_tomont_C,0,1)
+MAKE_TEST(asm_123_45678_inv,0,intt_dilithium_123_45678,invntt_u32_tomont_C,0,1)
 // A55
 MAKE_TEST(asm_123_45678_opt_a55,0,ntt_dilithium_123_45678_opt_a55,ntt_u32_C,0,0)
 MAKE_TEST(asm_123_45678_manual_st4_opt_a55,0,ntt_dilithium_123_45678_manual_st4_opt_a55,ntt_u32_C,0,0)
@@ -475,6 +478,14 @@ int main( void )
         return 1;
     }
     if (test_ntt_asm_1234_5678_manual_st4() != 0)
+    {
+        return 1;
+    }
+    if (test_ntt_asm_1234_5678_inv() != 0)
+    {
+        return 1;
+    }
+    if (test_ntt_asm_123_45678_inv() != 0)
     {
         return 1;
     }
