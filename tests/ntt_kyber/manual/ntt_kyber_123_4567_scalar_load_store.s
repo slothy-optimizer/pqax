@@ -137,22 +137,22 @@ xtmp1 .req x11
 .endm
 
 .macro transpose4 data
-        trn1 t0.4s, \data\()0\().4s, \data\()1\().4s
-        trn2 t1.4s, \data\()0\().4s, \data\()1\().4s
-        trn1 t2.4s, \data\()2\().4s, \data\()3\().4s
-        trn2 t3.4s, \data\()2\().4s, \data\()3\().4s
+        trn1 t0.4s, \data\()0.4s, \data\()1.4s
+        trn2 t1.4s, \data\()0.4s, \data\()1.4s
+        trn1 t2.4s, \data\()2.4s, \data\()3.4s
+        trn2 t3.4s, \data\()2.4s, \data\()3.4s
 
-        trn2 \data\()2\().2d, t0.2d, t2.2d
-        trn2 \data\()3\().2d, t1.2d, t3.2d
-        trn1 \data\()0\().2d, t0.2d, t2.2d
-        trn1 \data\()1\().2d, t1.2d, t3.2d
+        trn2 \data\()2.2d, t0.2d, t2.2d
+        trn2 \data\()3.2d, t1.2d, t3.2d
+        trn1 \data\()0.2d, t0.2d, t2.2d
+        trn1 \data\()1.2d, t1.2d, t3.2d
 .endm
 
 .macro transpose_single data_out, data_in
-        trn1 \data_out\()0\().4s, \data_in\()0\().4s, \data_in\()1\().4s
-        trn2 \data_out\()1\().4s, \data_in\()0\().4s, \data_in\()1\().4s
-        trn1 \data_out\()2\().4s, \data_in\()2\().4s, \data_in\()3\().4s
-        trn2 \data_out\()3\().4s, \data_in\()2\().4s, \data_in\()3\().4s
+        trn1 \data_out\()0.4s, \data_in\()0.4s, \data_in\()1.4s
+        trn2 \data_out\()1.4s, \data_in\()0.4s, \data_in\()1.4s
+        trn1 \data_out\()2.4s, \data_in\()2.4s, \data_in\()3.4s
+        trn2 \data_out\()3.4s, \data_in\()2.4s, \data_in\()3.4s
 .endm
 
 .macro vec_to_scalar_matrix out, in
@@ -178,7 +178,7 @@ xtmp1 .req x11
 .endm
 
 
-.macro save_gprs // slothy:no-unfold
+.macro save_gprs // @slothy:no-unfold
         sub sp, sp, #(16*6)
         stp x19, x20, [sp, #16*0]
         stp x19, x20, [sp, #16*0]
@@ -189,7 +189,7 @@ xtmp1 .req x11
         str x29, [sp, #16*5]
 .endm
 
-.macro restore_gprs // slothy:no-unfold
+.macro restore_gprs // @slothy:no-unfold
         ldp x19, x20, [sp, #16*0]
         ldp x21, x22, [sp, #16*1]
         ldp x23, x24, [sp, #16*2]
@@ -199,7 +199,7 @@ xtmp1 .req x11
         add sp, sp, #(16*6)
 .endm
 
-.macro save_vregs // slothy:no-unfold
+.macro save_vregs // @slothy:no-unfold
         sub sp, sp, #(16*4)
         stp  d8,  d9, [sp, #16*0]
         stp d10, d11, [sp, #16*1]
@@ -207,7 +207,7 @@ xtmp1 .req x11
         stp d14, d15, [sp, #16*3]
 .endm
 
-.macro restore_vregs // slothy:no-unfold
+.macro restore_vregs // @slothy:no-unfold
         ldp  d8,  d9, [sp, #16*0]
         ldp d10, d11, [sp, #16*1]
         ldp d12, d13, [sp, #16*2]
@@ -218,19 +218,19 @@ xtmp1 .req x11
 #define STACK_SIZE 16
 #define STACK0 0
 
-.macro restore a, loc     // slothy:no-unfold
+.macro restore a, loc     // @slothy:no-unfold
         ldr \a, [sp, #\loc\()]
 .endm
-.macro save loc, a        // slothy:no-unfold
+.macro save loc, a        // @slothy:no-unfold
         str \a, [sp, #\loc\()]
 .endm
-.macro push_stack // slothy:no-unfold
+.macro push_stack // @slothy:no-unfold
         save_gprs
         save_vregs
         sub sp, sp, #STACK_SIZE
 .endm
 
-.macro pop_stack // slothy:no-unfold
+.macro pop_stack // @slothy:no-unfold
         add sp, sp, #STACK_SIZE
         restore_vregs
         restore_gprs
