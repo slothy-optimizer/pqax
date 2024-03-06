@@ -43,6 +43,7 @@
 /* Add declarationa for ASM NTTs here */
 // base
 void ntt_kyber_123_4567(int16_t *);
+void intt_kyber_123_4567(int16_t *);
 void ntt_kyber_123_4567_scalar_load(int16_t *);
 void ntt_kyber_123_4567_scalar_load_store(int16_t *);
 void ntt_kyber_123_4567_scalar_store(int16_t *);
@@ -101,7 +102,8 @@ void ntt_kyber_123_4567_scalar_store_opt_m1_icestorm(int16_t *);
 int16_t base_root        = 17;
 int16_t modulus          = 3329;
 uint16_t modulus_inv_u16 = 62209;
-int16_t  ninvR            = 2285; // TODO FIX
+int16_t  ninv            = 1441; // TODO FIX
+int16_t  ninvR            = 512; // TODO for from_mont
 int16_t  base_root_inv    = 1175;
 
 int16_t  roots        [NTT_ROOT_ORDER / 2] __attribute__((aligned(16))) = { 0 };
@@ -196,20 +198,20 @@ static int precomp_ct_negacyclic(T *twiddles, size_t n, T root, T q, size_t numL
  * @param numLayers number of layers in the NTT. Needs to be <= log n
  * @return int 1 if there is an error, 0 otherwise
  */
-// static int precomp_gs_negacyclic(T *twiddles, size_t n, T root, T q, size_t numLayers){
-//     //powers = [pow(root, -(i+1), q) for i in range(2**numLayers)]
-//     T powers[(1<<numLayers)];
-//     T rootInverse = base_root_inv;
-//     powers[0] = rootInverse;
-//     for(size_t i=1;i< 1U<<numLayers;i++){
-//         powers[i] = ((T2) powers[i-1]*rootInverse) % q;
-//     }
-//     bitreverse(powers, 1<<numLayers);
-//     for(size_t i=0;i<(1U<<numLayers)-1;i++){
-//         twiddles[i] = powers[i];
-//     }
-//     return 0;
-// }
+static int precomp_gs_negacyclic(T *twiddles, size_t n, T root, T q, size_t numLayers){
+    //powers = [pow(root, -(i+1), q) for i in range(2**numLayers)]
+    T powers[(1<<numLayers)];
+    T rootInverse = base_root_inv;
+    powers[0] = rootInverse;
+    for(size_t i=1;i< 1U<<numLayers;i++){
+        powers[i] = ((T2) powers[i-1]*rootInverse) % q;
+    }
+    bitreverse(powers, 1<<numLayers);
+    for(size_t i=0;i<(1U<<numLayers)-1;i++){
+        twiddles[i] = powers[i];
+    }
+    return 0;
+}
 
 /**
  * @brief Compute a Cooley--Tukey FFT. Stop after numLayers
@@ -271,34 +273,36 @@ static void ntt_ct(T *a){
  * @param q modulus
  * @param numLayers number of layers in the NTT. Needs to be <= log n
  */
-// static void invntt_gs(T *a){
-//     size_t logn = log2(NTT_SIZE);
-//     precomp_gs_negacyclic(roots, NTT_SIZE, base_root, modulus, NTT_INCOMPLETE_LAYERS);
-//     int32_t *twiddles = roots;
-//     for(size_t i=logn-NTT_INCOMPLETE_LAYERS; i < logn; i++){
-//         size_t distance = 1<<i;
-//         for(size_t j=0; j<(1U<<(logn - 1 -i)); j++){
-//             T twiddle = *twiddles;
-//             twiddles++;
-//             // Note: in the cyclic case many of the twiddles are 1;
-//             // could optimize those multiplications away
-//             for(size_t k =0; k<distance; k++){
-//                 size_t idx0 = 2*j*distance + k;
-//                 size_t idx1 = idx0 + distance;
-//                 T a0  = (a[idx0] + a[idx1]) % modulus;
-//                 T a1  = (a[idx0] + modulus - a[idx1]) % modulus;
-//                 a[idx0] = a0;
-//                 a[idx1] = ((T2)a1*twiddle) % modulus;
-//             }
-//         }
-//     }
+static void invntt_gs(T *a){
+    size_t logn = log2(NTT_SIZE);
+    precomp_gs_negacyclic(roots, NTT_SIZE, base_root, modulus, NTT_INCOMPLETE_LAYERS);
+    T *twiddles = roots;
+    for(size_t i=logn-NTT_INCOMPLETE_LAYERS; i < logn; i++){        
+        size_t distance = 1<<i;
+        for(size_t j=0; j<(1U<<(logn - 1 -i)); j++){
+            T twiddle = *twiddles;
+            twiddles++;
+            // Note: in the cyclic case many of the twiddles are 1;
+            // could optimize those multiplications away
+            for(size_t k =0; k<distance; k++){
+                size_t idx0 = 2*j*distance + k;
+                size_t idx1 = idx0 + distance;
+                // printf("%d, %d\n", a[idx0], a[idx1]);
+                T a0  = (a[idx0] + a[idx1]) % modulus;
+                T a1  = (a[idx0] + modulus - a[idx1]) % modulus;
+                a[idx0] = a0;
+                a[idx1] = ((T2)a1*twiddle) % modulus;
+                // printf("->%d, %d\n", a[idx0], a[idx1]);
+            }
+        }
+    }
 
-//     // Note: Half of these multiplications can be merged into the last
-//     // layer of butterflies by pre-computing (twiddle*ninv)%q
-//     for(size_t i=0;i<NTT_SIZE;i++){
-//         a[i] = ((T2)a[i]*ninvR)%modulus;
-//     }
-// }
+    // Note: Half of these multiplications can be merged into the last
+    // layer of butterflies by pre-computing (twiddle*ninv)%q
+    for(size_t i=0;i<NTT_SIZE;i++){
+        a[i] = ((T2)a[i]*ninvR)%modulus;
+    }
+}
 
 void buf_bitrev_4( int16_t *src )
 {
@@ -315,7 +319,7 @@ void buf_bitrev_4( int16_t *src )
     }
 }
 
-#define MAKE_TEST_FWD(var,func,ref_func,rev4,reduction_included)                 \
+#define MAKE_TEST_FWD(var,inv,func,ref_func,rev4,reduction_included)                 \
 int test_ntt_ ## var ()                                                 \
 {                                                                       \
     debug_printf( "test ntt_kyber %-50s ", #func "\0");                 \
@@ -350,24 +354,26 @@ int test_ntt_ ## var ()                                                 \
     debug_printf("OK!\n");                                              \
     return( 0 );                                                        \
 }
-
-MAKE_TEST_FWD(asm, ntt_kyber_123_4567, ntt_ct,0,1)
-MAKE_TEST_FWD(asm_123_4567_scalar_load, ntt_kyber_123_4567_scalar_load, ntt_ct,0,1)
-MAKE_TEST_FWD(asm_123_4567_scalar_load_store, ntt_kyber_123_4567_scalar_load_store, ntt_ct,0,1)
-MAKE_TEST_FWD(asm_123_4567_scalar_store, ntt_kyber_123_4567_scalar_store, ntt_ct,0,1)
-MAKE_TEST_FWD(asm_1234_567, ntt_kyber_1234_567, ntt_ct,0,1)
+// Clean
+MAKE_TEST_FWD(asm, 0, ntt_kyber_123_4567, ntt_ct,0,1)
+MAKE_TEST_FWD(asm_123_4567_scalar_load, 0, ntt_kyber_123_4567_scalar_load, ntt_ct,0,1)
+MAKE_TEST_FWD(asm_123_4567_scalar_load_store, 0, ntt_kyber_123_4567_scalar_load_store, ntt_ct,0,1)
+MAKE_TEST_FWD(asm_123_4567_scalar_store, 0, ntt_kyber_123_4567_scalar_store, ntt_ct,0,1)
+MAKE_TEST_FWD(asm_1234_567, 0, ntt_kyber_1234_567, ntt_ct,0,1)
+// the output is small, but not canonically reduced. Same as NEON NTT paper
+MAKE_TEST_FWD(asm_123_4567_inv, 1, intt_kyber_123_4567, invntt_gs,0,0)
 // A55
-MAKE_TEST_FWD(asm_123_4567_manual_st4_opt_a55, ntt_kyber_123_4567_manual_st4_opt_a55, ntt_ct,0,1)
-MAKE_TEST_FWD(asm_123_4567_opt_a55, ntt_kyber_123_4567_opt_a55, ntt_ct,0,1)
-MAKE_TEST_FWD(asm_123_4567_scalar_load_opt_a55, ntt_kyber_123_4567_scalar_load_opt_a55, ntt_ct,0,1)
-MAKE_TEST_FWD(asm_123_4567_scalar_load_store_opt_a55, ntt_kyber_123_4567_scalar_load_store_opt_a55, ntt_ct,0,1)
-MAKE_TEST_FWD(asm_123_4567_scalar_store_opt_a55, ntt_kyber_123_4567_scalar_store_opt_a55, ntt_ct,0,1)
+MAKE_TEST_FWD(asm_123_4567_manual_st4_opt_a55, 0, ntt_kyber_123_4567_manual_st4_opt_a55, ntt_ct,0,1)
+MAKE_TEST_FWD(asm_123_4567_opt_a55, 0, ntt_kyber_123_4567_opt_a55, ntt_ct,0,1)
+MAKE_TEST_FWD(asm_123_4567_scalar_load_opt_a55, 0, ntt_kyber_123_4567_scalar_load_opt_a55, ntt_ct,0,1)
+MAKE_TEST_FWD(asm_123_4567_scalar_load_store_opt_a55, 0, ntt_kyber_123_4567_scalar_load_store_opt_a55, ntt_ct,0,1)
+MAKE_TEST_FWD(asm_123_4567_scalar_store_opt_a55, 0, ntt_kyber_123_4567_scalar_store_opt_a55, ntt_ct,0,1)
 // A72
-MAKE_TEST_FWD(asm_123_4567_manual_st4_opt_a72, ntt_kyber_123_4567_manual_st4_opt_a72, ntt_ct,0,1)
-MAKE_TEST_FWD(asm_123_4567_opt_a72, ntt_kyber_123_4567_opt_a72, ntt_ct,0,1)
-MAKE_TEST_FWD(asm_123_4567_scalar_load_opt_a72, ntt_kyber_123_4567_scalar_load_opt_a72, ntt_ct,0,1)
-MAKE_TEST_FWD(asm_123_4567_scalar_load_store_opt_a72, ntt_kyber_123_4567_scalar_load_store_opt_a72, ntt_ct,0,1)
-MAKE_TEST_FWD(asm_123_4567_scalar_store_opt_a72, ntt_kyber_123_4567_scalar_store_opt_a72, ntt_ct,0,1)
+MAKE_TEST_FWD(asm_123_4567_manual_st4_opt_a72, 0, ntt_kyber_123_4567_manual_st4_opt_a72, ntt_ct,0,1)
+MAKE_TEST_FWD(asm_123_4567_opt_a72, 0, ntt_kyber_123_4567_opt_a72, ntt_ct,0,1)
+MAKE_TEST_FWD(asm_123_4567_scalar_load_opt_a72, 0, ntt_kyber_123_4567_scalar_load_opt_a72, ntt_ct,0,1)
+MAKE_TEST_FWD(asm_123_4567_scalar_load_store_opt_a72, 0, ntt_kyber_123_4567_scalar_load_store_opt_a72, ntt_ct,0,1)
+MAKE_TEST_FWD(asm_123_4567_scalar_store_opt_a72, 0, ntt_kyber_123_4567_scalar_store_opt_a72, ntt_ct,0,1)
 // M1 Firestorm
 MAKE_TEST_FWD(asm_123_4567_opt_m1_firestorm, ntt_kyber_123_4567_opt_m1_firestorm,0,1)
 MAKE_TEST_FWD(asm_123_4567_scalar_load_opt_m1_firestorm, ntt_kyber_123_4567_scalar_load_opt_m1_firestorm,0,1)
@@ -385,8 +391,9 @@ MAKE_TEST_FWD(asm_123_4567_scalar_store_opt_m1_icestorm, ntt_kyber_123_4567_scal
 /* MAKE_TEST_FWD(asm_1234_567_opt_m1_icestorm, ntt_kyber_1234_567_opt_m1_icestorm,0,1) */
 /* MAKE_TEST_FWD(asm_1234_567_manual_st4_opt_m1_icestorm, ntt_kyber_1234_567_manual_st4_opt_m1_icestorm,0,1) */
 // other
-MAKE_TEST_FWD(neonntt,ntt, ntt_ct,0,1)
+MAKE_TEST_FWD(neonntt, 0, ntt, ntt_ct,0,1)
 MAKE_TEST_FWD(pqclean,pqclean_ntt,0,1)
+MAKE_TEST_FWD(neonntt_inv, 1, invntt, invntt_gs,0,0)
 
 uint64_t t0, t1;
 uint64_t cycles[TEST_COUNT];
@@ -417,11 +424,13 @@ int bench_ntt_ ## var ()                                                \
     return( 0 );                                                        \
 }
 
+// Clean
 MAKE_BENCH(asm_123_4567, ntt_kyber_123_4567)
 MAKE_BENCH(asm_123_4567_scalar_load, ntt_kyber_123_4567_scalar_load)
 MAKE_BENCH(asm_123_4567_scalar_load_store, ntt_kyber_123_4567_scalar_load_store)
 MAKE_BENCH(asm_123_4567_scalar_store, ntt_kyber_123_4567_scalar_store)
 MAKE_BENCH(asm_1234_567, ntt_kyber_1234_567)
+MAKE_BENCH(asm_123_4567_inv, intt_kyber_123_4567)
 // A55
 MAKE_BENCH(asm_123_4567_manual_st4_opt_a55, ntt_kyber_123_4567_manual_st4_opt_a55)
 MAKE_BENCH(asm_123_4567_opt_a55, ntt_kyber_123_4567_opt_a55)
@@ -453,6 +462,7 @@ MAKE_BENCH(asm_123_4567_scalar_store_opt_m1_icestorm, ntt_kyber_123_4567_scalar_
 // other
 MAKE_BENCH(neonntt,ntt)
 MAKE_BENCH(pqclean,pqclean_ntt)
+MAKE_BENCH(neonntt_inv,invntt)
 
 int main( void )
 {
@@ -484,6 +494,11 @@ int main( void )
     }
 
     if (test_ntt_asm_1234_567() != 0)
+    {
+        return (1);
+    }
+
+    if (test_ntt_asm_123_4567_inv() != 0)
     {
         return (1);
     }
@@ -554,25 +569,38 @@ int main( void )
     if(test_ntt_asm_123_4567_scalar_store_opt_m1_icestorm() != 0){return (1);}
     /* if(test_ntt_asm_1234_567_opt_m1_icestorm() != 0){return (1);} */
     /* if(test_ntt_asm_1234_567_manual_st4_opt_m1_icestorm() != 0){return (1);} */
-
-    if( test_ntt_neonntt()!= 0 )
+    
+    /* Neon NTT */
+    if(test_ntt_neonntt()!= 0)
+    {
         return(1);
+    }
+        
+    if(test_ntt_neonntt_inv()!= 0)
+    {
+        return(1);
+    }
     if( test_ntt_pqclean()!= 0 )
         return(1);
 #endif /* DO_TEST */
 
 #if defined(DO_BENCH)
     /* Benchs */
+
+    /* Clean */
     bench_ntt_asm_123_4567();
     bench_ntt_asm_123_4567_scalar_load();
     bench_ntt_asm_123_4567_scalar_load_store();
     bench_ntt_asm_123_4567_scalar_store();
     bench_ntt_asm_1234_567();
+    bench_ntt_asm_123_4567_inv();
+    /* A55 */
     bench_ntt_asm_123_4567_manual_st4_opt_a55();
     bench_ntt_asm_123_4567_opt_a55();
     bench_ntt_asm_123_4567_scalar_load_opt_a55();
     bench_ntt_asm_123_4567_scalar_load_store_opt_a55();
     bench_ntt_asm_123_4567_scalar_store_opt_a55();
+    /* A72 */
     bench_ntt_asm_123_4567_manual_st4_opt_a72();
     bench_ntt_asm_123_4567_opt_a72();
     bench_ntt_asm_123_4567_scalar_load_opt_a72();
@@ -595,8 +623,10 @@ int main( void )
     /* bench_ntt_asm_1234_567_opt_m1_icestorm(); */
     /* bench_ntt_asm_1234_567_manual_st4_opt_m1_icestorm(); */
 
+
     bench_ntt_neonntt();
     bench_ntt_pqclean();
+    bench_ntt_neonntt_inv();
 #endif /* DO_BENCH */
 
     debug_printf( "- Disable cycle counter ..." );
