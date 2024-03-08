@@ -319,7 +319,7 @@ void buf_bitrev_4( int16_t *src )
     }
 }
 
-#define MAKE_TEST_FWD(var,inv,func,ref_func,rev4,reduction_included)                 \
+#define MAKE_TEST_FWD(var,inv,func,ref_func,rev4,reduction_included,canonical_result)                 \
 int test_ntt_ ## var ()                                                 \
 {                                                                       \
     debug_printf( "test ntt_kyber %-50s ", #func "\0");                 \
@@ -332,8 +332,9 @@ int test_ntt_ ## var ()                                                 \
                                                                         \
     /* Step 1: Reference NTT */                                         \
     memcpy( src_copy, src, sizeof( src ) );                             \
-    (ref_func)( src_copy );                                                 \
-    mod_reduce_buf_s16_signed( src_copy, NTT_SIZE, modulus );           \
+    (ref_func)( src_copy );                                             \
+    if (canonical_result)                                               \
+        mod_reduce_buf_s16_signed( src_copy, NTT_SIZE, modulus );       \
                                                                         \
     if( rev4 )                                                          \
         buf_bitrev_4( src_copy );                                       \
@@ -355,25 +356,27 @@ int test_ntt_ ## var ()                                                 \
     return( 0 );                                                        \
 }
 // Clean
-MAKE_TEST_FWD(asm, 0, ntt_kyber_123_4567, ntt_ct,0,1)
-MAKE_TEST_FWD(asm_123_4567_scalar_load, 0, ntt_kyber_123_4567_scalar_load, ntt_ct,0,1)
-MAKE_TEST_FWD(asm_123_4567_scalar_load_store, 0, ntt_kyber_123_4567_scalar_load_store, ntt_ct,0,1)
-MAKE_TEST_FWD(asm_123_4567_scalar_store, 0, ntt_kyber_123_4567_scalar_store, ntt_ct,0,1)
-MAKE_TEST_FWD(asm_1234_567, 0, ntt_kyber_1234_567, ntt_ct,0,1)
-// the output is small, but not canonically reduced. Same as NEON NTT paper
-MAKE_TEST_FWD(asm_123_4567_inv, 1, intt_kyber_123_4567, invntt_gs,0,0)
+MAKE_TEST_FWD(asm, 0, ntt_kyber_123_4567, ntt_ct,0,1,1)
+MAKE_TEST_FWD(asm_123_4567_scalar_load, 0, ntt_kyber_123_4567_scalar_load, ntt_ct,0,1,1)
+MAKE_TEST_FWD(asm_123_4567_scalar_load_store, 0, ntt_kyber_123_4567_scalar_load_store, ntt_ct,0,1,1)
+MAKE_TEST_FWD(asm_123_4567_scalar_store, 0, ntt_kyber_123_4567_scalar_store, ntt_ct,0,1,1)
+MAKE_TEST_FWD(asm_1234_567, 0, ntt_kyber_1234_567, ntt_ct,0,1,1)
+// Clean invNTT
+MAKE_TEST_FWD(asm_123_4567_inv, 1, intt_kyber_123_4567, invntt_gs,0,0,1)
+// Check against neon-ntt for comparability
+MAKE_TEST_FWD(asm_vs_neonntt_123_4567_inv, 1, intt_kyber_123_4567, invntt,0,1,0)
 // A55
-MAKE_TEST_FWD(asm_123_4567_manual_st4_opt_a55, 0, ntt_kyber_123_4567_manual_st4_opt_a55, ntt_ct,0,1)
-MAKE_TEST_FWD(asm_123_4567_opt_a55, 0, ntt_kyber_123_4567_opt_a55, ntt_ct,0,1)
-MAKE_TEST_FWD(asm_123_4567_scalar_load_opt_a55, 0, ntt_kyber_123_4567_scalar_load_opt_a55, ntt_ct,0,1)
-MAKE_TEST_FWD(asm_123_4567_scalar_load_store_opt_a55, 0, ntt_kyber_123_4567_scalar_load_store_opt_a55, ntt_ct,0,1)
-MAKE_TEST_FWD(asm_123_4567_scalar_store_opt_a55, 0, ntt_kyber_123_4567_scalar_store_opt_a55, ntt_ct,0,1)
+MAKE_TEST_FWD(asm_123_4567_manual_st4_opt_a55, 0, ntt_kyber_123_4567_manual_st4_opt_a55, ntt_ct,0,1,1)
+MAKE_TEST_FWD(asm_123_4567_opt_a55, 0, ntt_kyber_123_4567_opt_a55, ntt_ct,0,1,1)
+MAKE_TEST_FWD(asm_123_4567_scalar_load_opt_a55, 0, ntt_kyber_123_4567_scalar_load_opt_a55, ntt_ct,0,1,1)
+MAKE_TEST_FWD(asm_123_4567_scalar_load_store_opt_a55, 0, ntt_kyber_123_4567_scalar_load_store_opt_a55, ntt_ct,0,1,1)
+MAKE_TEST_FWD(asm_123_4567_scalar_store_opt_a55, 0, ntt_kyber_123_4567_scalar_store_opt_a55, ntt_ct,0,1,1)
 // A72
-MAKE_TEST_FWD(asm_123_4567_manual_st4_opt_a72, 0, ntt_kyber_123_4567_manual_st4_opt_a72, ntt_ct,0,1)
-MAKE_TEST_FWD(asm_123_4567_opt_a72, 0, ntt_kyber_123_4567_opt_a72, ntt_ct,0,1)
-MAKE_TEST_FWD(asm_123_4567_scalar_load_opt_a72, 0, ntt_kyber_123_4567_scalar_load_opt_a72, ntt_ct,0,1)
-MAKE_TEST_FWD(asm_123_4567_scalar_load_store_opt_a72, 0, ntt_kyber_123_4567_scalar_load_store_opt_a72, ntt_ct,0,1)
-MAKE_TEST_FWD(asm_123_4567_scalar_store_opt_a72, 0, ntt_kyber_123_4567_scalar_store_opt_a72, ntt_ct,0,1)
+MAKE_TEST_FWD(asm_123_4567_manual_st4_opt_a72, 0, ntt_kyber_123_4567_manual_st4_opt_a72, ntt_ct,0,1,1)
+MAKE_TEST_FWD(asm_123_4567_opt_a72, 0, ntt_kyber_123_4567_opt_a72, ntt_ct,0,1,1)
+MAKE_TEST_FWD(asm_123_4567_scalar_load_opt_a72, 0, ntt_kyber_123_4567_scalar_load_opt_a72, ntt_ct,0,1,1)
+MAKE_TEST_FWD(asm_123_4567_scalar_load_store_opt_a72, 0, ntt_kyber_123_4567_scalar_load_store_opt_a72, ntt_ct,0,1,1)
+MAKE_TEST_FWD(asm_123_4567_scalar_store_opt_a72, 0, ntt_kyber_123_4567_scalar_store_opt_a72, ntt_ct,0,1,1)
 // M1 Firestorm
 MAKE_TEST_FWD(asm_123_4567_opt_m1_firestorm, ntt_kyber_123_4567_opt_m1_firestorm,0,1)
 MAKE_TEST_FWD(asm_123_4567_scalar_load_opt_m1_firestorm, ntt_kyber_123_4567_scalar_load_opt_m1_firestorm,0,1)
@@ -391,9 +394,9 @@ MAKE_TEST_FWD(asm_123_4567_scalar_store_opt_m1_icestorm, ntt_kyber_123_4567_scal
 /* MAKE_TEST_FWD(asm_1234_567_opt_m1_icestorm, ntt_kyber_1234_567_opt_m1_icestorm,0,1) */
 /* MAKE_TEST_FWD(asm_1234_567_manual_st4_opt_m1_icestorm, ntt_kyber_1234_567_manual_st4_opt_m1_icestorm,0,1) */
 // other
-MAKE_TEST_FWD(neonntt, 0, ntt, ntt_ct,0,1)
+MAKE_TEST_FWD(neonntt, 0, ntt, ntt_ct,0,1,1)
 MAKE_TEST_FWD(pqclean,pqclean_ntt,0,1)
-MAKE_TEST_FWD(neonntt_inv, 1, invntt, invntt_gs,0,0)
+MAKE_TEST_FWD(neonntt_inv, 1, invntt, invntt_gs,0,0,1)
 
 uint64_t t0, t1;
 uint64_t cycles[TEST_COUNT];
@@ -499,6 +502,11 @@ int main( void )
     }
 
     if (test_ntt_asm_123_4567_inv() != 0)
+    {
+        return (1);
+    }
+
+    if (test_ntt_asm_vs_neonntt_123_4567_inv() != 0)
     {
         return (1);
     }
