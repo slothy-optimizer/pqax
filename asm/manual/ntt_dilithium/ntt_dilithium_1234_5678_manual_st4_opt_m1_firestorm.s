@@ -1,0 +1,1 @@
+../../../slothy/examples/opt/aarch64/ntt_dilithium_1234_5678_manual_st4_opt_m1_firestorm.s
