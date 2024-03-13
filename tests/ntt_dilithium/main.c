@@ -77,6 +77,7 @@ void ntt_dilithium_1234_5678_manual_st4_opt_m1_icestorm(int32_t *);
 #include <misc.h>
 #include <poly.h>
 #include "neonntt.h"
+#include "pqclean.h"
 /*
  * Test cases
  */
@@ -354,6 +355,7 @@ MAKE_TEST(asm_1234_5678_opt_m1_icestorm,0,ntt_dilithium_1234_5678_opt_m1_icestor
 MAKE_TEST(asm_1234_5678_manual_st4_opt_m1_icestorm,0,ntt_dilithium_1234_5678_manual_st4_opt_m1_icestorm,ntt_u32_C,0,0)
 // Other
 MAKE_TEST(neonntt_fwd,0,ntt,ntt_u32_C,0,0)
+MAKE_TEST(pqclean_ntt_fwd,0,pqclean_ntt,ntt_u32_C,0,0)
 
 uint64_t t0, t1;
 uint64_t cycles[TEST_COUNT];
@@ -412,6 +414,7 @@ MAKE_BENCH(asm_1234_5678_opt_m1_icestorm,ntt_dilithium_1234_5678_opt_m1_icestorm
 MAKE_BENCH(asm_1234_5678_manual_st4_opt_m1_icestorm,ntt_dilithium_1234_5678_manual_st4_opt_m1_icestorm)
 // Other
 MAKE_BENCH(neonntt_fwd,ntt)
+MAKE_BENCH(pqclean_ntt_fwd,pqclean_ntt)
 
 int main( void )
 {
@@ -448,6 +451,8 @@ int main( void )
     bench_ntt_asm_1234_5678_manual_st4_opt_m1_icestorm();
     // other
     bench_ntt_neonntt_fwd();
+    bench_ntt_pqclean_ntt_fwd();
+
     disable_cyclecounter();
 
     // Tests
@@ -543,6 +548,10 @@ int main( void )
     }
     // other
     if (test_ntt_neonntt_fwd() != 0)
+    {
+        return 1;
+    }
+    if (test_ntt_pqclean_ntt_fwd() != 0)
     {
         return 1;
     }

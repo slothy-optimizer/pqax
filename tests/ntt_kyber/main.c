@@ -88,6 +88,7 @@ void ntt_kyber_123_4567_scalar_store_opt_m1_icestorm(int16_t *);
 #include <misc.h>
 #include <poly.h>
 #include "neonntt.h"
+#include "pqclean.h"
 /*
  * Test cases
  */
@@ -250,6 +251,7 @@ MAKE_TEST_FWD(asm_123_4567_scalar_store_opt_m1_icestorm, ntt_kyber_123_4567_scal
 /* MAKE_TEST_FWD(asm_1234_567_manual_st4_opt_m1_icestorm, ntt_kyber_1234_567_manual_st4_opt_m1_icestorm,0,1) */
 // other
 MAKE_TEST_FWD(neonntt,ntt,0,1)
+MAKE_TEST_FWD(pqclean,pqclean_ntt,0,1)
 
 uint64_t t0, t1;
 uint64_t cycles[TEST_COUNT];
@@ -315,6 +317,7 @@ MAKE_BENCH(asm_123_4567_scalar_store_opt_m1_icestorm, ntt_kyber_123_4567_scalar_
 /* MAKE_BENCH(asm_1234_567_manual_st4_opt_m1_icestorm, ntt_kyber_1234_567_manual_st4_opt_m1_icestorm) */
 // other
 MAKE_BENCH(neonntt,ntt)
+MAKE_BENCH(pqclean,pqclean_ntt)
 
 int main( void )
 {
@@ -419,6 +422,8 @@ int main( void )
 
     if( test_ntt_neonntt()!= 0 )
         return(1);
+    if( test_ntt_pqclean()!= 0 )
+        return(1);
 #endif /* DO_TEST */
 
 #if defined(DO_BENCH)
@@ -456,6 +461,7 @@ int main( void )
     /* bench_ntt_asm_1234_567_manual_st4_opt_m1_icestorm(); */
 
     bench_ntt_neonntt();
+    bench_ntt_pqclean();
 #endif /* DO_BENCH */
 
     debug_printf( "- Disable cycle counter ..." );
