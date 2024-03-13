@@ -35,8 +35,8 @@
 #include <stdio.h>
 #include <string.h>
 
-#define WARMUP_ITERATIONS 1000
-#define ITER_PER_TEST      100
+#define WARMUP_ITERATIONS  1000
+#define ITER_PER_TEST      1000
 #define TEST_COUNT         100
 
 /* Add declarationa for ASM NTTs here */
