@@ -41,6 +41,16 @@ SRC_DIR=./src
 CFLAGS+= -Ofast -I$(INC_DIR)              \
          -I$(INC_DIR_TEST)
 
+CYCLES?=NO # PERF
+
+ifeq ($(CYCLES),PERF)
+	CFLAGS += -DPERF_CYCLES
+endif
+
+ifeq ($(CYCLES),NO)
+	CFLAGS += -DNO_CYCLES
+endif
+
 C_SRC_FILES_PRE=$(wildcard $(SRC_DIR)/*.c) $(wildcard $(SRC_DIR)/*/*.c) $(wildcard $(SRC_DIR)/*/*/*.c $(SRC_DIR)/*/*/*/*.c)
 C_SRC_FILES=$(patsubst $(SRC_DIR)/%.c, %.c, $(C_SRC_FILES_PRE))
 ASM_SRC_FILES_PRE=$(wildcard $(SRC_DIR)/*/*.s) $(wildcard $(SRC_DIR)/*.s) $(wildcard $(SRC_DIR)/*/*/*.s) $(wildcard $(SRC_DIR)/*/*/*/*.s)

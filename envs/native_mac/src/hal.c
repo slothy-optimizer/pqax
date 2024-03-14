@@ -11,8 +11,6 @@
 #include <stdarg.h>
 #include <time.h>
 
-#include "m1cycles.h"
-
 void rand_init( unsigned long seed )
 {
     ((void) seed);
@@ -43,6 +41,10 @@ void debug_printf(const char * format, ... )
 void debug_test_ok()   { printf( "Ok\n"    ); }
 void debug_test_fail() { printf( "FAIL!\n" ); }
 
+#if defined(PERF_CYCLES)
+
+#include "m1cycles.h"
+
 void enable_cyclecounter() {
     setup_rdtsc();
 }
@@ -52,3 +54,17 @@ void disable_cyclecounter() {
 uint64_t get_cyclecounter() {
     return(rdtsc());
 }
+
+#else /* NO_CYCLES */
+
+void enable_cyclecounter() {
+    return;
+}
+void disable_cyclecounter() {
+    return;
+}
+uint64_t get_cyclecounter() {
+    return(0);
+}
+
+#endif /* NO_CYCLES */
