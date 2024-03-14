@@ -1,0 +1,1 @@
+../../../slothy/examples/opt/aarch64/ntt_kyber_123_4567_manual_st4_opt_m1_firestorm.s

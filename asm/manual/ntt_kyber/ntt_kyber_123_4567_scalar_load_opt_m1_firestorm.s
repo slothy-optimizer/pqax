@@ -1,0 +1,1 @@
+../../../slothy/examples/opt/aarch64/ntt_kyber_123_4567_scalar_load_opt_m1_firestorm.s

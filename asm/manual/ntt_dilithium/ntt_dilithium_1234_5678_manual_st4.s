@@ -1,0 +1,1 @@
+../../../slothy/examples/naive/aarch64/ntt_dilithium_1234_5678_manual_st4.s
