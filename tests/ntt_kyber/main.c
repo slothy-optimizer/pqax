@@ -378,24 +378,24 @@ MAKE_TEST_FWD(asm_123_4567_scalar_load_opt_a72, 0, ntt_kyber_123_4567_scalar_loa
 MAKE_TEST_FWD(asm_123_4567_scalar_load_store_opt_a72, 0, ntt_kyber_123_4567_scalar_load_store_opt_a72, ntt_ct,0,1,1)
 MAKE_TEST_FWD(asm_123_4567_scalar_store_opt_a72, 0, ntt_kyber_123_4567_scalar_store_opt_a72, ntt_ct,0,1,1)
 // M1 Firestorm
-MAKE_TEST_FWD(asm_123_4567_opt_m1_firestorm, ntt_kyber_123_4567_opt_m1_firestorm,0,1)
-MAKE_TEST_FWD(asm_123_4567_scalar_load_opt_m1_firestorm, ntt_kyber_123_4567_scalar_load_opt_m1_firestorm,0,1)
+MAKE_TEST_FWD(asm_123_4567_opt_m1_firestorm, 0, ntt_kyber_123_4567_opt_m1_firestorm,ntt_ct,0,1,1)
+MAKE_TEST_FWD(asm_123_4567_scalar_load_opt_m1_firestorm, 0, ntt_kyber_123_4567_scalar_load_opt_m1_firestorm,ntt_ct,0,1,1)
 /* MAKE_TEST_FWD(asm_1234_567_opt_m1_firestorm, ntt_kyber_1234_567_opt_m1_firestorm,0,1) */
-MAKE_TEST_FWD(asm_123_4567_scalar_load_store_opt_m1_firestorm, ntt_kyber_123_4567_scalar_load_store_opt_m1_firestorm,0,1)
-MAKE_TEST_FWD(asm_123_4567_manual_st4_opt_m1_firestorm, ntt_kyber_123_4567_manual_st4_opt_m1_firestorm,0,1)
-MAKE_TEST_FWD(asm_123_4567_scalar_store_opt_m1_firestorm, ntt_kyber_123_4567_scalar_store_opt_m1_firestorm,0,1)
+MAKE_TEST_FWD(asm_123_4567_scalar_load_store_opt_m1_firestorm, 0, ntt_kyber_123_4567_scalar_load_store_opt_m1_firestorm,ntt_ct,0,1,1)
+MAKE_TEST_FWD(asm_123_4567_manual_st4_opt_m1_firestorm, 0, ntt_kyber_123_4567_manual_st4_opt_m1_firestorm,ntt_ct,0,1,1)
+MAKE_TEST_FWD(asm_123_4567_scalar_store_opt_m1_firestorm, 0, ntt_kyber_123_4567_scalar_store_opt_m1_firestorm,ntt_ct,0,1,1)
 /* MAKE_TEST_FWD(asm_1234_567_manual_st4_opt_m1_firestorm, ntt_kyber_1234_567_manual_st4_opt_m1_firestorm,0,1) */
 // M1 Icestorm
-MAKE_TEST_FWD(asm_123_4567_manual_st4_opt_m1_icestorm, ntt_kyber_123_4567_manual_st4_opt_m1_icestorm,0,1)
-MAKE_TEST_FWD(asm_123_4567_opt_m1_icestorm, ntt_kyber_123_4567_opt_m1_icestorm,0,1)
-MAKE_TEST_FWD(asm_123_4567_scalar_load_opt_m1_icestorm, ntt_kyber_123_4567_scalar_load_opt_m1_icestorm,0,1)
-MAKE_TEST_FWD(asm_123_4567_scalar_load_store_opt_m1_icestorm, ntt_kyber_123_4567_scalar_load_store_opt_m1_icestorm,0,1)
-MAKE_TEST_FWD(asm_123_4567_scalar_store_opt_m1_icestorm, ntt_kyber_123_4567_scalar_store_opt_m1_icestorm,0,1)
+MAKE_TEST_FWD(asm_123_4567_manual_st4_opt_m1_icestorm, 0, ntt_kyber_123_4567_manual_st4_opt_m1_icestorm,ntt_ct,0,1,1)
+MAKE_TEST_FWD(asm_123_4567_opt_m1_icestorm, 0, ntt_kyber_123_4567_opt_m1_icestorm,ntt_ct,0,1,1)
+MAKE_TEST_FWD(asm_123_4567_scalar_load_opt_m1_icestorm, 0, ntt_kyber_123_4567_scalar_load_opt_m1_icestorm,ntt_ct,0,1,1)
+MAKE_TEST_FWD(asm_123_4567_scalar_load_store_opt_m1_icestorm, 0, ntt_kyber_123_4567_scalar_load_store_opt_m1_icestorm,ntt_ct,0,1,1)
+MAKE_TEST_FWD(asm_123_4567_scalar_store_opt_m1_icestorm, 0, ntt_kyber_123_4567_scalar_store_opt_m1_icestorm,ntt_ct,0,1,1)
 /* MAKE_TEST_FWD(asm_1234_567_opt_m1_icestorm, ntt_kyber_1234_567_opt_m1_icestorm,0,1) */
 /* MAKE_TEST_FWD(asm_1234_567_manual_st4_opt_m1_icestorm, ntt_kyber_1234_567_manual_st4_opt_m1_icestorm,0,1) */
 // other
 MAKE_TEST_FWD(neonntt, 0, ntt, ntt_ct,0,1,1)
-MAKE_TEST_FWD(pqclean,pqclean_ntt,0,1)
+MAKE_TEST_FWD(pqclean, 0, pqclean_ntt, ntt_ct,0,1,1)
 MAKE_TEST_FWD(neonntt_inv, 1, invntt, invntt_gs,0,0,1)
 
 uint64_t t0, t1;
