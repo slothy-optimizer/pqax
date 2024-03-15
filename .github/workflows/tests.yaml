@@ -1,0 +1,16 @@
+name: Tests
+on:
+  pull_request:
+    branches: [ "main" ]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        submodules: true
+    - name: install dependencies
+      run: sudo apt install gcc-aarch64-linux-gnu qemu-user
+    - name: Run tests
+      run: |
+        make run-cross-ntt_dilithium
