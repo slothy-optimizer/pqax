@@ -55,12 +55,16 @@ void ntt_kyber_123_4567_opt_a55(int16_t *);
 void ntt_kyber_123_4567_scalar_load_opt_a55(int16_t *);
 void ntt_kyber_123_4567_scalar_load_store_opt_a55(int16_t *);
 void ntt_kyber_123_4567_scalar_store_opt_a55(int16_t *);
+void intt_kyber_123_4567_opt_a55(int16_t *);
+void intt_kyber_123_4567_manual_ld4_opt_a55(int16_t *);
 // A72
 void ntt_kyber_123_4567_manual_st4_opt_a72(int16_t *);
 void ntt_kyber_123_4567_opt_a72(int16_t *);
 void ntt_kyber_123_4567_scalar_load_opt_a72(int16_t *);
 void ntt_kyber_123_4567_scalar_load_store_opt_a72(int16_t *);
 void ntt_kyber_123_4567_scalar_store_opt_a72(int16_t *);
+void intt_kyber_123_4567_opt_a72(int16_t *);
+void intt_kyber_123_4567_manual_ld4_opt_a72(int16_t *);
 // M1 Firestorm
 void ntt_kyber_123_4567_opt_m1_firestorm(int16_t *);
 void ntt_kyber_123_4567_scalar_load_opt_m1_firestorm(int16_t *);
@@ -69,6 +73,8 @@ void ntt_kyber_123_4567_manual_st4_opt_m1_firestorm(int16_t *);
 void ntt_kyber_123_4567_scalar_store_opt_m1_firestorm(int16_t *);
 /* void ntt_kyber_1234_567_opt_m1_firestorm(int16_t *); */
 /* void ntt_kyber_1234_567_manual_st4_opt_m1_firestorm(int16_t *); */
+void intt_kyber_123_4567_opt_m1_firestorm(int16_t *);
+void intt_kyber_123_4567_manual_ld4_opt_m1_firestorm(int16_t *);
 
 // M1 Icestorm
 void ntt_kyber_123_4567_manual_st4_opt_m1_icestorm(int16_t *);
@@ -78,6 +84,8 @@ void ntt_kyber_123_4567_scalar_load_store_opt_m1_icestorm(int16_t *);
 void ntt_kyber_123_4567_scalar_store_opt_m1_icestorm(int16_t *);
 /* void ntt_kyber_1234_567_opt_m1_icestorm(int16_t *); */
 /* void ntt_kyber_1234_567_manual_st4_opt_m1_icestorm(int16_t *); */
+void intt_kyber_123_4567_opt_m1_icestorm(int16_t *);
+void intt_kyber_123_4567_manual_ld4_opt_m1_icestorm(int16_t *);
 
 #define NTT_LAYERS             8
 #define NTT_SIZE               (1u << NTT_LAYERS)
@@ -366,19 +374,25 @@ MAKE_TEST_FWD(asm_1234_567, 0, ntt_kyber_1234_567, ntt_ct,0,1,1)
 MAKE_TEST_FWD(asm_123_4567_inv, 1, intt_kyber_123_4567, invntt_gs,0,0,1)
 MAKE_TEST_FWD(asm_123_4567_inv_manual_ld4, 1, intt_kyber_123_4567_manual_ld4, invntt_gs,0,0,1)
 // Check against neon-ntt for comparability
-MAKE_TEST_FWD(asm_vs_neonntt_123_4567_inv, 1, intt_kyber_123_4567, invntt,0,1,0)
+// (both results are not additionally reduced for comparison reasons)
+MAKE_TEST_FWD(asm_vs_pqclean_123_4567_inv, 1, intt_kyber_123_4567, pqclean_invntt,0,1,0)
+MAKE_TEST_FWD(asm_vs_pqclean_123_4567_inv_manual_ld4, 1, intt_kyber_123_4567_manual_ld4, pqclean_invntt,0,1,0)
 // A55
 MAKE_TEST_FWD(asm_123_4567_manual_st4_opt_a55, 0, ntt_kyber_123_4567_manual_st4_opt_a55, ntt_ct,0,1,1)
 MAKE_TEST_FWD(asm_123_4567_opt_a55, 0, ntt_kyber_123_4567_opt_a55, ntt_ct,0,1,1)
 MAKE_TEST_FWD(asm_123_4567_scalar_load_opt_a55, 0, ntt_kyber_123_4567_scalar_load_opt_a55, ntt_ct,0,1,1)
 MAKE_TEST_FWD(asm_123_4567_scalar_load_store_opt_a55, 0, ntt_kyber_123_4567_scalar_load_store_opt_a55, ntt_ct,0,1,1)
 MAKE_TEST_FWD(asm_123_4567_scalar_store_opt_a55, 0, ntt_kyber_123_4567_scalar_store_opt_a55, ntt_ct,0,1,1)
+MAKE_TEST_FWD(asm_123_4567_inv_opt_a55, 0, intt_kyber_123_4567_opt_a55, invntt_gs,0,0,1)
+MAKE_TEST_FWD(asm_123_4567_inv_manual_ld4_opt_a55, 0, intt_kyber_123_4567_manual_ld4_opt_a55, invntt_gs,0,0,1)
 // A72
 MAKE_TEST_FWD(asm_123_4567_manual_st4_opt_a72, 0, ntt_kyber_123_4567_manual_st4_opt_a72, ntt_ct,0,1,1)
 MAKE_TEST_FWD(asm_123_4567_opt_a72, 0, ntt_kyber_123_4567_opt_a72, ntt_ct,0,1,1)
 MAKE_TEST_FWD(asm_123_4567_scalar_load_opt_a72, 0, ntt_kyber_123_4567_scalar_load_opt_a72, ntt_ct,0,1,1)
 MAKE_TEST_FWD(asm_123_4567_scalar_load_store_opt_a72, 0, ntt_kyber_123_4567_scalar_load_store_opt_a72, ntt_ct,0,1,1)
 MAKE_TEST_FWD(asm_123_4567_scalar_store_opt_a72, 0, ntt_kyber_123_4567_scalar_store_opt_a72, ntt_ct,0,1,1)
+MAKE_TEST_FWD(asm_123_4567_inv_opt_a72, 0, intt_kyber_123_4567_opt_a72, invntt_gs,0,0,1)
+MAKE_TEST_FWD(asm_123_4567_inv_manual_ld4_opt_a72, 0, intt_kyber_123_4567_manual_ld4_opt_a72, invntt_gs,0,0,1)
 // M1 Firestorm
 MAKE_TEST_FWD(asm_123_4567_opt_m1_firestorm, 0, ntt_kyber_123_4567_opt_m1_firestorm,ntt_ct,0,1,1)
 MAKE_TEST_FWD(asm_123_4567_scalar_load_opt_m1_firestorm, 0, ntt_kyber_123_4567_scalar_load_opt_m1_firestorm,ntt_ct,0,1,1)
@@ -387,6 +401,8 @@ MAKE_TEST_FWD(asm_123_4567_scalar_load_store_opt_m1_firestorm, 0, ntt_kyber_123_
 MAKE_TEST_FWD(asm_123_4567_manual_st4_opt_m1_firestorm, 0, ntt_kyber_123_4567_manual_st4_opt_m1_firestorm,ntt_ct,0,1,1)
 MAKE_TEST_FWD(asm_123_4567_scalar_store_opt_m1_firestorm, 0, ntt_kyber_123_4567_scalar_store_opt_m1_firestorm,ntt_ct,0,1,1)
 /* MAKE_TEST_FWD(asm_1234_567_manual_st4_opt_m1_firestorm, ntt_kyber_1234_567_manual_st4_opt_m1_firestorm,0,1) */
+MAKE_TEST_FWD(asm_123_4567_inv_opt_m1_firestorm, 0, intt_kyber_123_4567_opt_m1_firestorm, invntt_gs,0,0,1)
+MAKE_TEST_FWD(asm_123_4567_inv_manual_ld4_opt_m1_firestorm, 0, intt_kyber_123_4567_manual_ld4_opt_m1_firestorm, invntt_gs,0,0,1)
 // M1 Icestorm
 MAKE_TEST_FWD(asm_123_4567_manual_st4_opt_m1_icestorm, 0, ntt_kyber_123_4567_manual_st4_opt_m1_icestorm,ntt_ct,0,1,1)
 MAKE_TEST_FWD(asm_123_4567_opt_m1_icestorm, 0, ntt_kyber_123_4567_opt_m1_icestorm,ntt_ct,0,1,1)
@@ -395,10 +411,13 @@ MAKE_TEST_FWD(asm_123_4567_scalar_load_store_opt_m1_icestorm, 0, ntt_kyber_123_4
 MAKE_TEST_FWD(asm_123_4567_scalar_store_opt_m1_icestorm, 0, ntt_kyber_123_4567_scalar_store_opt_m1_icestorm,ntt_ct,0,1,1)
 /* MAKE_TEST_FWD(asm_1234_567_opt_m1_icestorm, ntt_kyber_1234_567_opt_m1_icestorm,0,1) */
 /* MAKE_TEST_FWD(asm_1234_567_manual_st4_opt_m1_icestorm, ntt_kyber_1234_567_manual_st4_opt_m1_icestorm,0,1) */
+MAKE_TEST_FWD(asm_123_4567_inv_opt_m1_icestorm, 0, intt_kyber_123_4567_opt_m1_icestorm, invntt_gs,0,0,1)
+MAKE_TEST_FWD(asm_123_4567_inv_manual_ld4_opt_m1_icestorm, 0, intt_kyber_123_4567_manual_ld4_opt_m1_icestorm, invntt_gs,0,0,1)
 // other
 MAKE_TEST_FWD(neonntt, 0, ntt, ntt_ct,0,1,1)
 MAKE_TEST_FWD(pqclean, 0, pqclean_ntt, ntt_ct,0,1,1)
 MAKE_TEST_FWD(neonntt_inv, 1, invntt, invntt_gs,0,0,1)
+MAKE_TEST_FWD(pqclean_inv, 1, pqclean_invntt, invntt_gs,0,0,1)
 
 uint64_t t0, t1;
 uint64_t cycles[TEST_COUNT];
@@ -443,12 +462,20 @@ MAKE_BENCH(asm_123_4567_opt_a55, ntt_kyber_123_4567_opt_a55)
 MAKE_BENCH(asm_123_4567_scalar_load_opt_a55, ntt_kyber_123_4567_scalar_load_opt_a55)
 MAKE_BENCH(asm_123_4567_scalar_load_store_opt_a55, ntt_kyber_123_4567_scalar_load_store_opt_a55)
 MAKE_BENCH(asm_123_4567_scalar_store_opt_a55, ntt_kyber_123_4567_scalar_store_opt_a55)
+// inv
+MAKE_BENCH(asm_123_4567_inv_opt_a55, intt_kyber_123_4567_opt_a55)
+MAKE_BENCH(asm_123_4567_inv_manual_ld4_opt_a55, intt_kyber_123_4567_manual_ld4_opt_a55)
+
 // A72
 MAKE_BENCH(asm_123_4567_manual_st4_opt_a72, ntt_kyber_123_4567_manual_st4_opt_a72)
 MAKE_BENCH(asm_123_4567_opt_a72, ntt_kyber_123_4567_opt_a72)
 MAKE_BENCH(asm_123_4567_scalar_load_opt_a72, ntt_kyber_123_4567_scalar_load_opt_a72)
 MAKE_BENCH(asm_123_4567_scalar_load_store_opt_a72, ntt_kyber_123_4567_scalar_load_store_opt_a72)
 MAKE_BENCH(asm_123_4567_scalar_store_opt_a72, ntt_kyber_123_4567_scalar_store_opt_a72)
+// inv
+MAKE_BENCH(asm_123_4567_inv_opt_a72, intt_kyber_123_4567_opt_a72)
+MAKE_BENCH(asm_123_4567_inv_manual_ld4_opt_a72, intt_kyber_123_4567_manual_ld4_opt_a72)
+
 // M1 Firestorm
 MAKE_BENCH(asm_123_4567_opt_m1_firestorm, ntt_kyber_123_4567_opt_m1_firestorm)
 MAKE_BENCH(asm_123_4567_scalar_load_opt_m1_firestorm, ntt_kyber_123_4567_scalar_load_opt_m1_firestorm)
@@ -457,6 +484,10 @@ MAKE_BENCH(asm_123_4567_scalar_load_store_opt_m1_firestorm, ntt_kyber_123_4567_s
 MAKE_BENCH(asm_123_4567_manual_st4_opt_m1_firestorm, ntt_kyber_123_4567_manual_st4_opt_m1_firestorm)
 MAKE_BENCH(asm_123_4567_scalar_store_opt_m1_firestorm, ntt_kyber_123_4567_scalar_store_opt_m1_firestorm)
 /* MAKE_BENCH(asm_1234_567_manual_st4_opt_m1_firestorm, ntt_kyber_1234_567_manual_st4_opt_m1_firestorm) */
+// inv
+MAKE_BENCH(asm_123_4567_inv_opt_m1_firestorm, intt_kyber_123_4567_opt_m1_firestorm)
+MAKE_BENCH(asm_123_4567_inv_manual_ld4_opt_m1_firestorm, intt_kyber_123_4567_manual_ld4_opt_m1_firestorm)
+
 // M1 Icestorm
 MAKE_BENCH(asm_123_4567_manual_st4_opt_m1_icestorm, ntt_kyber_123_4567_manual_st4_opt_m1_icestorm)
 MAKE_BENCH(asm_123_4567_opt_m1_icestorm, ntt_kyber_123_4567_opt_m1_icestorm)
@@ -465,10 +496,15 @@ MAKE_BENCH(asm_123_4567_scalar_load_store_opt_m1_icestorm, ntt_kyber_123_4567_sc
 MAKE_BENCH(asm_123_4567_scalar_store_opt_m1_icestorm, ntt_kyber_123_4567_scalar_store_opt_m1_icestorm)
 /* MAKE_BENCH(asm_1234_567_opt_m1_icestorm, ntt_kyber_1234_567_opt_m1_icestorm) */
 /* MAKE_BENCH(asm_1234_567_manual_st4_opt_m1_icestorm, ntt_kyber_1234_567_manual_st4_opt_m1_icestorm) */
+// inv
+MAKE_BENCH(asm_123_4567_inv_opt_m1_icestorm, intt_kyber_123_4567_opt_m1_icestorm)
+MAKE_BENCH(asm_123_4567_inv_manual_ld4_opt_m1_icestorm, intt_kyber_123_4567_manual_ld4_opt_m1_icestorm)
+
 // other
 MAKE_BENCH(neonntt,ntt)
 MAKE_BENCH(pqclean,pqclean_ntt)
 MAKE_BENCH(neonntt_inv,invntt)
+MAKE_BENCH(pqclean_inv,pqclean_invntt)
 
 int main( void )
 {
@@ -514,10 +550,8 @@ int main( void )
         return (1);
     }
 
-    if (test_ntt_asm_vs_neonntt_123_4567_inv() != 0)
-    {
-        return (1);
-    }
+    if (test_ntt_asm_vs_pqclean_123_4567_inv() != 0){return (1);}
+    if (test_ntt_asm_vs_pqclean_123_4567_inv_manual_ld4() != 0){return (1);}
 
     if (test_ntt_asm_123_4567_manual_st4_opt_a55() != 0)
     {
@@ -544,6 +578,9 @@ int main( void )
         return (1);
     }
 
+    if (test_ntt_asm_123_4567_inv_opt_a55() != 0){return (1);}
+    if (test_ntt_asm_123_4567_inv_manual_ld4_opt_a55() != 0){return (1);}
+
     if (test_ntt_asm_123_4567_manual_st4_opt_a72() != 0)
     {
         return (1);
@@ -568,6 +605,8 @@ int main( void )
     {
         return (1);
     }
+    if (test_ntt_asm_123_4567_inv_opt_a72() != 0){return (1);}
+    if (test_ntt_asm_123_4567_inv_manual_ld4_opt_a72() != 0){return (1);}
     // M1 Firestorm
     if(test_ntt_asm_123_4567_opt_m1_firestorm() != 0){return (1);}
     if(test_ntt_asm_123_4567_scalar_load_opt_m1_firestorm() != 0){return (1);}
@@ -576,6 +615,8 @@ int main( void )
     if(test_ntt_asm_123_4567_scalar_store_opt_m1_firestorm() != 0){return (1);}
     /* if(test_ntt_asm_1234_567_opt_m1_firestorm() != 0){return (1);} */
     /* if(test_ntt_asm_1234_567_manual_st4_opt_m1_firestorm() != 0){return (1);} */
+    if (test_ntt_asm_123_4567_inv_opt_m1_firestorm() != 0){return (1);}
+    if (test_ntt_asm_123_4567_inv_manual_ld4_opt_m1_firestorm() != 0){return (1);}
 
     // M1 Icestorm
     if(test_ntt_asm_123_4567_manual_st4_opt_m1_icestorm() != 0){return (1);}
@@ -596,8 +637,8 @@ int main( void )
     {
         return(1);
     }
-    if( test_ntt_pqclean()!= 0 )
-        return(1);
+    if( test_ntt_pqclean()!= 0 ){return(1);}
+    if( test_ntt_pqclean_inv()!= 0 ){return(1);}
 #endif /* DO_TEST */
 
 #if defined(DO_BENCH)
@@ -617,12 +658,16 @@ int main( void )
     bench_ntt_asm_123_4567_scalar_load_opt_a55();
     bench_ntt_asm_123_4567_scalar_load_store_opt_a55();
     bench_ntt_asm_123_4567_scalar_store_opt_a55();
+    bench_ntt_asm_123_4567_inv_opt_a55();
+    bench_ntt_asm_123_4567_inv_manual_ld4_opt_a55();
     /* A72 */
     bench_ntt_asm_123_4567_manual_st4_opt_a72();
     bench_ntt_asm_123_4567_opt_a72();
     bench_ntt_asm_123_4567_scalar_load_opt_a72();
     bench_ntt_asm_123_4567_scalar_load_store_opt_a72();
     bench_ntt_asm_123_4567_scalar_store_opt_a72();
+    bench_ntt_asm_123_4567_inv_opt_a72();
+    bench_ntt_asm_123_4567_inv_manual_ld4_opt_a72();
     // M1 Firestorm
     bench_ntt_asm_123_4567_opt_m1_firestorm();
     bench_ntt_asm_123_4567_scalar_load_opt_m1_firestorm();
@@ -631,6 +676,8 @@ int main( void )
     bench_ntt_asm_123_4567_scalar_store_opt_m1_firestorm();
     /* bench_ntt_asm_1234_567_opt_m1_firestorm(); */
     /* bench_ntt_asm_1234_567_manual_st4_opt_m1_firestorm(); */
+    bench_ntt_asm_123_4567_inv_opt_m1_firestorm();
+    bench_ntt_asm_123_4567_inv_manual_ld4_opt_m1_firestorm();
     // M1 Icestorm
     bench_ntt_asm_123_4567_manual_st4_opt_m1_icestorm();
     bench_ntt_asm_123_4567_opt_m1_icestorm();
@@ -639,11 +686,14 @@ int main( void )
     bench_ntt_asm_123_4567_scalar_store_opt_m1_icestorm();
     /* bench_ntt_asm_1234_567_opt_m1_icestorm(); */
     /* bench_ntt_asm_1234_567_manual_st4_opt_m1_icestorm(); */
+    bench_ntt_asm_123_4567_inv_opt_m1_icestorm();
+    bench_ntt_asm_123_4567_inv_manual_ld4_opt_m1_icestorm();
 
 
     bench_ntt_neonntt();
     bench_ntt_pqclean();
     bench_ntt_neonntt_inv();
+    bench_ntt_pqclean_inv();
 #endif /* DO_BENCH */
 
     debug_printf( "- Disable cycle counter ..." );
