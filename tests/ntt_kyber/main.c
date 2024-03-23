@@ -568,6 +568,9 @@ int main( void )
     if(test_ntt_asm_123_4567_scalar_store_opt_m1_icestorm() != 0){return (1);}
     /* if(test_ntt_asm_1234_567_opt_m1_icestorm() != 0){return (1);} */
     /* if(test_ntt_asm_1234_567_manual_st4_opt_m1_icestorm() != 0){return (1);} */
+
+    if (test_ntt_asm_123_4567_inv_opt_m1_icestorm() != 0){return (1);}
+    if (test_ntt_asm_123_4567_inv_manual_ld4_opt_m1_icestorm() != 0){return (1);}
     
     /* Other */
     if(test_ntt_neonntt()!= 0){return(1);}
