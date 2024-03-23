@@ -515,99 +515,40 @@ int main( void )
     debug_printf( "ok\n" );
 
 #if defined(DO_TEST)
-    if (test_ntt_asm() != 0)
-    {
-        return (1);
-    }
+    /* Clean */
+    if (test_ntt_asm() != 0){return (1);}
+    if (test_ntt_asm_123_4567_scalar_load() != 0){return (1);}
+    if (test_ntt_asm_123_4567_scalar_load_store() != 0){return (1);}
+    if (test_ntt_asm_123_4567_scalar_store() != 0){return (1);}
+    if (test_ntt_asm_1234_567() != 0){return (1);}
 
-    if (test_ntt_asm_123_4567_scalar_load() != 0)
-    {
-        return (1);
-    }
-
-    if (test_ntt_asm_123_4567_scalar_load_store() != 0)
-    {
-        return (1);
-    }
-
-    if (test_ntt_asm_123_4567_scalar_store() != 0)
-    {
-        return (1);
-    }
-
-    if (test_ntt_asm_1234_567() != 0)
-    {
-        return (1);
-    }
-
-    if (test_ntt_asm_123_4567_inv() != 0)
-    {
-        return (1);
-    }
-
-    if (test_ntt_asm_123_4567_inv_manual_ld4() != 0)
-    {
-        return (1);
-    }
+    if (test_ntt_asm_123_4567_inv() != 0){return (1);}
+    if (test_ntt_asm_123_4567_inv_manual_ld4() != 0){return (1);}
 
     if (test_ntt_asm_vs_pqclean_123_4567_inv() != 0){return (1);}
     if (test_ntt_asm_vs_pqclean_123_4567_inv_manual_ld4() != 0){return (1);}
 
-    if (test_ntt_asm_123_4567_manual_st4_opt_a55() != 0)
-    {
-        return (1);
-    }
-
-    if (test_ntt_asm_123_4567_opt_a55() != 0)
-    {
-        return (1);
-    }
-
-    if (test_ntt_asm_123_4567_scalar_load_opt_a55() != 0)
-    {
-        return (1);
-    }
-
-    if (test_ntt_asm_123_4567_scalar_load_store_opt_a55() != 0)
-    {
-        return (1);
-    }
-
-    if (test_ntt_asm_123_4567_scalar_store_opt_a55() != 0)
-    {
-        return (1);
-    }
+    /* A55 */
+    if (test_ntt_asm_123_4567_manual_st4_opt_a55() != 0){return (1);}
+    if (test_ntt_asm_123_4567_opt_a55() != 0){return (1);}
+    if (test_ntt_asm_123_4567_scalar_load_opt_a55() != 0){return (1);}
+    if (test_ntt_asm_123_4567_scalar_load_store_opt_a55() != 0){return (1);}
+    if (test_ntt_asm_123_4567_scalar_store_opt_a55() != 0){return (1);}
 
     if (test_ntt_asm_123_4567_inv_opt_a55() != 0){return (1);}
     if (test_ntt_asm_123_4567_inv_manual_ld4_opt_a55() != 0){return (1);}
+    
+    /* A72 */
+    if (test_ntt_asm_123_4567_manual_st4_opt_a72() != 0){return (1);}
+    if (test_ntt_asm_123_4567_opt_a72() != 0){return (1);}
+    if (test_ntt_asm_123_4567_scalar_load_opt_a72() != 0){return (1);}
+    if (test_ntt_asm_123_4567_scalar_load_store_opt_a72() != 0){return (1);}
+    if (test_ntt_asm_123_4567_scalar_store_opt_a72() != 0){return (1);}
 
-    if (test_ntt_asm_123_4567_manual_st4_opt_a72() != 0)
-    {
-        return (1);
-    }
-
-    if (test_ntt_asm_123_4567_opt_a72() != 0)
-    {
-        return (1);
-    }
-
-    if (test_ntt_asm_123_4567_scalar_load_opt_a72() != 0)
-    {
-        return (1);
-    }
-
-    if (test_ntt_asm_123_4567_scalar_load_store_opt_a72() != 0)
-    {
-        return (1);
-    }
-
-    if (test_ntt_asm_123_4567_scalar_store_opt_a72() != 0)
-    {
-        return (1);
-    }
     if (test_ntt_asm_123_4567_inv_opt_a72() != 0){return (1);}
     if (test_ntt_asm_123_4567_inv_manual_ld4_opt_a72() != 0){return (1);}
-    // M1 Firestorm
+    
+    /* M1 Firestorm */
     if(test_ntt_asm_123_4567_opt_m1_firestorm() != 0){return (1);}
     if(test_ntt_asm_123_4567_scalar_load_opt_m1_firestorm() != 0){return (1);}
     if(test_ntt_asm_123_4567_scalar_load_store_opt_m1_firestorm() != 0){return (1);}
@@ -615,10 +556,11 @@ int main( void )
     if(test_ntt_asm_123_4567_scalar_store_opt_m1_firestorm() != 0){return (1);}
     /* if(test_ntt_asm_1234_567_opt_m1_firestorm() != 0){return (1);} */
     /* if(test_ntt_asm_1234_567_manual_st4_opt_m1_firestorm() != 0){return (1);} */
+
     if (test_ntt_asm_123_4567_inv_opt_m1_firestorm() != 0){return (1);}
     if (test_ntt_asm_123_4567_inv_manual_ld4_opt_m1_firestorm() != 0){return (1);}
 
-    // M1 Icestorm
+    /* M1 Icestorm */
     if(test_ntt_asm_123_4567_manual_st4_opt_m1_icestorm() != 0){return (1);}
     if(test_ntt_asm_123_4567_opt_m1_icestorm() != 0){return (1);}
     if(test_ntt_asm_123_4567_scalar_load_opt_m1_icestorm() != 0){return (1);}
@@ -627,16 +569,9 @@ int main( void )
     /* if(test_ntt_asm_1234_567_opt_m1_icestorm() != 0){return (1);} */
     /* if(test_ntt_asm_1234_567_manual_st4_opt_m1_icestorm() != 0){return (1);} */
     
-    /* Neon NTT */
-    if(test_ntt_neonntt()!= 0)
-    {
-        return(1);
-    }
-        
-    if(test_ntt_neonntt_inv()!= 0)
-    {
-        return(1);
-    }
+    /* Other */
+    if(test_ntt_neonntt()!= 0){return(1);}
+    if(test_ntt_neonntt_inv()!= 0){return(1);}
     if( test_ntt_pqclean()!= 0 ){return(1);}
     if( test_ntt_pqclean_inv()!= 0 ){return(1);}
 #endif /* DO_TEST */
@@ -689,7 +624,7 @@ int main( void )
     bench_ntt_asm_123_4567_inv_opt_m1_icestorm();
     bench_ntt_asm_123_4567_inv_manual_ld4_opt_m1_icestorm();
 
-
+    /* Other */
     bench_ntt_neonntt();
     bench_ntt_pqclean();
     bench_ntt_neonntt_inv();
