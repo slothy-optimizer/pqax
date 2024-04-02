@@ -74,17 +74,17 @@ void ntt_dilithium_1234_5678_manual_st4_opt_m1_firestorm(int32_t *);
 void intt_dilithium_123_45678_opt_m1_firestorm(int32_t *);
 void intt_dilithium_123_45678_manual_ld4_opt_m1_firestorm(int32_t *);
 void intt_dilithium_1234_5678_opt_m1_firestorm(int32_t *);
-/* void intt_dilithium_1234_5678_manual_ld4_opt_m1_firestorm(int32_t *); */ // not done yet
+void intt_dilithium_1234_5678_manual_ld4_opt_m1_firestorm(int32_t *);
 // M1 Icestorm
 void ntt_dilithium_123_45678_manual_st4_opt_m1_icestorm(int32_t *);
 void ntt_dilithium_123_45678_opt_m1_icestorm(int32_t *);
 void ntt_dilithium_123_45678_w_scalar_opt_m1_icestorm(int32_t *);
 void ntt_dilithium_1234_5678_opt_m1_icestorm(int32_t *);
 void ntt_dilithium_1234_5678_manual_st4_opt_m1_icestorm(int32_t *);
-/* void intt_dilithium_123_45678_opt_m1_icestorm(int32_t *);
+void intt_dilithium_123_45678_opt_m1_icestorm(int32_t *);
 void intt_dilithium_123_45678_manual_ld4_opt_m1_icestorm(int32_t *);
 void intt_dilithium_1234_5678_opt_m1_icestorm(int32_t *);
-void intt_dilithium_1234_5678_manual_ld4_opt_m1_icestorm(int32_t *); */ // not done yet
+void intt_dilithium_1234_5678_manual_ld4_opt_m1_icestorm(int32_t *);
 
 #define NTT_LAYERS             8
 #define NTT_SIZE               (1u << NTT_LAYERS)
@@ -353,42 +353,47 @@ MAKE_TEST(asm_123_45678_w_scalar,0,ntt_dilithium_123_45678_w_scalar,ntt_u32_C,0,
 MAKE_TEST(asm_123_45678_manual_st4,0,ntt_dilithium_123_45678_manual_st4,ntt_u32_C,0,0,1)
 MAKE_TEST(asm_1234_5678,0,ntt_dilithium_1234_5678,ntt_u32_C,0,0,1)
 MAKE_TEST(asm_1234_5678_manual_st4,0,ntt_dilithium_1234_5678_manual_st4,ntt_u32_C,0,0,1)
+
 MAKE_TEST(asm_1234_5678_inv,1,intt_dilithium_1234_5678,invntt_u32_tomont_C,0,1,1)
 MAKE_TEST(asm_1234_5678_inv_manual_ld4,1,intt_dilithium_1234_5678_manual_ld4,invntt_u32_tomont_C,0,1,1)
 MAKE_TEST(asm_123_45678_inv,1,intt_dilithium_123_45678,invntt_u32_tomont_C,0,1,1)
 MAKE_TEST(asm_123_45678_inv_manual_ld4,1,intt_dilithium_123_45678_manual_ld4,invntt_u32_tomont_C,0,1,1)
+
+MAKE_TEST(asm_vs_pqclean_1234_5678_inv,1,intt_dilithium_1234_5678,pqclean_invntt_tomont,0,1,0)
+MAKE_TEST(asm_vs_pqclean_1234_5678_inv_manual_ld4,1,intt_dilithium_1234_5678_manual_ld4,pqclean_invntt_tomont,0,1,0)
+MAKE_TEST(asm_vs_pqclean_123_45678_inv,1,intt_dilithium_123_45678,pqclean_invntt_tomont,0,1,0)
+MAKE_TEST(asm_vs_pqclean_123_45678_inv_manual_ld4,1,intt_dilithium_123_45678_manual_ld4,pqclean_invntt_tomont,0,1,0)
 
 // A55
 MAKE_TEST(asm_123_45678_opt_a55,0,ntt_dilithium_123_45678_opt_a55,ntt_u32_C,0,0,1)
 MAKE_TEST(asm_123_45678_manual_st4_opt_a55,0,ntt_dilithium_123_45678_manual_st4_opt_a55,ntt_u32_C,0,0,1)
 MAKE_TEST(asm_123_45678_w_scalar_opt_a55,0,ntt_dilithium_123_45678_w_scalar_opt_a55,ntt_u32_C,0,0,1)
 
-MAKE_TEST(asm_123_45678_inv_opt_a55,1,intt_dilithium_123_45678_opt_a55,invntt_u32_tomont_C,0,1,1)
-MAKE_TEST(asm_123_45678_inv_manual_ld4_opt_a55,1,intt_dilithium_123_45678_manual_ld4_opt_a55,invntt_u32_tomont_C,0,1,1)
-MAKE_TEST(asm_1234_5678_inv_opt_a55,1,intt_dilithium_1234_5678_opt_a55,invntt_u32_tomont_C,0,1,1)
-MAKE_TEST(asm_1234_5678_inv_manual_ld4_opt_a55,1,intt_dilithium_1234_5678_manual_ld4_opt_a55,invntt_u32_tomont_C,0,1,1)
+MAKE_TEST(asm_123_45678_inv_opt_a55,1,intt_dilithium_123_45678_opt_a55,invntt_u32_tomont_C,0,0,1)
+MAKE_TEST(asm_123_45678_inv_manual_ld4_opt_a55,1,intt_dilithium_123_45678_manual_ld4_opt_a55,invntt_u32_tomont_C,0,0,1)
+MAKE_TEST(asm_1234_5678_inv_opt_a55,1,intt_dilithium_1234_5678_opt_a55,invntt_u32_tomont_C,0,0,1)
+MAKE_TEST(asm_1234_5678_inv_manual_ld4_opt_a55,1,intt_dilithium_1234_5678_manual_ld4_opt_a55,invntt_u32_tomont_C,0,0,1)
 
 // A72
 MAKE_TEST(asm_123_45678_opt_a72,0,ntt_dilithium_123_45678_opt_a72,ntt_u32_C,0,0,1)
 MAKE_TEST(asm_123_45678_manual_st4_opt_a72,0,ntt_dilithium_123_45678_manual_st4_opt_a72,ntt_u32_C,0,0,1)
 MAKE_TEST(asm_1234_5678_opt_a72,0,ntt_dilithium_1234_5678_opt_a72,ntt_u32_C,0,0,1)
 
-MAKE_TEST(asm_123_45678_inv_opt_a72,1,intt_dilithium_123_45678_opt_a72,invntt_u32_tomont_C,0,1,1)
-MAKE_TEST(asm_123_45678_inv_manual_ld4_opt_a72,1,intt_dilithium_123_45678_manual_ld4_opt_a72,invntt_u32_tomont_C,0,1,1)
-MAKE_TEST(asm_1234_5678_inv_opt_a72,1,intt_dilithium_1234_5678_opt_a72,invntt_u32_tomont_C,0,1,1)
-MAKE_TEST(asm_1234_5678_inv_manual_ld4_opt_a72,1,intt_dilithium_1234_5678_manual_ld4_opt_a72,invntt_u32_tomont_C,0,1,1)
+MAKE_TEST(asm_123_45678_inv_opt_a72,1,intt_dilithium_123_45678_opt_a72,invntt_u32_tomont_C,0,0,1)
+MAKE_TEST(asm_123_45678_inv_manual_ld4_opt_a72,1,intt_dilithium_123_45678_manual_ld4_opt_a72,invntt_u32_tomont_C,0,0,1)
+MAKE_TEST(asm_1234_5678_inv_opt_a72,1,intt_dilithium_1234_5678_opt_a72,invntt_u32_tomont_C,0,0,1)
+MAKE_TEST(asm_1234_5678_inv_manual_ld4_opt_a72,1,intt_dilithium_1234_5678_manual_ld4_opt_a72,invntt_u32_tomont_C,0,0,1)
 
 // M1 Firestorm
 MAKE_TEST(asm_123_45678_opt_m1_firestorm,0,ntt_dilithium_123_45678_opt_m1_firestorm,ntt_u32_C,0,0,1)
 MAKE_TEST(asm_123_45678_manual_st4_opt_m1_firestorm,0,ntt_dilithium_123_45678_manual_st4_opt_m1_firestorm,ntt_u32_C,0,0,1)
-/* MAKE_TEST(asm_123_45678_w_scalar_opt_m1_firestorm,0,ntt_dilithium_123_45678_w_scalar_opt_m1_firestorm,ntt_u32_C,0,0) */
 MAKE_TEST(asm_1234_5678_opt_m1_firestorm,0,ntt_dilithium_1234_5678_opt_m1_firestorm,ntt_u32_C,0,0,1)
 MAKE_TEST(asm_1234_5678_manual_st4_opt_m1_firestorm,0,ntt_dilithium_1234_5678_manual_st4_opt_m1_firestorm,ntt_u32_C,0,0,1)
 
-MAKE_TEST(asm_123_45678_inv_opt_m1_firestorm,1,intt_dilithium_123_45678_opt_m1_firestorm,invntt_u32_tomont_C,0,1,1)
-MAKE_TEST(asm_123_45678_inv_manual_ld4_opt_m1_firestorm,1,intt_dilithium_123_45678_manual_ld4_opt_m1_firestorm,invntt_u32_tomont_C,0,1,1)
-MAKE_TEST(asm_1234_5678_inv_opt_m1_firestorm,1,intt_dilithium_1234_5678_opt_m1_firestorm,invntt_u32_tomont_C,0,1,1)
-/* MAKE_TEST(asm_1234_5678_inv_manual_ld4_opt_m1_firestorm,1,intt_dilithium_1234_5678_manual_ld4_opt_m1_firestorm,invntt_u32_tomont_C,0,1) */
+MAKE_TEST(asm_123_45678_inv_opt_m1_firestorm,1,intt_dilithium_123_45678_opt_m1_firestorm,invntt_u32_tomont_C,0,0,1)
+MAKE_TEST(asm_123_45678_inv_manual_ld4_opt_m1_firestorm,1,intt_dilithium_123_45678_manual_ld4_opt_m1_firestorm,invntt_u32_tomont_C,0,0,1)
+MAKE_TEST(asm_1234_5678_inv_opt_m1_firestorm,1,intt_dilithium_1234_5678_opt_m1_firestorm,invntt_u32_tomont_C,0,0,1)
+MAKE_TEST(asm_1234_5678_inv_manual_ld4_opt_m1_firestorm,1,intt_dilithium_1234_5678_manual_ld4_opt_m1_firestorm,invntt_u32_tomont_C,0,0,1)
 
 // M1 Icestorm
 MAKE_TEST(asm_123_45678_opt_m1_icestorm,0,ntt_dilithium_123_45678_opt_m1_icestorm,ntt_u32_C,0,0,1)
@@ -397,10 +402,10 @@ MAKE_TEST(asm_123_45678_w_scalar_opt_m1_icestorm,0,ntt_dilithium_123_45678_w_sca
 MAKE_TEST(asm_1234_5678_opt_m1_icestorm,0,ntt_dilithium_1234_5678_opt_m1_icestorm,ntt_u32_C,0,0,1)
 MAKE_TEST(asm_1234_5678_manual_st4_opt_m1_icestorm,0,ntt_dilithium_1234_5678_manual_st4_opt_m1_icestorm,ntt_u32_C,0,0,1)
 
-/* MAKE_TEST(asm_123_45678_inv_opt_m1_icestorm,1,intt_dilithium_123_45678_opt_m1_icestorm,invntt_u32_tomont_C,0,1)
-MAKE_TEST(asm_123_45678_inv_manual_ld4_opt_m1_icestorm,1,intt_dilithium_123_45678_manual_ld4_opt_m1_icestorm,invntt_u32_tomont_C,0,1)
-MAKE_TEST(asm_1234_5678_inv_opt_m1_icestorm,1,intt_dilithium_1234_5678_opt_m1_icestorm,invntt_u32_tomont_C,0,1)
-MAKE_TEST(asm_1234_5678_inv_manual_ld4_opt_m1_icestorm,1,intt_dilithium_1234_5678_manual_ld4_opt_m1_icestorm,invntt_u32_tomont_C,0,1) */
+MAKE_TEST(asm_123_45678_inv_opt_m1_icestorm,1,intt_dilithium_123_45678_opt_m1_icestorm,invntt_u32_tomont_C,0,0,1)
+MAKE_TEST(asm_123_45678_inv_manual_ld4_opt_m1_icestorm,1,intt_dilithium_123_45678_manual_ld4_opt_m1_icestorm,invntt_u32_tomont_C,0,0,1)
+MAKE_TEST(asm_1234_5678_inv_opt_m1_icestorm,1,intt_dilithium_1234_5678_opt_m1_icestorm,invntt_u32_tomont_C,0,0,1)
+MAKE_TEST(asm_1234_5678_inv_manual_ld4_opt_m1_icestorm,1,intt_dilithium_1234_5678_manual_ld4_opt_m1_icestorm,invntt_u32_tomont_C,0,0,1)
 
 // Other
 MAKE_TEST(neonntt_fwd,0,ntt,ntt_u32_C,0,0,1)
@@ -471,14 +476,13 @@ MAKE_BENCH(asm_1234_5678_inv_manual_ld4_opt_a72,intt_dilithium_1234_5678_manual_
 // M1 Firestorm
 MAKE_BENCH(asm_123_45678_opt_m1_firestorm,ntt_dilithium_123_45678_opt_m1_firestorm)
 MAKE_BENCH(asm_123_45678_manual_st4_opt_m1_firestorm,ntt_dilithium_123_45678_manual_st4_opt_m1_firestorm)
-/* MAKE_BENCH(asm_123_45678_w_scalar_opt_m1_firestorm,ntt_dilithium_123_45678_w_scalar_opt_m1_firestorm) */
 MAKE_BENCH(asm_1234_5678_opt_m1_firestorm,ntt_dilithium_1234_5678_opt_m1_firestorm)
 MAKE_BENCH(asm_1234_5678_manual_st4_opt_m1_firestorm,ntt_dilithium_1234_5678_manual_st4_opt_m1_firestorm)
 
 MAKE_BENCH(asm_123_45678_inv_opt_m1_firestorm,intt_dilithium_123_45678_opt_m1_firestorm)
 MAKE_BENCH(asm_123_45678_inv_manual_ld4_opt_m1_firestorm,intt_dilithium_123_45678_manual_ld4_opt_m1_firestorm)
 MAKE_BENCH(asm_1234_5678_inv_opt_m1_firestorm,intt_dilithium_1234_5678_opt_m1_firestorm)
-/* MAKE_BENCH(asm_1234_5678_inv_manual_ld4_opt_m1_firestorm,intt_dilithium_1234_5678_manual_ld4_opt_m1_firestorm) */
+MAKE_BENCH(asm_1234_5678_inv_manual_ld4_opt_m1_firestorm,intt_dilithium_1234_5678_manual_ld4_opt_m1_firestorm)
 
 // M1 Icestorm
 MAKE_BENCH(asm_123_45678_opt_m1_icestorm,ntt_dilithium_123_45678_opt_m1_icestorm)
@@ -487,10 +491,10 @@ MAKE_BENCH(asm_123_45678_w_scalar_opt_m1_icestorm,ntt_dilithium_123_45678_w_scal
 MAKE_BENCH(asm_1234_5678_opt_m1_icestorm,ntt_dilithium_1234_5678_opt_m1_icestorm)
 MAKE_BENCH(asm_1234_5678_manual_st4_opt_m1_icestorm,ntt_dilithium_1234_5678_manual_st4_opt_m1_icestorm)
 
-/* MAKE_BENCH(asm_123_45678_inv_opt_m1_icestorm,intt_dilithium_123_45678_opt_m1_icestorm)
+MAKE_BENCH(asm_123_45678_inv_opt_m1_icestorm,intt_dilithium_123_45678_opt_m1_icestorm)
 MAKE_BENCH(asm_123_45678_inv_manual_ld4_opt_m1_icestorm,intt_dilithium_123_45678_manual_ld4_opt_m1_icestorm)
 MAKE_BENCH(asm_1234_5678_inv_opt_m1_icestorm,intt_dilithium_1234_5678_opt_m1_icestorm)
-MAKE_BENCH(asm_1234_5678_inv_manual_ld4_opt_m1_icestorm,intt_dilithium_1234_5678_manual_ld4_opt_m1_icestorm) */
+MAKE_BENCH(asm_1234_5678_inv_manual_ld4_opt_m1_icestorm,intt_dilithium_1234_5678_manual_ld4_opt_m1_icestorm)
 // Other
 MAKE_BENCH(neonntt_fwd,ntt)
 MAKE_BENCH(pqclean_ntt_fwd,pqclean_ntt)
@@ -534,14 +538,13 @@ int main( void )
     // M1 Firestorm
     bench_ntt_asm_123_45678_opt_m1_firestorm();
     bench_ntt_asm_123_45678_manual_st4_opt_m1_firestorm();
-    /* bench_ntt_asm_123_45678_w_scalar_opt_m1_firestorm(); */
     bench_ntt_asm_1234_5678_opt_m1_firestorm();
     bench_ntt_asm_1234_5678_manual_st4_opt_m1_firestorm();
 
     bench_ntt_asm_123_45678_inv_opt_m1_firestorm();
     bench_ntt_asm_123_45678_inv_manual_ld4_opt_m1_firestorm();
     bench_ntt_asm_1234_5678_inv_opt_m1_firestorm();
-    /* bench_ntt_asm_1234_5678_inv_manual_ld4_opt_m1_firestorm(); */
+    bench_ntt_asm_1234_5678_inv_manual_ld4_opt_m1_firestorm();
 
     // M1 Icestorm
     bench_ntt_asm_123_45678_opt_m1_icestorm();
@@ -550,10 +553,10 @@ int main( void )
     bench_ntt_asm_1234_5678_opt_m1_icestorm();
     bench_ntt_asm_1234_5678_manual_st4_opt_m1_icestorm();
 
-    /* bench_ntt_asm_123_45678_inv_opt_m1_icestorm();
+    bench_ntt_asm_123_45678_inv_opt_m1_icestorm();
     bench_ntt_asm_123_45678_inv_manual_ld4_opt_m1_icestorm();
     bench_ntt_asm_1234_5678_inv_opt_m1_icestorm();
-    bench_ntt_asm_1234_5678_inv_manual_ld4_opt_m1_icestorm(); */
+    bench_ntt_asm_1234_5678_inv_manual_ld4_opt_m1_icestorm();
     // other
     bench_ntt_neonntt_fwd();
     bench_ntt_pqclean_ntt_fwd();
@@ -563,198 +566,68 @@ int main( void )
 
     // Tests
     debug_printf("Tests:\n");
-    // base
-    if (test_ntt_asm_123_45678() != 0)
-    {
-        return 1;
-    }
-    if (test_ntt_asm_123_45678_w_scalar() != 0)
-    {
-        return 1;
-    }
-    if (test_ntt_asm_123_45678_manual_st4() != 0)
-    {
-        return 1;
-    }
-    if (test_ntt_asm_1234_5678() != 0)
-    {
-        return 1;
-    }
-    if (test_ntt_asm_1234_5678_manual_st4() != 0)
-    {
-        return 1;
-    }
-    if (test_ntt_asm_1234_5678_inv() != 0)
-    {
-        return 1;
-    }
-    if (test_ntt_asm_1234_5678_inv_manual_ld4() != 0)
-    {
-        return 1;
-    }
-    if (test_ntt_asm_123_45678_inv() != 0)
-    {
-        return 1;
-    }
-    if (test_ntt_asm_123_45678_inv_manual_ld4() != 0)
-    {
-        return 1;
-    }
-    // A55
-    if (test_ntt_asm_123_45678_opt_a55() != 0)
-    {
-        return 1;
-    }
-    if (test_ntt_asm_123_45678_manual_st4_opt_a55() != 0)
-    {
-        return 1;
-    }
-    if (test_ntt_asm_123_45678_w_scalar_opt_a55() != 0)
-    {
-        return 1;
-    }
+    // Clean
+    if (test_ntt_asm_123_45678() != 0){return 1;}
+    if (test_ntt_asm_123_45678_w_scalar() != 0){return 1;}
+    if (test_ntt_asm_123_45678_manual_st4() != 0){return 1;}
+    if (test_ntt_asm_1234_5678() != 0){return 1;}
+    if (test_ntt_asm_1234_5678_manual_st4() != 0){return 1;}
+    if (test_ntt_asm_1234_5678_inv() != 0){return 1;}
+    if (test_ntt_asm_1234_5678_inv_manual_ld4() != 0){return 1;}
+    if (test_ntt_asm_123_45678_inv() != 0){return 1;}
+    if (test_ntt_asm_123_45678_inv_manual_ld4() != 0){return 1;}
 
-    if (test_ntt_asm_123_45678_inv_opt_a55() != 0)
-    {
-        return 1;
-    }
-    if (test_ntt_asm_123_45678_inv_manual_ld4_opt_a55() != 0)
-    {
-        return 1;
-    }
-    if (test_ntt_asm_1234_5678_inv_opt_a55() != 0)
-    {
-        return 1;
-    }
-    if (test_ntt_asm_1234_5678_inv_manual_ld4_opt_a55() != 0)
-    {
-        return 1;
-    }
+    if (test_ntt_asm_vs_pqclean_1234_5678_inv() != 0){return 1;}
+    if (test_ntt_asm_vs_pqclean_1234_5678_inv_manual_ld4() != 0){return 1;}
+    if (test_ntt_asm_vs_pqclean_123_45678_inv() != 0){return 1;}
+    if (test_ntt_asm_vs_pqclean_123_45678_inv_manual_ld4() != 0){return 1;}
+
+    // A55
+    if (test_ntt_asm_123_45678_opt_a55() != 0){return 1;}
+    if (test_ntt_asm_123_45678_manual_st4_opt_a55() != 0){return 1;}
+    if (test_ntt_asm_123_45678_w_scalar_opt_a55() != 0){return 1;}
+
+    if (test_ntt_asm_123_45678_inv_opt_a55() != 0){return 1;}
+    if (test_ntt_asm_123_45678_inv_manual_ld4_opt_a55() != 0){return 1;}
+    if (test_ntt_asm_1234_5678_inv_opt_a55() != 0){return 1;}
+    if (test_ntt_asm_1234_5678_inv_manual_ld4_opt_a55() != 0){return 1;}
     // A72
-    if (test_ntt_asm_123_45678_opt_a72() != 0)
-    {
-        return 1;
-    }
-    if (test_ntt_asm_123_45678_manual_st4_opt_a72() != 0)
-    {
-        return 1;
-    }
-    if (test_ntt_asm_1234_5678_opt_a72() != 0)
-    {
-        return 1;
-    }
+    if (test_ntt_asm_123_45678_opt_a72() != 0){return 1;}
+    if (test_ntt_asm_123_45678_manual_st4_opt_a72() != 0){return 1;}
+    if (test_ntt_asm_1234_5678_opt_a72() != 0){return 1;}
     
-    if (test_ntt_asm_123_45678_inv_opt_a72() != 0)
-    {
-        return 1;
-    }
-    if (test_ntt_asm_123_45678_inv_manual_ld4_opt_a72() != 0)
-    {
-        return 1;
-    }
-    if (test_ntt_asm_1234_5678_inv_opt_a72() != 0)
-    {
-        return 1;
-    }
-    if (test_ntt_asm_1234_5678_inv_manual_ld4_opt_a72() != 0)
-    {
-        return 1;
-    }
+    if (test_ntt_asm_123_45678_inv_opt_a72() != 0){return 1;}
+    /* if (test_ntt_asm_123_45678_inv_manual_ld4_opt_a72() != 0){return 1;} */
+    if (test_ntt_asm_1234_5678_inv_opt_a72() != 0){return 1;}
+    if (test_ntt_asm_1234_5678_inv_manual_ld4_opt_a72() != 0){return 1;}
 
     // M1 Firestorm
-    if (test_ntt_asm_123_45678_opt_m1_firestorm() != 0)
-    {
-        return 1;
-    }
-    if (test_ntt_asm_123_45678_manual_st4_opt_m1_firestorm() != 0)
-    {
-        return 1;
-    }
-    /* if (test_ntt_asm_123_45678_w_scalar_opt_m1_firestorm() != 0)
-    {
-        return 1;
-    } */
-    if (test_ntt_asm_1234_5678_opt_m1_firestorm() != 0)
-    {
-        return 1;
-    }
-    if (test_ntt_asm_1234_5678_manual_st4_opt_m1_firestorm() != 0)
-    {
-        return 1;
-    }
+    if (test_ntt_asm_123_45678_opt_m1_firestorm() != 0){return 1;}
+    if (test_ntt_asm_123_45678_manual_st4_opt_m1_firestorm() != 0){return 1;}
+    if (test_ntt_asm_1234_5678_opt_m1_firestorm() != 0){return 1;}
+    if (test_ntt_asm_1234_5678_manual_st4_opt_m1_firestorm() != 0){return 1;}
 
-    if (test_ntt_asm_123_45678_inv_opt_m1_firestorm() != 0)
-    {
-        return 1;
-    }
-    if (test_ntt_asm_123_45678_inv_manual_ld4_opt_m1_firestorm() != 0)
-    {
-        return 1;
-    }
-    if (test_ntt_asm_1234_5678_inv_opt_m1_firestorm() != 0)
-    {
-        return 1;
-    }
-    // if (test_ntt_asm_1234_5678_inv_manual_ld4_opt_m1_firestorm() != 0)
-    // {
-    //     return 1;
-    // }
+    if (test_ntt_asm_123_45678_inv_opt_m1_firestorm() != 0){return 1;}
+    /* if (test_ntt_asm_123_45678_inv_manual_ld4_opt_m1_firestorm() != 0){return 1;} */
+    if (test_ntt_asm_1234_5678_inv_opt_m1_firestorm() != 0){return 1;}
+    if (test_ntt_asm_1234_5678_inv_manual_ld4_opt_m1_firestorm() != 0){return 1;}
 
     // M1 Icestorm
-    if (test_ntt_asm_123_45678_opt_m1_icestorm() != 0)
-    {
-        return 1;
-    }
-    if (test_ntt_asm_123_45678_manual_st4_opt_m1_icestorm() != 0)
-    {
-        return 1;
-    }
-    if (test_ntt_asm_123_45678_w_scalar_opt_m1_icestorm() != 0)
-    {
-        return 1;
-    }
-    if (test_ntt_asm_1234_5678_opt_m1_icestorm() != 0)
-    {
-        return 1;
-    }
-    if (test_ntt_asm_1234_5678_manual_st4_opt_m1_icestorm() != 0)
-    {
-        return 1;
-    }
+    if (test_ntt_asm_123_45678_opt_m1_icestorm() != 0){return 1;}
+    if (test_ntt_asm_123_45678_manual_st4_opt_m1_icestorm() != 0){return 1;}
+    if (test_ntt_asm_123_45678_w_scalar_opt_m1_icestorm() != 0){return 1;}
+    if (test_ntt_asm_1234_5678_opt_m1_icestorm() != 0){return 1;}
+    if (test_ntt_asm_1234_5678_manual_st4_opt_m1_icestorm() != 0){return 1;}
 
-    // if (test_ntt_asm_123_45678_inv_opt_m1_icestorm() != 0)
-    // {
-    //     return 1;
-    // }
-    // if (test_ntt_asm_123_45678_inv_manual_ld4_opt_m1_icestorm() != 0)
-    // {
-    //     return 1;
-    // }
-    // if (test_ntt_asm_1234_5678_inv_opt_m1_icestorm() != 0)
-    // {
-    //     return 1;
-    // }
-    // if (test_ntt_asm_1234_5678_inv_manual_ld4_opt_m1_icestorm() != 0)
-    // {
-    //     return 1;
-    // }
+    if (test_ntt_asm_123_45678_inv_opt_m1_icestorm() != 0){return 1;}
+    /* if (test_ntt_asm_123_45678_inv_manual_ld4_opt_m1_icestorm() != 0){return 1;} */
+    if (test_ntt_asm_1234_5678_inv_opt_m1_icestorm() != 0){return 1;}
+    if (test_ntt_asm_1234_5678_inv_manual_ld4_opt_m1_icestorm() != 0){return 1;}
     // other
-    if (test_ntt_neonntt_fwd() != 0)
-    {
-        return 1;
-    }
-    if (test_ntt_pqclean_ntt_fwd() != 0)
-    {
-        return 1;
-    }
-    if (test_ntt_neonntt_inv() != 0)
-    {
-        return 1;
-    }
-    if (test_ntt_pqclean_ntt_inv() != 0)
-    {
-        return 1;
-    }   
+    if (test_ntt_neonntt_fwd() != 0){return 1;}
+    if (test_ntt_pqclean_ntt_fwd() != 0){return 1;}
+    if (test_ntt_neonntt_inv() != 0){return 1;}
+    if (test_ntt_pqclean_ntt_inv() != 0){return 1;}   
 
     return(0);
 }

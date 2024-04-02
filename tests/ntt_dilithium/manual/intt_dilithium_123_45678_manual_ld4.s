@@ -67,19 +67,13 @@ xtmp1 .req x11
         cmge \tmp1\().4s, \neg_modulus_half\().4s, \a\().4s
         cmge \tmp2\().4s, \a\().4s, \modulus_half\().4s
         sub \tmp2\().4s, \tmp1\().4s, \tmp2\().4s
-        vmls \a, \tmp2, modulus
+        vmls \a, \tmp2, consts
 .endm
 
 .macro gs_butterfly a, b, root, idx0, idx1
         sub     tmp.4s,    \a\().4s, \b\().4s
         add     \a\().4s,    \a\().4s, \b\().4s
         mulmodq  \b, tmp, \root, \idx0, \idx1
-.endm
-
-.macro mulmod_v dst, src, const, const_twisted
-        vmul        \dst,  \src, \const
-        vqrdmulh    \src,  \src, \const_twisted
-        vmls        \dst,  \src, modulus
 .endm
 
 .macro gs_butterfly_v a, b, root, root_twisted
@@ -193,7 +187,7 @@ xtmp1 .req x11
         trn2 \data_out3\().4s, \data_in2\().4s, \data_in3\().4s
 .endm
 
-.macro save_gprs // slothy:no-unfold
+.macro save_gprs // @slothy:no-unfold
         sub sp, sp, #(16*6)
         stp x19, x20, [sp, #16*0]
         stp x19, x20, [sp, #16*0]
@@ -204,7 +198,7 @@ xtmp1 .req x11
         stp x29, x30, [sp, #16*5]
 .endm
 
-.macro restore_gprs // slothy:no-unfold
+.macro restore_gprs // @slothy:no-unfold
         ldp x19, x20, [sp, #16*0]
         ldp x21, x22, [sp, #16*1]
         ldp x23, x24, [sp, #16*2]
@@ -214,7 +208,7 @@ xtmp1 .req x11
         add sp, sp, #(16*6)
 .endm
 
-.macro save_vregs // slothy:no-unfold
+.macro save_vregs // @slothy:no-unfold
         sub sp, sp, #(16*4)
         stp  d8,  d9, [sp, #16*0]
         stp d10, d11, [sp, #16*1]
@@ -222,7 +216,7 @@ xtmp1 .req x11
         stp d14, d15, [sp, #16*3]
 .endm
 
-.macro restore_vregs // slothy:no-unfold
+.macro restore_vregs // @slothy:no-unfold
         ldp  d8,  d9, [sp, #16*0]
         ldp d10, d11, [sp, #16*1]
         ldp d12, d13, [sp, #16*2]
@@ -233,19 +227,19 @@ xtmp1 .req x11
 #define STACK_SIZE 16
 #define STACK0 0
 
-.macro restore a, loc     // slothy:no-unfold
+.macro restore a, loc     // @slothy:no-unfold
         ldr \a, [sp, #\loc\()]
 .endm
-.macro save loc, a        // slothy:no-unfold
+.macro save loc, a        // @slothy:no-unfold
         str \a, [sp, #\loc\()]
 .endm
-.macro push_stack // slothy:no-unfold
+.macro push_stack // @slothy:no-unfold
         save_gprs
         save_vregs
         sub sp, sp, #STACK_SIZE
 .endm
 
-.macro pop_stack // slothy:no-unfold
+.macro pop_stack // @slothy:no-unfold
         add sp, sp, #STACK_SIZE
         restore_vregs
         restore_gprs
@@ -371,8 +365,6 @@ _intt_dilithium_123_45678_manual_ld4:
         consts .req v8
         qform_consts .req q8
 
-        modulus .req v29
-
         ASM_LOAD(r_ptr0, roots_l345)
         ASM_LOAD(r_ptr1, roots_l67)
 
@@ -486,7 +478,7 @@ layer45678_start:
         ASM_LOAD(xtmp, ninv_tw_addr)
         ld1r {ninv_tw.4s}, [xtmp]
 
-        ushr modulus_half.4S, modulus.4S, #1
+        ushr modulus_half.4S, consts.4S, #1
         neg neg_modulus_half.4S, modulus_half.4S
 
         mov count, #8

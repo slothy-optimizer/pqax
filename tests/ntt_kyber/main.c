@@ -377,6 +377,7 @@ MAKE_TEST_FWD(asm_123_4567_inv_manual_ld4, 1, intt_kyber_123_4567_manual_ld4, in
 // (both results are not additionally reduced for comparison reasons)
 MAKE_TEST_FWD(asm_vs_pqclean_123_4567_inv, 1, intt_kyber_123_4567, pqclean_invntt,0,1,0)
 MAKE_TEST_FWD(asm_vs_pqclean_123_4567_inv_manual_ld4, 1, intt_kyber_123_4567_manual_ld4, pqclean_invntt,0,1,0)
+
 // A55
 MAKE_TEST_FWD(asm_123_4567_manual_st4_opt_a55, 0, ntt_kyber_123_4567_manual_st4_opt_a55, ntt_ct,0,1,1)
 MAKE_TEST_FWD(asm_123_4567_opt_a55, 0, ntt_kyber_123_4567_opt_a55, ntt_ct,0,1,1)
