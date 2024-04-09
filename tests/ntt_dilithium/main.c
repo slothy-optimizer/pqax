@@ -369,20 +369,20 @@ MAKE_TEST(asm_123_45678_opt_a55,0,ntt_dilithium_123_45678_opt_a55,ntt_u32_C,0,0,
 MAKE_TEST(asm_123_45678_manual_st4_opt_a55,0,ntt_dilithium_123_45678_manual_st4_opt_a55,ntt_u32_C,0,0,1)
 MAKE_TEST(asm_123_45678_w_scalar_opt_a55,0,ntt_dilithium_123_45678_w_scalar_opt_a55,ntt_u32_C,0,0,1)
 
-MAKE_TEST(asm_123_45678_inv_opt_a55,1,intt_dilithium_123_45678_opt_a55,invntt_u32_tomont_C,0,0,1)
-MAKE_TEST(asm_123_45678_inv_manual_ld4_opt_a55,1,intt_dilithium_123_45678_manual_ld4_opt_a55,invntt_u32_tomont_C,0,0,1)
-MAKE_TEST(asm_1234_5678_inv_opt_a55,1,intt_dilithium_1234_5678_opt_a55,invntt_u32_tomont_C,0,0,1)
-MAKE_TEST(asm_1234_5678_inv_manual_ld4_opt_a55,1,intt_dilithium_1234_5678_manual_ld4_opt_a55,invntt_u32_tomont_C,0,0,1)
+MAKE_TEST(asm_123_45678_inv_opt_a55,1,intt_dilithium_123_45678_opt_a55,invntt_u32_tomont_C,0,1,1)
+MAKE_TEST(asm_123_45678_inv_manual_ld4_opt_a55,1,intt_dilithium_123_45678_manual_ld4_opt_a55,invntt_u32_tomont_C,0,1,1)
+MAKE_TEST(asm_1234_5678_inv_opt_a55,1,intt_dilithium_1234_5678_opt_a55,invntt_u32_tomont_C,0,1,1)
+MAKE_TEST(asm_1234_5678_inv_manual_ld4_opt_a55,1,intt_dilithium_1234_5678_manual_ld4_opt_a55,invntt_u32_tomont_C,0,1,1)
 
 // A72
 MAKE_TEST(asm_123_45678_opt_a72,0,ntt_dilithium_123_45678_opt_a72,ntt_u32_C,0,0,1)
 MAKE_TEST(asm_123_45678_manual_st4_opt_a72,0,ntt_dilithium_123_45678_manual_st4_opt_a72,ntt_u32_C,0,0,1)
 MAKE_TEST(asm_1234_5678_opt_a72,0,ntt_dilithium_1234_5678_opt_a72,ntt_u32_C,0,0,1)
 
-MAKE_TEST(asm_123_45678_inv_opt_a72,1,intt_dilithium_123_45678_opt_a72,invntt_u32_tomont_C,0,0,1)
-MAKE_TEST(asm_123_45678_inv_manual_ld4_opt_a72,1,intt_dilithium_123_45678_manual_ld4_opt_a72,invntt_u32_tomont_C,0,0,1)
-MAKE_TEST(asm_1234_5678_inv_opt_a72,1,intt_dilithium_1234_5678_opt_a72,invntt_u32_tomont_C,0,0,1)
-MAKE_TEST(asm_1234_5678_inv_manual_ld4_opt_a72,1,intt_dilithium_1234_5678_manual_ld4_opt_a72,invntt_u32_tomont_C,0,0,1)
+MAKE_TEST(asm_123_45678_inv_opt_a72,1,intt_dilithium_123_45678_opt_a72,invntt_u32_tomont_C,0,1,1)
+MAKE_TEST(asm_123_45678_inv_manual_ld4_opt_a72,1,intt_dilithium_123_45678_manual_ld4_opt_a72,invntt_u32_tomont_C,0,1,1)
+MAKE_TEST(asm_1234_5678_inv_opt_a72,1,intt_dilithium_1234_5678_opt_a72,invntt_u32_tomont_C,0,1,1)
+MAKE_TEST(asm_1234_5678_inv_manual_ld4_opt_a72,1,intt_dilithium_1234_5678_manual_ld4_opt_a72,invntt_u32_tomont_C,0,1,1)
 
 // M1 Firestorm
 MAKE_TEST(asm_123_45678_opt_m1_firestorm,0,ntt_dilithium_123_45678_opt_m1_firestorm,ntt_u32_C,0,0,1)
@@ -390,10 +390,10 @@ MAKE_TEST(asm_123_45678_manual_st4_opt_m1_firestorm,0,ntt_dilithium_123_45678_ma
 MAKE_TEST(asm_1234_5678_opt_m1_firestorm,0,ntt_dilithium_1234_5678_opt_m1_firestorm,ntt_u32_C,0,0,1)
 MAKE_TEST(asm_1234_5678_manual_st4_opt_m1_firestorm,0,ntt_dilithium_1234_5678_manual_st4_opt_m1_firestorm,ntt_u32_C,0,0,1)
 
-MAKE_TEST(asm_123_45678_inv_opt_m1_firestorm,1,intt_dilithium_123_45678_opt_m1_firestorm,invntt_u32_tomont_C,0,0,1)
-MAKE_TEST(asm_123_45678_inv_manual_ld4_opt_m1_firestorm,1,intt_dilithium_123_45678_manual_ld4_opt_m1_firestorm,invntt_u32_tomont_C,0,0,1)
-MAKE_TEST(asm_1234_5678_inv_opt_m1_firestorm,1,intt_dilithium_1234_5678_opt_m1_firestorm,invntt_u32_tomont_C,0,0,1)
-MAKE_TEST(asm_1234_5678_inv_manual_ld4_opt_m1_firestorm,1,intt_dilithium_1234_5678_manual_ld4_opt_m1_firestorm,invntt_u32_tomont_C,0,0,1)
+MAKE_TEST(asm_123_45678_inv_opt_m1_firestorm,1,intt_dilithium_123_45678_opt_m1_firestorm,invntt_u32_tomont_C,0,1,1)
+MAKE_TEST(asm_123_45678_inv_manual_ld4_opt_m1_firestorm,1,intt_dilithium_123_45678_manual_ld4_opt_m1_firestorm,invntt_u32_tomont_C,0,1,1)
+MAKE_TEST(asm_1234_5678_inv_opt_m1_firestorm,1,intt_dilithium_1234_5678_opt_m1_firestorm,invntt_u32_tomont_C,0,1,1)
+MAKE_TEST(asm_1234_5678_inv_manual_ld4_opt_m1_firestorm,1,intt_dilithium_1234_5678_manual_ld4_opt_m1_firestorm,invntt_u32_tomont_C,0,1,1)
 
 // M1 Icestorm
 MAKE_TEST(asm_123_45678_opt_m1_icestorm,0,ntt_dilithium_123_45678_opt_m1_icestorm,ntt_u32_C,0,0,1)
@@ -402,16 +402,16 @@ MAKE_TEST(asm_123_45678_w_scalar_opt_m1_icestorm,0,ntt_dilithium_123_45678_w_sca
 MAKE_TEST(asm_1234_5678_opt_m1_icestorm,0,ntt_dilithium_1234_5678_opt_m1_icestorm,ntt_u32_C,0,0,1)
 MAKE_TEST(asm_1234_5678_manual_st4_opt_m1_icestorm,0,ntt_dilithium_1234_5678_manual_st4_opt_m1_icestorm,ntt_u32_C,0,0,1)
 
-MAKE_TEST(asm_123_45678_inv_opt_m1_icestorm,1,intt_dilithium_123_45678_opt_m1_icestorm,invntt_u32_tomont_C,0,0,1)
-MAKE_TEST(asm_123_45678_inv_manual_ld4_opt_m1_icestorm,1,intt_dilithium_123_45678_manual_ld4_opt_m1_icestorm,invntt_u32_tomont_C,0,0,1)
-MAKE_TEST(asm_1234_5678_inv_opt_m1_icestorm,1,intt_dilithium_1234_5678_opt_m1_icestorm,invntt_u32_tomont_C,0,0,1)
-MAKE_TEST(asm_1234_5678_inv_manual_ld4_opt_m1_icestorm,1,intt_dilithium_1234_5678_manual_ld4_opt_m1_icestorm,invntt_u32_tomont_C,0,0,1)
+MAKE_TEST(asm_123_45678_inv_opt_m1_icestorm,1,intt_dilithium_123_45678_opt_m1_icestorm,invntt_u32_tomont_C,0,1,1)
+MAKE_TEST(asm_123_45678_inv_manual_ld4_opt_m1_icestorm,1,intt_dilithium_123_45678_manual_ld4_opt_m1_icestorm,invntt_u32_tomont_C,0,1,1)
+MAKE_TEST(asm_1234_5678_inv_opt_m1_icestorm,1,intt_dilithium_1234_5678_opt_m1_icestorm,invntt_u32_tomont_C,0,1,1)
+MAKE_TEST(asm_1234_5678_inv_manual_ld4_opt_m1_icestorm,1,intt_dilithium_1234_5678_manual_ld4_opt_m1_icestorm,invntt_u32_tomont_C,0,1,1)
 
 // Other
 MAKE_TEST(neonntt_fwd,0,ntt,ntt_u32_C,0,0,1)
 MAKE_TEST(pqclean_ntt_fwd,0,pqclean_ntt,ntt_u32_C,0,0,1)
-MAKE_TEST(neonntt_inv,1,invntt_tomont,invntt_u32_tomont_C,0,0,1)
-MAKE_TEST(pqclean_ntt_inv,1,pqclean_invntt_tomont,invntt_u32_tomont_C,0,0,1)
+MAKE_TEST(neonntt_inv,1,invntt_tomont,invntt_u32_tomont_C,0,1,1)
+MAKE_TEST(pqclean_ntt_inv,1,pqclean_invntt_tomont,invntt_u32_tomont_C,0,1,1)
 
 uint64_t t0, t1;
 uint64_t cycles[TEST_COUNT];
