@@ -85,18 +85,18 @@
 .endm
 
 .macro mulmodq dst, src, const, idx0, idx1
+        vqrdmulhq   t2,  \src, \const, \idx1
         vmulq       \dst,  \src, \const, \idx0
-        vqrdmulhq   \src,  \src, \const, \idx1
-        vmls        \dst,  \src, modulus
+        vmls       \dst,  t2, modulus
 .endm
 
 .macro mulmod dst, src, const, const_twisted
-        vmul       \dst,  \src, \const
-        vqrdmulh   \src,  \src, \const_twisted
-        vmls       \dst,  \src, modulus
+        vqrdmulh   t2,  \src, \const_twisted
+        mul        \dst\().4s,  \src\().4s, \const\().4s
+        vmls       \dst,  t2, modulus
 .endm
 
-.macro montg_reduce a
+.macro barrett_reduce_single a
         srshr tmp.4S,  \a\().4S, #23
         vmls   \a, tmp, modulus
 .endm
@@ -112,12 +112,6 @@
         vsub     tmp,    \a, \b
         vadd     \a,    \a, \b
         mulmodq  \b, tmp, \root, \idx0, \idx1
-.endm
-
-.macro mulmod_v dst, src, const, const_twisted
-        vmul        \dst,  \src, \const
-        vqrdmulh    \src,  \src, \const_twisted
-        vmls        \dst,  \src, modulus
 .endm
 
 .macro gs_butterfly_v a, b, root, root_twisted
@@ -234,6 +228,12 @@
         restore_vregs
         restore_gprs
 .endm
+
+// For comparability reasons, the output range for the coefficients of this
+// invNTT code is supposed to match the implementation from PQClean on commit
+// ee71d2c823982bfcf54686f3cf1d666f396dc9aa. After the invNTT, the coefficients
+// are canonically reduced. The ordering of the coefficients is canonical, also
+// matching PQClean.
 
 .data
 .p2align 4
@@ -360,8 +360,8 @@ layer5678_start:
         gs_butterfly data0, data2, root1, 0, 1
         gs_butterfly data1, data3, root1, 0, 1
 
-        montg_reduce data0
-        montg_reduce data1
+        barrett_reduce_single data0
+        barrett_reduce_single data1
 
         str_vi  data0, inp, (16*4)
         str_vo  data1, inp, (-16*4 +  1*16)
@@ -486,25 +486,28 @@ layer1234_start:
         str_vo data14, in, (14*(512/8))
         str_vo data15, in, (15*(512/8))
 
-        mul_ninv data8, data9, data10, data11, data12, data13, data14, data15, data0, data1, data2, data3, data4, data5, data6, data7
+        // Scale half the coeffs by 1/n; for the other half, the scaling has
+        // been merged into the multiplication with the twiddle factor on the
+        // last layer.
+        mul_ninv data0, data1, data2, data3, data4, data5, data6, data7, data0, data1, data2, data3, data4, data5, data6, data7
 
-        canonical_reduce data8,  modulus_half, neg_modulus_half, t2, t3
-        canonical_reduce data9,  modulus_half, neg_modulus_half, t2, t3
-        canonical_reduce data10, modulus_half, neg_modulus_half, t2, t3
-        canonical_reduce data11, modulus_half, neg_modulus_half, t2, t3
-        canonical_reduce data12, modulus_half, neg_modulus_half, t2, t3
-        canonical_reduce data13, modulus_half, neg_modulus_half, t2, t3
-        canonical_reduce data14, modulus_half, neg_modulus_half, t2, t3
-        canonical_reduce data15, modulus_half, neg_modulus_half, t2, t3
+        canonical_reduce data0, modulus_half, neg_modulus_half, t2, t3
+        canonical_reduce data1, modulus_half, neg_modulus_half, t2, t3
+        canonical_reduce data2, modulus_half, neg_modulus_half, t2, t3
+        canonical_reduce data3, modulus_half, neg_modulus_half, t2, t3
+        canonical_reduce data4, modulus_half, neg_modulus_half, t2, t3
+        canonical_reduce data5, modulus_half, neg_modulus_half, t2, t3
+        canonical_reduce data6, modulus_half, neg_modulus_half, t2, t3
+        canonical_reduce data7, modulus_half, neg_modulus_half, t2, t3
 
-        str_vi data8, in, (16)
-        str_vo data9, in, (-16 + 1*(512/8))
-        str_vo data10, in, (-16 + 2*(512/8))
-        str_vo data11, in, (-16 + 3*(512/8))
-        str_vo data12, in, (-16 + 4*(512/8))
-        str_vo data13, in, (-16 + 5*(512/8))
-        str_vo data14, in, (-16 + 6*(512/8))
-        str_vo data15, in, (-16 + 7*(512/8))
+        str_vi data0, in, (16)
+        str_vo data1, in, (-16 + 1*(512/8))
+        str_vo data2, in, (-16 + 2*(512/8))
+        str_vo data3, in, (-16 + 3*(512/8))
+        str_vo data4, in, (-16 + 4*(512/8))
+        str_vo data5, in, (-16 + 5*(512/8))
+        str_vo data6, in, (-16 + 6*(512/8))
+        str_vo data7, in, (-16 + 7*(512/8))
 
 // layer1234_end:
         subs count, count, #1
