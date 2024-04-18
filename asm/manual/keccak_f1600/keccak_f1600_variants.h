@@ -47,7 +47,7 @@ void keccak_f1600_x2_scalar_C     ( uint64_t state[KECCAK_F1600_X2_STATE_SIZE_UI
 void keccak_f1600_x2_bas          ( uint64_t state[KECCAK_F1600_X2_STATE_SIZE_UINT64] );
 #include <arm_neon.h>
 typedef uint64x2_t v128;
-void keccak_f1600_x2_neon_C_cothan( v128 state[25] );
+void keccak_f1600_x2_neon_C_cothan( uint64_t stateu64[2*25] );
 
 /* PQAX implementations */
 void keccak_f1600_x2_v84a_asm_v1( uint64_t state[KECCAK_F1600_X2_STATE_SIZE_UINT64] );

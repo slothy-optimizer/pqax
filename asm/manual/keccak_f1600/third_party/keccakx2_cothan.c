@@ -135,8 +135,9 @@ static const uint64_t neon_KeccakF_RoundConstants[NROUNDS] = {
  *
  * Arguments:   - v128 *state: pointer to input/output Keccak state
  **************************************************/
-void keccak_f1600_x2_neon_C_cothan(v128 state[25])
+void keccak_f1600_x2_neon_C_cothan(uint64_t stateu64[2*25])
 {
+  v128 *state = (v128 *) stateu64;
   v128 Aba, Abe, Abi, Abo, Abu;
   v128 Aga, Age, Agi, Ago, Agu;
   v128 Aka, Ake, Aki, Ako, Aku;
