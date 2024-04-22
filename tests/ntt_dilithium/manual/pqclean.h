@@ -76,6 +76,6 @@ const int32_t streamlined_GS_itable_Q1_jump_extended[((NTT_N - 1) + (1 << 0) + (
 // #define ntt DILITHIUM_NAMESPACE(pqclean_ntt)
 void pqclean_ntt(int32_t a[ARRAY_N]);
 // #define pqclean_invntt_tomont DILITHIUM_NAMESPACE(invntt_tomont)
-void invntt_tomont(int32_t a[ARRAY_N]);
+void pqclean_invntt_tomont(int32_t a[ARRAY_N]);
 
 #endif

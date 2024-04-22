@@ -67,33 +67,34 @@
 .endm
 
 .macro mulmodq dst, src, const, idx0, idx1
+        vqrdmulhq   t2,  \src, \const, \idx1
         vmulq       \dst,  \src, \const, \idx0
-        vqrdmulhq   \src,  \src, \const, \idx1
-        vmlsq       \dst,  \src, consts, 0
+        vmlsq       \dst,  t2, consts, 0
 .endm
 
 .macro mulmod dst, src, const, const_twisted
+        vqrdmulh   t2,  \src, \const_twisted
         mul        \dst\().8h,  \src\().8h, \const\().8h
-        vqrdmulh   \src,  \src, \const_twisted
-        vmlsq      \dst,  \src, consts, 0
+        vmlsq      \dst,  t2, consts, 0
 .endm
 
-.macro ct_butterfly a, b, root, idx0, idx1
-        mulmodq  tmp, \b, \root, \idx0, \idx1
-        sub     \b\().8h,    \a\().8h, tmp.8h
-        add     \a\().8h,    \a\().8h, tmp.8h
+.macro gs_butterfly a, b, root, idx0, idx1
+        sub     tmp.8h,    \a\().8h, \b\().8h
+        add     \a\().8h,    \a\().8h, \b\().8h
+        mulmodq  \b, tmp, \root, \idx0, \idx1
 .endm
 
-.macro mulmod_v dst, src, const, const_twisted
-        mul         \dst\().8h,  \src\().8h, \const\().8h
-        vqrdmulh    \src,  \src, \const_twisted
-        vmlsq       \dst,  \src, consts, 0
+.macro gs_butterfly_v a, b, root, root_twisted
+        sub    tmp.8h,    \a\().8h, \b\().8h
+        add    \a\().8h,    \a\().8h, \b\().8h
+        mulmod  \b, tmp, \root, \root_twisted
 .endm
 
-.macro ct_butterfly_v a, b, root, root_twisted
-        mulmod  tmp, \b, \root, \root_twisted
-        sub    \b\().8h,    \a\().8h, tmp.8h
-        add    \a\().8h,    \a\().8h, tmp.8h
+.macro mul_ninv dst0, dst1, dst2, dst3, src0, src1, src2, src3
+        mulmod \dst0, \src0, ninv, ninv_tw
+        mulmod \dst1, \src1, ninv, ninv_tw
+        mulmod \dst2, \src2, ninv, ninv_tw
+        mulmod \dst3, \src3, ninv, ninv_tw
 .endm
 
 .macro barrett_reduce a
@@ -139,6 +140,27 @@
         trn2 \data_out\()3.4s, \data_in\()2.4s, \data_in\()3.4s
 .endm
 
+.macro save_gprs // @slothy:no-unfold
+        sub sp, sp, #(16*6)
+        stp x19, x20, [sp, #16*0]
+        stp x19, x20, [sp, #16*0]
+        stp x21, x22, [sp, #16*1]
+        stp x23, x24, [sp, #16*2]
+        stp x25, x26, [sp, #16*3]
+        stp x27, x28, [sp, #16*4]
+        str x29, [sp, #16*5]
+.endm
+
+.macro restore_gprs // @slothy:no-unfold
+        ldp x19, x20, [sp, #16*0]
+        ldp x21, x22, [sp, #16*1]
+        ldp x23, x24, [sp, #16*2]
+        ldp x25, x26, [sp, #16*3]
+        ldp x27, x28, [sp, #16*4]
+        ldr x29, [sp, #16*5]
+        add sp, sp, #(16*6)
+.endm
+
 .macro save_vregs // @slothy:no-unfold
         sub sp, sp, #(16*4)
         stp  d8,  d9, [sp, #16*0]
@@ -155,16 +177,74 @@
         add sp, sp, #(16*4)
 .endm
 
+#define STACK_SIZE 16
+#define STACK0 0
+
+.macro restore a, loc     // @slothy:no-unfold
+        ldr \a, [sp, #\loc\()]
+.endm
+.macro save loc, a        // @slothy:no-unfold
+        str \a, [sp, #\loc\()]
+.endm
 .macro push_stack // @slothy:no-unfold
+        save_gprs
         save_vregs
+        sub sp, sp, #STACK_SIZE
 .endm
 
 .macro pop_stack // @slothy:no-unfold
+        add sp, sp, #STACK_SIZE
         restore_vregs
+        restore_gprs
 .endm
 
+// For comparability reasons, the output range for the coefficients of this
+// invNTT code is supposed to match the implementation from PQClean on commit
+// ee71d2c823982bfcf54686f3cf1d666f396dc9aa. After the invNTT, the coefficients
+// are NOT canonically reduced. The ordering of the coefficients is canonical,
+// also matching PQClean.
+
+.data
+.p2align 4
+roots:
+#include "intt_kyber_123_45_67_twiddles.s"
+.text
+
+        .global intt_kyber_123_4567
+        .global _intt_kyber_123_4567
+
+.p2align 4
+const_addr:       .short 3329
+                  .short 20159
+                  .short 0
+                  .short 0
+                  .short 0
+                  .short 0
+                  .short 0
+                  .short 0
+ninv_addr:        .short 512
+                  .short 512
+                  .short 512
+                  .short 512
+                  .short 512
+                  .short 512
+                  .short 512
+                  .short 512
+ninv_tw_addr:     .short 5040
+                  .short 5040
+                  .short 5040
+                  .short 5040
+                  .short 5040
+                  .short 5040
+                  .short 5040
+                  .short 5040
+
+intt_kyber_123_4567:
+_intt_kyber_123_4567:
+        push_stack
+
         in      .req x0
-        in_orig .req x1
+        inp     .req x1
         count   .req x2
         r_ptr0  .req x3
         r_ptr1  .req x4
@@ -262,40 +342,76 @@
         t2  .req v27
         t3  .req v28
 
-.data
-.p2align 4
-roots:
-#include "ntt_kyber_123_45_67_twiddles.s"
-.text
-
-        .global ntt_kyber_123_4567
-        .global _ntt_kyber_123_4567
-
-.p2align 4
-const_addr:       .short 3329
-                  .short 20159
-                  .short 0
-                  .short 0
-                  .short 0
-                  .short 0
-                  .short 0
-                  .short 0
-ntt_kyber_123_4567:
-_ntt_kyber_123_4567:
-        push_stack
-
-        ASM_LOAD(r_ptr0, roots)
+        ASM_LOAD(r_ptr0, roots_l34)
         ASM_LOAD(r_ptr1, roots_l56)
 
         ASM_LOAD(xtmp, const_addr)
         ld1 {consts.8h}, [xtmp]
 
-        mov in_orig, in
-        mov count, #4
+        save STACK0, in
 
+        mov inp, in
+        mov count, #8
+
+        .p2align 2
+layer4567_start:
+        ldr_vo data0, inp, (16*0)
+        ldr_vo data1, inp, (16*1)
+        ldr_vo data2, inp, (16*2)
+        ldr_vo data3, inp, (16*3)
+
+        transpose4 data // manual ld4
+
+        load_next_roots_67
+
+        // Layer 7
+        gs_butterfly_v data0, data1, root1, root1_tw
+        gs_butterfly_v data2, data3, root2, root2_tw
+        // Layer 6
+        gs_butterfly_v data0, data2, root0, root0_tw
+        gs_butterfly_v data1, data3, root0, root0_tw
+
+        transpose4 data
+        
+        load_next_roots_45
+
+        // Layer 5
+        gs_butterfly data0, data1, root0, 2, 3
+        gs_butterfly data2, data3, root0, 4, 5
+
+        barrett_reduce data0
+        barrett_reduce data2
+        barrett_reduce data1
+        barrett_reduce data3
+
+        // Layer 4
+        gs_butterfly data0, data2, root0, 0, 1
+        gs_butterfly data1, data3, root0, 0, 1
+
+        str_vi data0, inp, (64)
+        str_vo data1, inp, (-64 + 16*1)
+        str_vo data2, inp, (-64 + 16*2)
+        str_vo data3, inp, (-64 + 16*3)
+
+        subs count, count, #1
+        cbnz count, layer4567_start
+
+        // ---------------------------------------------------------------------
+
+        ninv             .req v29
+        ninv_tw          .req v30
+
+        ASM_LOAD(xtmp, ninv_addr)
+        ld1r {ninv.8h}, [xtmp]
+        ASM_LOAD(xtmp, ninv_tw_addr)
+        ld1r {ninv_tw.8h}, [xtmp]
+
+        mov count, #4
+        ASM_LOAD(r_ptr0, roots_l012)
         load_roots_123
 
         .p2align 2
+
 layer123_start:
 
         ldr_vo data0, in, 0
@@ -307,66 +423,39 @@ layer123_start:
         ldr_vo data6, in, (6*(512/8))
         ldr_vo data7, in, (7*(512/8))
 
-        ct_butterfly data0, data4, root0, 0, 1
-        ct_butterfly data1, data5, root0, 0, 1
-        ct_butterfly data2, data6, root0, 0, 1
-        ct_butterfly data3, data7, root0, 0, 1
+        gs_butterfly data0, data1, root0, 6, 7
+        gs_butterfly data2, data3, root1, 0, 1
+        gs_butterfly data4, data5, root1, 2, 3
+        gs_butterfly data6, data7, root1, 4, 5
 
-        ct_butterfly data0, data2, root0, 2, 3
-        ct_butterfly data1, data3, root0, 2, 3
-        ct_butterfly data4, data6, root0, 4, 5
-        ct_butterfly data5, data7, root0, 4, 5
+        gs_butterfly data0, data2, root0, 2, 3
+        gs_butterfly data1, data3, root0, 2, 3
+        gs_butterfly data4, data6, root0, 4, 5
+        gs_butterfly data5, data7, root0, 4, 5
 
-        ct_butterfly data0, data1, root0, 6, 7
-        ct_butterfly data2, data3, root1, 0, 1
-        ct_butterfly data4, data5, root1, 2, 3
-        ct_butterfly data6, data7, root1, 4, 5
+        gs_butterfly data0, data4, root0, 0, 1
+        gs_butterfly data1, data5, root0, 0, 1
+        gs_butterfly data2, data6, root0, 0, 1
+        gs_butterfly data3, data7, root0, 0, 1
+
+        str_vo data4, in, (4*(512/8))
+        str_vo data5, in, (5*(512/8))
+        str_vo data6, in, (6*(512/8))
+        str_vo data7, in, (7*(512/8))
+
+        // Scale half the coeffs by 1/n; for the other half, the scaling has
+        // been merged into the multiplication with the twiddle factor on the
+        // last layer.
+        mul_ninv data0, data1, data2, data3, data0, data1, data2, data3
 
         str_vi data0, in, (16)
         str_vo data1, in, (-16 + 1*(512/8))
         str_vo data2, in, (-16 + 2*(512/8))
         str_vo data3, in, (-16 + 3*(512/8))
-        str_vo data4, in, (-16 + 4*(512/8))
-        str_vo data5, in, (-16 + 5*(512/8))
-        str_vo data6, in, (-16 + 6*(512/8))
-        str_vo data7, in, (-16 + 7*(512/8))
+
 
         subs count, count, #1
         cbnz count, layer123_start
-
-        mov in, in_orig
-        mov count, #8
-
-        .p2align 2
-layer4567_start:
-        ldr_vo data0, in, (16*0)
-        ldr_vo data1, in, (16*1)
-        ldr_vo data2, in, (16*2)
-        ldr_vo data3, in, (16*3)
-
-        load_next_roots_45
-
-        ct_butterfly data0, data2, root0, 0, 1
-        ct_butterfly data1, data3, root0, 0, 1
-        ct_butterfly data0, data1, root0, 2, 3
-        ct_butterfly data2, data3, root0, 4, 5
-
-        transpose4 data
-        load_next_roots_67
-
-        ct_butterfly_v data0, data2, root0, root0_tw
-        ct_butterfly_v data1, data3, root0, root0_tw
-        ct_butterfly_v data0, data1, root1, root1_tw
-        ct_butterfly_v data2, data3, root2, root2_tw
-
-        barrett_reduce data0
-        barrett_reduce data1
-        barrett_reduce data2
-        barrett_reduce data3
-        st4 {data0.4S, data1.4S, data2.4S, data3.4S}, [in], #64
-
-        subs count, count, #1
-        cbnz count, layer4567_start
 
        pop_stack
        ret
