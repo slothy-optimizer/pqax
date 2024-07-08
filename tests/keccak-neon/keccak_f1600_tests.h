@@ -69,6 +69,7 @@ int validate_keccak_f1600_x4_hybrid_asm_v5p(void);
 int validate_keccak_f1600_x4_hybrid_asm_v6(void);
 int validate_keccak_f1600_x4_hybrid_asm_v7(void);
 int validate_keccak_f1600_x4_hybrid_asm_v8(void);
+int validate_keccak_f1600_x4_hybrid_slothy(void);
 
 int validate_keccak_f1600_x4_scalar_asm_v5(void);
 
@@ -153,6 +154,7 @@ int benchmark_keccak_f1600_x4_hybrid_asm_v5p(void);
 int benchmark_keccak_f1600_x4_hybrid_asm_v6(void);
 int benchmark_keccak_f1600_x4_hybrid_asm_v7(void);
 int benchmark_keccak_f1600_x4_hybrid_asm_v8(void);
+int benchmark_keccak_f1600_x4_hybrid_slothy(void);
 
 int benchmark_keccak_f1600_x4_scalar_asm_v5(void);
 

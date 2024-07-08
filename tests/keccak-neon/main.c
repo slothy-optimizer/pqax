@@ -143,6 +143,8 @@ int main(void)
         return( 1 );
     if( validate_keccak_f1600_x4_scalar_asm_v5() != 0 )
         return( 1 );
+    if( validate_keccak_f1600_x4_hybrid_slothy() != 0 )
+        return( 1 );
     if( validate_keccak_f1600_x5_hybrid_asm_v8() != 0 )
         return( 1 );
     if( validate_keccak_f1600_x2_hybrid_asm_v1() != 0 )
@@ -220,6 +222,7 @@ int main(void)
     benchmark_keccak_f1600_x4_hybrid_asm_v6();
     benchmark_keccak_f1600_x4_hybrid_asm_v7();
     benchmark_keccak_f1600_x4_hybrid_asm_v8();
+    benchmark_keccak_f1600_x4_hybrid_slothy();
 
     benchmark_keccak_f1600_x4_scalar_asm_v5();
 
