@@ -79,6 +79,9 @@ void keccak_f1600_x1_scalar_asm_v2( uint64_t state[KECCAK_F1600_X1_STATE_SIZE_UI
 void keccak_f1600_x1_scalar_asm_v3( uint64_t state[KECCAK_F1600_X1_STATE_SIZE_UINT64] );
 void keccak_f1600_x1_scalar_asm_v4( uint64_t state[KECCAK_F1600_X1_STATE_SIZE_UINT64] );
 void keccak_f1600_x1_scalar_asm_v5( uint64_t state[KECCAK_F1600_X1_STATE_SIZE_UINT64] );
+void keccak_f1600_x1_scalar_slothy( uint64_t state[KECCAK_F1600_X1_STATE_SIZE_UINT64] );
+void keccak_f1600_x1_scalar_slothy( uint64_t state[KECCAK_F1600_X1_STATE_SIZE_UINT64] );
+void keccak_f1600_x1_scalar_slothy_opt_a55( uint64_t state[KECCAK_F1600_X1_STATE_SIZE_UINT64] );
 
 void keccak_f1600_x4_scalar_asm_v1( uint64_t state[4*KECCAK_F1600_X1_STATE_SIZE_UINT64] );
 void keccak_f1600_x4_scalar_asm_v5( uint64_t state[4*KECCAK_F1600_X1_STATE_SIZE_UINT64] );

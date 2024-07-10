@@ -1,0 +1,1 @@
+../../../slothy/examples/naive/aarch64/keccak_f1600_x1_scalar_slothy.s

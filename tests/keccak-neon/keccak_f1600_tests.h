@@ -47,6 +47,8 @@ int validate_keccak_f1600_x1_scalar_asm_v2();
 int validate_keccak_f1600_x1_scalar_asm_v3();
 int validate_keccak_f1600_x1_scalar_asm_v4();
 int validate_keccak_f1600_x1_scalar_asm_v5();
+int validate_keccak_f1600_x1_scalar_slothy();
+int validate_keccak_f1600_x1_scalar_slothy_opt_a55();
 
 int validate_keccak_f1600_x2_scalar_C(void);
 int validate_keccak_f1600_x2_neon_C_cothan(void);
@@ -133,6 +135,8 @@ int benchmark_keccak_f1600_x1_scalar_asm_v2(void);
 int benchmark_keccak_f1600_x1_scalar_asm_v3(void);
 int benchmark_keccak_f1600_x1_scalar_asm_v4(void);
 int benchmark_keccak_f1600_x1_scalar_asm_v5(void);
+int benchmark_keccak_f1600_x1_scalar_slothy_opt_a55();
+
 
 int benchmark_keccak_f1600_x2_scalar_C(void);
 int benchmark_keccak_f1600_x2_neon_C_cothan(void);
