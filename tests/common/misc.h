@@ -66,11 +66,13 @@
 void fill_random_u8 ( uint8_t  *buf, unsigned len );
 void fill_random_u16( uint16_t *buf, unsigned len );
 void fill_random_u32( uint32_t *buf, unsigned len );
+void fill_random_u64( uint64_t *buf, unsigned len );
 
 /* Copy buffers */
 void copy_buf_u8 ( uint8_t  *dst, uint8_t  const *src, unsigned len );
 void copy_buf_u16( uint16_t *dst, uint16_t const *src, unsigned len );
 void copy_buf_u32( uint32_t *dst, uint32_t const *src, unsigned len );
+void copy_buf_u64( uint64_t *dst, uint64_t const *src, unsigned len );
 
 /* Compare buffers
  * Same semantics as memcmp(), but we want to rely on stdlib
@@ -78,6 +80,7 @@ void copy_buf_u32( uint32_t *dst, uint32_t const *src, unsigned len );
 int compare_buf_u8 ( uint8_t  const *src_a, uint8_t  const *src_b, unsigned len );
 int compare_buf_u16( uint16_t const *src_a, uint16_t const *src_b, unsigned len );
 int compare_buf_u32( uint32_t const *src_a, uint32_t const *src_b, unsigned len );
+int compare_buf_u64( uint64_t const *src_a, uint64_t const *src_b, unsigned len );
 
 static inline int compare_buf_s8( int8_t const *src_a,
                                   int8_t const *src_b,
@@ -109,9 +112,11 @@ static inline int compare_buf_s32( int32_t const *src_a,
 void debug_print_buf_u8 ( uint8_t  const *buf, unsigned entries, const char *prefix );
 void debug_print_buf_u16( uint16_t const *buf, unsigned entries, const char *prefix );
 void debug_print_buf_u32( uint32_t const *buf, unsigned entries, const char *prefix );
+void debug_print_buf_u64( uint64_t const *buf, unsigned entries, const char *prefix );
 void debug_print_buf_s8 ( int8_t   const *buf, unsigned entries, const char *prefix );
 void debug_print_buf_s16( int16_t  const *buf, unsigned entries, const char *prefix );
 void debug_print_buf_s32( int32_t  const *buf, unsigned entries, const char *prefix );
+void debug_print_buf_s64( int64_t  const *buf, unsigned entries, const char *prefix );
 
 /* Transpose buffers */
 void buffer_transpose_u8 ( uint8_t *dst, uint8_t const *src,
@@ -120,7 +125,8 @@ void buffer_transpose_u16( uint16_t *dst, uint16_t const *src,
                            unsigned block_length, unsigned dim_x, unsigned dim_y );
 void buffer_transpose_u32( uint32_t *dst, uint32_t const *src,
                            unsigned block_length, unsigned dim_x, unsigned dim_y );
-
+void buffer_transpose_u64( uint64_t *dst, uint64_t const *src,
+                           unsigned block_length, unsigned dim_x, unsigned dim_y );
 #define ALIGN(x) __attribute__((aligned(x)))
 
 #endif /* MVE_POLY_ARITHMETIC_TESTS_MISC */

@@ -40,6 +40,7 @@
  GEN_FILL_RANDOM(8)
  GEN_FILL_RANDOM(16)
  GEN_FILL_RANDOM(32)
+ GEN_FILL_RANDOM(64)
  #undef GEN_FILL_RANDOM
 
  #define GEN_COPY( bits )                                              \
@@ -52,6 +53,7 @@
  GEN_COPY(8)
  GEN_COPY(16)
  GEN_COPY(32)
+ GEN_COPY(64)
  #undef GEN_COPY
 
  #define GEN_COMPARE_BUF( bits )                                       \
@@ -67,6 +69,7 @@
  GEN_COMPARE_BUF(8)
  GEN_COMPARE_BUF(16)
  GEN_COMPARE_BUF(32)
+ GEN_COMPARE_BUF(64)
  #undef GEN_COMPARE_BUF
 
  #define GEN_PRINT_BUF( bits )                                         \
@@ -86,6 +89,7 @@
  GEN_PRINT_BUF(8)
  GEN_PRINT_BUF(16)
  GEN_PRINT_BUF(32)
+ GEN_PRINT_BUF(64)
  #undef GEN_PRINT_BUF
 
  #define GEN_PRINT_BUF_S( bits )                                       \
@@ -105,6 +109,7 @@
  GEN_PRINT_BUF_S(8)
 GEN_PRINT_BUF_S(16)
 GEN_PRINT_BUF_S(32)
+GEN_PRINT_BUF_S(64)
 #undef GEN_PRINT_BUF_S
 
 /* Helper to transpose buffers in case this is needed for  input preparation. */
