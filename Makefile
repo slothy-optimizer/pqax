@@ -5,6 +5,7 @@ include tests/ntt-dilithium/ntt-dilithium.mk
 include tests/ntt-kyber/ntt-kyber.mk
 include tests/ntt-neon/ntt-neon.mk
 include tests/ntt-sve2/ntt-sve2.mk
+include tests/profiling/profiling.mk
 
 testname = $(shell echo $(1) | tr '[a-z]' '[A-Z]' | tr '-' '_' | tr '/' '_')
 testdir = $(addprefix $(2),tests/$(firstword $(subst /, ,$1))/)
