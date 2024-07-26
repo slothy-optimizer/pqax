@@ -29,6 +29,7 @@
 
 #include <hal.h>
 
+
 #include "ntt.h"
 
 int main(void)
