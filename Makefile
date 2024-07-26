@@ -1,5 +1,6 @@
 # Tests
 include tests/helloworld/helloworld.mk
+include tests/keccak-neon/keccak-neon.mk
 
 
 # TODO: Check if all those are needed
