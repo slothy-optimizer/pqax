@@ -1,7 +1,7 @@
 # Tests
 include tests/helloworld/helloworld.mk
 include tests/keccak-neon/keccak-neon.mk
-
+include tests/ntt-dilithium/ntt-dilithium.mk
 
 # TODO: Check if all those are needed
 testname = $(shell echo $(1) | tr '[a-z]' '[A-Z]' | tr '-' '_' | tr '/' '_')
