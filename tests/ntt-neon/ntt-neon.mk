@@ -6,6 +6,7 @@ TESTS += ntt-neon
 # Platforms this test should run on (matching the directory name in envs/)
 NTT_NEON_PLATFORMS += cross-v8a
 NTT_NEON_PLATFORMS += cross-v84a
+NTT_NEON_PLATFORMS += cross-v9a
 
 # C sources required for this test
 NTT_NEON_SOURCES += main.c
