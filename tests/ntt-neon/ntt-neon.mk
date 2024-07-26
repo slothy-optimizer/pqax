@@ -8,6 +8,7 @@ NTT_NEON_PLATFORMS += cross-v8a
 NTT_NEON_PLATFORMS += cross-v84a
 NTT_NEON_PLATFORMS += native-linux-v8a
 NTT_NEON_PLATFORMS += native-linux-v84a
+NTT_NEON_PLATFORMS += native-mac
 
 # C sources required for this test
 NTT_NEON_SOURCES += main.c

@@ -8,7 +8,7 @@ NTT_DILITHIUM_PLATFORMS += cross-v8a
 NTT_DILITHIUM_PLATFORMS += cross-v84a
 NTT_DILITHIUM_PLATFORMS += native-linux-v8a
 NTT_DILITHIUM_PLATFORMS += native-linux-v84a
-
+NTT_DILITHIUM_PLATFORMS += native-mac
 
 # C sources required for this test
 NTT_DILITHIUM_SOURCES += main.c

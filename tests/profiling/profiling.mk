@@ -8,6 +8,7 @@ PROFILING_PLATFORMS += cross-v8a
 PROFILING_PLATFORMS += cross-v84a
 PROFILING_PLATFORMS += native-linux-v8a
 PROFILING_PLATFORMS += native-linux-v84a
+PROFILING_PLATFORMS += native-mac
 
 # C sources required for this test
 PROFILING_SOURCES += main.c

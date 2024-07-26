@@ -8,6 +8,7 @@ KECCAK_NEON_PLATFORMS += cross-v8a
 KECCAK_NEON_PLATFORMS += cross-v84a
 KECCAK_NEON_PLATFORMS += natice-linux-v8a
 KECCAK_NEON_PLATFORMS += natice-linux-v84a
+KECCAK_NEON_PLATFORMS += native-mac
 
 # C sources required for this test
 KECCAK_NEON_SOURCES += main.c

@@ -8,6 +8,7 @@ HELLOWORLD_PLATFORMS += cross-v8a
 HELLOWORLD_PLATFORMS += cross-v84a
 HELLOWORLD_PLATFORMS += native-linux-v8a
 HELLOWORLD_PLATFORMS += native-linux-v84a
+HELLOWORLD_PLATFORMS += native-mac
 
 # C sources required for this test
 HELLOWORLD_SOURCES += main.c
