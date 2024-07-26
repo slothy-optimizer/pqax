@@ -6,7 +6,8 @@ TESTS += helloworld
 # Platforms this test should run on (matching the directory name in envs/)
 HELLOWORLD_PLATFORMS += cross-v8a
 HELLOWORLD_PLATFORMS += cross-v84a
-HELLOWORLD_PLATFORMS += cross-v9a
+HELLOWORLD_PLATFORMS += native-linux-v8a
+HELLOWORLD_PLATFORMS += native-linux-v84a
 
 # C sources required for this test
 HELLOWORLD_SOURCES += main.c

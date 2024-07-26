@@ -6,7 +6,8 @@ TESTS += keccak-neon
 # Platforms this test should run on (matching the directory name in envs/)
 KECCAK_NEON_PLATFORMS += cross-v8a
 KECCAK_NEON_PLATFORMS += cross-v84a
-KECCAK_NEON_PLATFORMS += cross-v9a
+KECCAK_NEON_PLATFORMS += natice-linux-v8a
+KECCAK_NEON_PLATFORMS += natice-linux-v84a
 
 # C sources required for this test
 KECCAK_NEON_SOURCES += main.c

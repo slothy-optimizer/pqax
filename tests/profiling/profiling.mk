@@ -6,7 +6,8 @@ TESTS += profiling
 # Platforms this test should run on (matching the directory name in envs/)
 PROFILING_PLATFORMS += cross-v8a
 PROFILING_PLATFORMS += cross-v84a
-PROFILING_PLATFORMS += cross-v9a
+PROFILING_PLATFORMS += native-linux-v8a
+PROFILING_PLATFORMS += native-linux-v84a
 
 # C sources required for this test
 PROFILING_SOURCES += main.c

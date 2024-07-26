@@ -6,6 +6,8 @@ TESTS += ntt-kyber
 # Platforms this test should run on (matching the directory name in envs/)
 NTT_KYBER_PLATFORMS += cross-v8a
 NTT_KYBER_PLATFORMS += cross-v84a
+NTT_KYBER_PLATFORMS += native-linux-v8a
+NTT_KYBER_PLATFORMS += native-linux-v84a
 
 # C sources required for this test
 NTT_KYBER_SOURCES += main.c

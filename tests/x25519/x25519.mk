@@ -6,7 +6,8 @@ TESTS += x25519
 # Platforms this test should run on (matching the directory name in envs/)
 X25519_PLATFORMS += cross-v8a
 X25519_PLATFORMS += cross-v84a
-X25519_PLATFORMS += cross-v9a
+X25519_PLATFORMS += native-linux-v8a
+X25519_PLATFORMS += native-linux-v84a
 
 # C sources required for this test
 X25519_SOURCES += main.c
