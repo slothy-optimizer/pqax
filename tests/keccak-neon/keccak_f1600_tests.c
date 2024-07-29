@@ -119,6 +119,7 @@ int testname (void)                                                     \
                             NUM * KECCAK_F1600_X1_STATE_SIZE_BYTES,     \
                             "Actual" );                                 \
         debug_test_fail();                                              \
+        return 1;                                                       \
     }                                                                   \
                                                                         \
     debug_test_ok();                                                    \
