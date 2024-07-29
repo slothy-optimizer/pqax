@@ -4,6 +4,9 @@ on:
     branches: [ "main" ]
 jobs:
   test:
+    strategy:
+      matrix:
+        target: [cross-v8a, cross-v84a]
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
@@ -11,19 +14,6 @@ jobs:
         submodules: true
     - name: install dependencies
       run: sudo apt install gcc-aarch64-linux-gnu qemu-user
-    - name: Run Dilithium NTT Tests
+    - name: Run tests
       run: |
-        make run-cross-ntt_dilithium
-    - name: Run Kyber NTT Tests
-      run: |
-        make run-cross-ntt_kyber
-    - name: Run Kyber NTT Tests
-      run: |
-        make run-cross-ntt_kyber
-    - name: Run X25519 Tests
-      run: |
-        make run-cross-x25519
-    - name: Run Keccak Tests
-      run: |
-        make clean
-        make run-cross-keccak_neon
+        make runall-${{ matrix.target }}

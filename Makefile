@@ -18,10 +18,11 @@ elfname = $(addsuffix -test.elf,$(subst /,-,$1))
 
 
 platformtests := $(foreach test,$(TESTS), $(call testplatforms,$(test)))
+platforms =  $(sort $(foreach test,$(platformtests),$(firstword $(subst _, ,$(test)))))
 
 builds          := $(addprefix build-, $(platformtests))
 runs            := $(addprefix run-, $(platformtests))
-checks          := $(addprefix check-, $(platformtests))
+runsplatform    := $(addprefix runall-, $(platforms))
 cleans          := $(addprefix clean-, $(platformtests))
 
 
@@ -42,12 +43,9 @@ ${runs}: run-%:
 .PHONY: run
 run: ${runs}
 
-.PHONY: ${checks}
-${checks}: check-%:
-	make -C envs/$(platform) check CFLAGS_EXTRA='$(call testcflags,$(test))' SOURCES='$(call testsources,$(test),../../)' ASMS='$(call testasms,$(test),../../)' TARGET=$(call elfname,$(test)) TESTDIR=$(call testdir,$(test),../../)
-
-.PHONY: check
-check: ${checks}
+.PHONY:${runsplatform}
+${runsplatform}:
+	make $(filter run-$(subst runall-,,$@)_%, $(runs))
 
 .PHONY: ${cleans}
 ${cleans}: clean-%:
