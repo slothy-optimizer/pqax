@@ -19,8 +19,9 @@ CFLAGS+= -Ofast \
 	-I$(TESTDIR) \
 	-I$(TEST_COMMON) \
 
-
-CFLAGS += -DPERF_CYCLES
+ifeq ($(CYCLES),PERF)
+	CFLAGS += -DPERF_CYCLES
+endif
 
 
 
