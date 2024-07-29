@@ -6,7 +6,6 @@ TESTS += ntt-sve2
 # Platforms this test should run on (matching the directory name in envs/)
 NTT_SVE2_PLATFORMS += cross-v84a
 NTT_SVE2_PLATFORMS += native-linux-v84a
-NTT_SVE2_PLATFORMS += native-mac
 
 # C sources required for this test
 NTT_SVE2_SOURCES += main.c
