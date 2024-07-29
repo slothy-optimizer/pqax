@@ -6,13 +6,20 @@ jobs:
   test:
     strategy:
       matrix:
-        target: [cross-v8a, cross-v84a]
-    runs-on: ubuntu-latest
+        include:
+          - system: ubuntu-latest
+            target: cross-v8a
+          - system: ubuntu-latest
+            target: cross-v8a
+          - system: macos-latest
+            target: native-mac
+    runs-on: ${{ matrix.system }}
     steps:
     - uses: actions/checkout@v3
       with:
         submodules: true
     - name: install dependencies
+      if: ${{ matrix.system == 'ubuntu-latest' }} 
       run: sudo apt install gcc-aarch64-linux-gnu qemu-user
     - name: Run tests
       run: |
