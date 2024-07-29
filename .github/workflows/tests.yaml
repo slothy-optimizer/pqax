@@ -10,7 +10,7 @@ jobs:
           - system: ubuntu-latest
             target: cross-v8a
           - system: ubuntu-latest
-            target: cross-v8a
+            target: cross-v84a
           - system: macos-latest
             target: native-mac
     runs-on: ${{ matrix.system }}
