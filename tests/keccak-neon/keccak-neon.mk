@@ -75,4 +75,4 @@ KECCAK_NEON_ASMS += $(KECCAK_NEON_ASM_DIR)/keccak_f1600_x5_hybrid_asm_v8.s
 KECCAK_NEON_ASMS += $(KECCAK_NEON_ASM_DIR)/keccak_f1600_x5_hybrid_asm_v8p.s
 KECCAK_NEON_ASMS += $(KECCAK_NEON_ASM_DIR)/keccak_f1600_x4_hybrid_slothy.s
 KECCAK_NEON_ASMS += $(KECCAK_NEON_ASM_DIR)/keccak_f1600_x4_hybrid_slothy_a55_opt_a55.s
-KECCAK_NEON_ASMS += $(KECCAK_NEON_ASM_DIR)/keccak_f1600_x1_scalar_slothy_a55_opt_a55.s
+KECCAK_NEON_ASMS += $(KECCAK_NEON_ASM_DIR)/keccak_f1600_x1_scalar_no_symbolic_opt_a55.s
