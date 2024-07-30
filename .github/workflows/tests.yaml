@@ -4,26 +4,23 @@ on:
     branches: [ "main" ]
 jobs:
   test:
-    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          - system: ubuntu-latest
+            target: cross-v8a
+          - system: ubuntu-latest
+            target: cross-v84a
+          - system: macos-latest
+            target: native-mac
+    runs-on: ${{ matrix.system }}
     steps:
     - uses: actions/checkout@v3
       with:
         submodules: true
     - name: install dependencies
+      if: ${{ matrix.system == 'ubuntu-latest' }} 
       run: sudo apt install gcc-aarch64-linux-gnu qemu-user
-    - name: Run Dilithium NTT Tests
+    - name: Run tests
       run: |
-        make run-cross-ntt_dilithium
-    - name: Run Kyber NTT Tests
-      run: |
-        make run-cross-ntt_kyber
-    - name: Run Kyber NTT Tests
-      run: |
-        make run-cross-ntt_kyber
-    - name: Run X25519 Tests
-      run: |
-        make run-cross-x25519
-    - name: Run Keccak Tests
-      run: |
-        make clean
-        make run-cross-keccak_neon
+        make runall-${{ matrix.target }}
