@@ -1,0 +1,1 @@
+../../../slothy/examples/opt/aarch64/keccak_f1600_x1_scalar_slothy_a55_opt_a55.s

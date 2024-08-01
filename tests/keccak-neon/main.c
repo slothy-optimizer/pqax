@@ -58,6 +58,8 @@ int main(void)
     if( validate_keccak_f1600_x1_scalar_asm_v5() != 0 )
         return( 1 );
     #endif
+    if( validate_keccak_f1600_x1_scalar_slothy_opt_a55() != 0 )
+        return( 1 );
     if( validate_keccak_f1600_x2_v84a_asm_v1() != 0 )
         return( 1 );
     if( validate_keccak_f1600_x2_v84a_asm_v1p0() != 0 )
@@ -143,6 +145,10 @@ int main(void)
         return( 1 );
     if( validate_keccak_f1600_x4_scalar_asm_v5() != 0 )
         return( 1 );
+    if( validate_keccak_f1600_x4_hybrid_slothy() != 0 )
+        return( 1 );
+    if( validate_keccak_f1600_x4_hybrid_slothy_opt_a55() != 0 )
+        return( 1 );
     if( validate_keccak_f1600_x5_hybrid_asm_v8() != 0 )
         return( 1 );
     if( validate_keccak_f1600_x2_hybrid_asm_v1() != 0 )
@@ -171,6 +177,7 @@ int main(void)
     benchmark_keccak_f1600_x1_scalar_asm_v3();
     benchmark_keccak_f1600_x1_scalar_asm_v4();
     benchmark_keccak_f1600_x1_scalar_asm_v5();
+    benchmark_keccak_f1600_x1_scalar_slothy_opt_a55();
 
     benchmark_keccak_f1600_x2_scalar_C();
     benchmark_keccak_f1600_x2_v84a_asm_v2();
@@ -220,6 +227,8 @@ int main(void)
     benchmark_keccak_f1600_x4_hybrid_asm_v6();
     benchmark_keccak_f1600_x4_hybrid_asm_v7();
     benchmark_keccak_f1600_x4_hybrid_asm_v8();
+    benchmark_keccak_f1600_x4_hybrid_slothy();
+    benchmark_keccak_f1600_x4_hybrid_slothy_opt_a55();
 
     benchmark_keccak_f1600_x4_scalar_asm_v5();
 
