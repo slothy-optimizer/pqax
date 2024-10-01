@@ -351,12 +351,14 @@ MAKE_VALIDATE_F1600_X_GENERIC_V84A(validate_keccak_f1600_x4_hybrid_asm_v8,
                               keccak_f1600_x4_hybrid_asm_v8,4)
 MAKE_VALIDATE_F1600_X_GENERIC(validate_keccak_f1600_x4_scalar_asm_v5,
                               keccak_f1600_x4_scalar_asm_v5,4)
-MAKE_VALIDATE_F1600_X_GENERIC(validate_keccak_f1600_x4_hybrid_slothy,
-                              keccak_f1600_x4_hybrid_slothy,4)
 MAKE_VALIDATE_F1600_X_GENERIC(validate_keccak_f1600_x4_hybrid_slothy_opt_a55,
                               keccak_f1600_x4_hybrid_slothy_opt_a55,4)
-
-
+MAKE_VALIDATE_F1600_X_GENERIC(validate_keccak_f1600_x4_hybrid_no_symbolic,
+                              keccak_f1600_x4_hybrid_no_symbolic,4)
+MAKE_VALIDATE_F1600_X_GENERIC(validate_keccak_f1600_x4_hybrid_slothy_clean,
+                              keccak_f1600_x4_hybrid_slothy_clean,4)
+MAKE_VALIDATE_F1600_X_GENERIC(validate_keccak_f1600_x4_hybrid_slothy_interleaved,
+                              keccak_f1600_x4_hybrid_slothy_interleaved,4)
 
 MAKE_VALIDATE_F1600_X_GENERIC(validate_keccak_f1600_x5_hybrid_asm_v8,
                               keccak_f1600_x5_hybrid_asm_v8,5)
@@ -457,11 +459,16 @@ MAKE_BENCHMARK_F1600_X_GENERIC_V84A(benchmark_keccak_f1600_x4_hybrid_asm_v7,
                               keccak_f1600_x4_hybrid_asm_v7,4)
 MAKE_BENCHMARK_F1600_X_GENERIC_V84A(benchmark_keccak_f1600_x4_hybrid_asm_v8,
                               keccak_f1600_x4_hybrid_asm_v8,4)
-MAKE_BENCHMARK_F1600_X_GENERIC(benchmark_keccak_f1600_x4_hybrid_slothy,
-                              keccak_f1600_x4_hybrid_slothy,4)
 MAKE_BENCHMARK_F1600_X_GENERIC(benchmark_keccak_f1600_x4_hybrid_slothy_opt_a55,
                               keccak_f1600_x4_hybrid_slothy_opt_a55,4)
-                              
+
+
+MAKE_BENCHMARK_F1600_X_GENERIC(benchmark_keccak_f1600_x4_hybrid_no_symbolic,
+                              keccak_f1600_x4_hybrid_no_symbolic,4)
+MAKE_BENCHMARK_F1600_X_GENERIC(benchmark_keccak_f1600_x4_hybrid_slothy_clean,
+                              keccak_f1600_x4_hybrid_slothy_clean,4)
+MAKE_BENCHMARK_F1600_X_GENERIC(benchmark_keccak_f1600_x4_hybrid_slothy_interleaved,
+                              keccak_f1600_x4_hybrid_slothy_interleaved,4)
 
 MAKE_BENCHMARK_F1600_X_GENERIC(benchmark_keccak_f1600_x4_scalar_asm_v5,
                               keccak_f1600_x4_scalar_asm_v5,4)

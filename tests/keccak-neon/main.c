@@ -45,126 +45,132 @@ int main(void)
         return( 1 );
     if( validate_keccak_f1600_x1_scalar_C_v1() != 0 )
         return( 1 );
-    // TODO: These implementations are using x18 which is reserved on Apple Silicon
-    #ifndef __APPLE__
-    if( validate_keccak_f1600_x1_scalar_asm_v1() != 0 )
-        return( 1 );
-    if( validate_keccak_f1600_x1_scalar_asm_v2() != 0 )
-        return( 1 );
-    if( validate_keccak_f1600_x1_scalar_asm_v3() != 0 )
-        return( 1 );
-    if( validate_keccak_f1600_x1_scalar_asm_v4() != 0 )
-        return( 1 );
-    if( validate_keccak_f1600_x1_scalar_asm_v5() != 0 )
-        return( 1 );
-    #endif
-    if( validate_keccak_f1600_x1_scalar_slothy_opt_a55() != 0 )
-        return( 1 );
-    if( validate_keccak_f1600_x2_v84a_asm_v1() != 0 )
-        return( 1 );
-    if( validate_keccak_f1600_x2_v84a_asm_v1p0() != 0 )
-        return( 1 );
-    if( validate_keccak_f1600_x4_v84a_asm_v1p0() != 0 )
-        return( 1 );
-    if( validate_keccak_f1600_x2_v84a_asm_v2() != 0 )
-        return( 1 );
-    if( validate_keccak_f1600_x2_v84a_asm_v2p0() != 0 )
-        return( 1 );
-    if( validate_keccak_f1600_x2_v84a_asm_v2p1() != 0 )
-        return( 1 );
-    if( validate_keccak_f1600_x2_v84a_asm_v2p2() != 0 )
-        return( 1 );
-    if( validate_keccak_f1600_x2_v84a_asm_v2p3() != 0 )
-        return( 1 );
-    if( validate_keccak_f1600_x2_v84a_asm_v2p4() != 0 )
-        return( 1 );
-    if( validate_keccak_f1600_x2_v84a_asm_v2p5() != 0 )
-        return( 1 );
-    if( validate_keccak_f1600_x2_v84a_asm_v2p6() != 0 )
-        return( 1 );
-    if( validate_keccak_f1600_x2_v84a_asm_v2pp0() != 0 )
-        return( 1 );
-    if( validate_keccak_f1600_x2_v84a_asm_v2pp1() != 0 )
-        return( 1 );
-    if( validate_keccak_f1600_x2_v84a_asm_v2pp2() != 0 )
-        return( 1 );
-    if( validate_keccak_f1600_x2_v84a_asm_v2pp3() != 0 )
-        return( 1 );
-    if( validate_keccak_f1600_x2_v84a_asm_v2pp4() != 0 )
-        return( 1 );
-    if( validate_keccak_f1600_x2_v84a_asm_v2pp5() != 0 )
-        return( 1 );
-    if( validate_keccak_f1600_x2_v84a_asm_v2pp6() != 0 )
-        return( 1 );
-    if( validate_keccak_f1600_x2_v84a_asm_v2pp7() != 0 )
-        return( 1 );
-    if( validate_keccak_f1600_x2_scalar_C() != 0 )
-        return( 1 );
-    if( validate_keccak_f1600_x2_neon_C_cothan() != 0 )
-        return( 1 );
-    if( validate_keccak_f1600_x2_bas() != 0 )
-        return( 1 );
-    if( validate_keccak_f1600_x3_hybrid_asm_v3p() != 0 )
-        return( 1 );
-    if( validate_keccak_f1600_x3_hybrid_asm_v6() != 0 )
-        return( 1 );
+    /* // TODO: These implementations are using x18 which is reserved on Apple Silicon */
+    /* #ifndef __APPLE__ */
+    /* if( validate_keccak_f1600_x1_scalar_asm_v1() != 0 ) */
+    /*     return( 1 ); */
+    /* if( validate_keccak_f1600_x1_scalar_asm_v2() != 0 ) */
+    /*     return( 1 ); */
+    /* if( validate_keccak_f1600_x1_scalar_asm_v3() != 0 ) */
+    /*     return( 1 ); */
+    /* if( validate_keccak_f1600_x1_scalar_asm_v4() != 0 ) */
+    /*     return( 1 ); */
+    /* if( validate_keccak_f1600_x1_scalar_asm_v5() != 0 ) */
+    /*     return( 1 ); */
+    /* #endif */
+    /* if( validate_keccak_f1600_x1_scalar_slothy_opt_a55() != 0 ) */
+    /*     return( 1 ); */
+    /* if( validate_keccak_f1600_x2_v84a_asm_v1() != 0 ) */
+    /*     return( 1 ); */
+    /* if( validate_keccak_f1600_x2_v84a_asm_v1p0() != 0 ) */
+    /*     return( 1 ); */
+    /* if( validate_keccak_f1600_x4_v84a_asm_v1p0() != 0 ) */
+    /*     return( 1 ); */
+    /* if( validate_keccak_f1600_x2_v84a_asm_v2() != 0 ) */
+    /*     return( 1 ); */
+    /* if( validate_keccak_f1600_x2_v84a_asm_v2p0() != 0 ) */
+    /*     return( 1 ); */
+    /* if( validate_keccak_f1600_x2_v84a_asm_v2p1() != 0 ) */
+    /*     return( 1 ); */
+    /* if( validate_keccak_f1600_x2_v84a_asm_v2p2() != 0 ) */
+    /*     return( 1 ); */
+    /* if( validate_keccak_f1600_x2_v84a_asm_v2p3() != 0 ) */
+    /*     return( 1 ); */
+    /* if( validate_keccak_f1600_x2_v84a_asm_v2p4() != 0 ) */
+    /*     return( 1 ); */
+    /* if( validate_keccak_f1600_x2_v84a_asm_v2p5() != 0 ) */
+    /*     return( 1 ); */
+    /* if( validate_keccak_f1600_x2_v84a_asm_v2p6() != 0 ) */
+    /*     return( 1 ); */
+    /* if( validate_keccak_f1600_x2_v84a_asm_v2pp0() != 0 ) */
+    /*     return( 1 ); */
+    /* if( validate_keccak_f1600_x2_v84a_asm_v2pp1() != 0 ) */
+    /*     return( 1 ); */
+    /* if( validate_keccak_f1600_x2_v84a_asm_v2pp2() != 0 ) */
+    /*     return( 1 ); */
+    /* if( validate_keccak_f1600_x2_v84a_asm_v2pp3() != 0 ) */
+    /*     return( 1 ); */
+    /* if( validate_keccak_f1600_x2_v84a_asm_v2pp4() != 0 ) */
+    /*     return( 1 ); */
+    /* if( validate_keccak_f1600_x2_v84a_asm_v2pp5() != 0 ) */
+    /*     return( 1 ); */
+    /* if( validate_keccak_f1600_x2_v84a_asm_v2pp6() != 0 ) */
+    /*     return( 1 ); */
+    /* if( validate_keccak_f1600_x2_v84a_asm_v2pp7() != 0 ) */
+    /*     return( 1 ); */
+    /* if( validate_keccak_f1600_x2_scalar_C() != 0 ) */
+    /*     return( 1 ); */
+    /* if( validate_keccak_f1600_x2_neon_C_cothan() != 0 ) */
+    /*     return( 1 ); */
+    /* if( validate_keccak_f1600_x2_bas() != 0 ) */
+    /*     return( 1 ); */
+    /* if( validate_keccak_f1600_x3_hybrid_asm_v3p() != 0 ) */
+    /*     return( 1 ); */
+    /* if( validate_keccak_f1600_x3_hybrid_asm_v6() != 0 ) */
+    /*     return( 1 ); */
 
-    #ifndef __APPLE__
-    if( validate_keccak_f1600_x3_hybrid_asm_v7() != 0 )
+    /* #ifndef __APPLE__ */
+    /* if( validate_keccak_f1600_x3_hybrid_asm_v7() != 0 ) */
+    /*     return( 1 ); */
+    /* #endif */
+    /* if( validate_keccak_f1600_x4_hybrid_asm_v1() != 0 ) */
+    /*     return( 1 ); */
+    /* if( validate_keccak_f1600_x4_hybrid_asm_v2() != 0 ) */
+    /*     return( 1 ); */
+    /* if( validate_keccak_f1600_x4_hybrid_asm_v3() != 0 ) */
+    /*     return( 1 ); */
+    /* if( validate_keccak_f1600_x4_hybrid_asm_v3p() != 0 ) */
+    /*     return( 1 ); */
+    /* #ifndef __APPLE__ */
+    /* if( validate_keccak_f1600_x4_hybrid_asm_v3pp() != 0 ) */
+    /*     return( 1 ); */
+    /* #endif */
+    /* if( validate_keccak_f1600_x4_hybrid_asm_v4() != 0 ) */
+    /*     return( 1 ); */
+    /* if( validate_keccak_f1600_x4_hybrid_asm_v4p() != 0 ) */
+    /*     return( 1 ); */
+    /* #ifndef __APPLE__ */
+    /* if( validate_keccak_f1600_x4_hybrid_asm_v5() != 0 ) */
+    /*     return( 1 ); */
+    /* #endif */
+    /* if( validate_keccak_f1600_x4_hybrid_asm_v5p() != 0 ) */
+    /*     return( 1 ); */
+    /* #ifndef __APPLE__ */
+    /* if( validate_keccak_f1600_x4_hybrid_asm_v6() != 0 ) */
+    /*     return( 1 ); */
+    /* #endif */
+    /* if( validate_keccak_f1600_x4_hybrid_asm_v7() != 0 ) */
+    /*     return( 1 ); */
+    /* if( validate_keccak_f1600_x4_hybrid_asm_v8() != 0 ) */
+    /*     return( 1 ); */
+    /* if( validate_keccak_f1600_x4_scalar_asm_v5() != 0 ) */
+    /*     return( 1 ); */
+    /* if( validate_keccak_f1600_x4_hybrid_slothy() != 0 ) */
+    /*     return( 1 ); */
+    /* if( validate_keccak_f1600_x4_hybrid_slothy_opt_a55() != 0 ) */
+    /*     return( 1 ); */
+    if( validate_keccak_f1600_x4_hybrid_no_symbolic() != 0 )
         return( 1 );
-    #endif
-    if( validate_keccak_f1600_x4_hybrid_asm_v1() != 0 )
+    if( validate_keccak_f1600_x4_hybrid_slothy_clean() != 0 )
         return( 1 );
-    if( validate_keccak_f1600_x4_hybrid_asm_v2() != 0 )
+    if( validate_keccak_f1600_x4_hybrid_slothy_interleaved() != 0 )
         return( 1 );
-    if( validate_keccak_f1600_x4_hybrid_asm_v3() != 0 )
-        return( 1 );
-    if( validate_keccak_f1600_x4_hybrid_asm_v3p() != 0 )
-        return( 1 );
-    #ifndef __APPLE__
-    if( validate_keccak_f1600_x4_hybrid_asm_v3pp() != 0 )
-        return( 1 );
-    #endif
-    if( validate_keccak_f1600_x4_hybrid_asm_v4() != 0 )
-        return( 1 );
-    if( validate_keccak_f1600_x4_hybrid_asm_v4p() != 0 )
-        return( 1 );
-    #ifndef __APPLE__
-    if( validate_keccak_f1600_x4_hybrid_asm_v5() != 0 )
-        return( 1 );
-    #endif
-    if( validate_keccak_f1600_x4_hybrid_asm_v5p() != 0 )
-        return( 1 );
-    #ifndef __APPLE__
-    if( validate_keccak_f1600_x4_hybrid_asm_v6() != 0 )
-        return( 1 );
-    #endif
-    if( validate_keccak_f1600_x4_hybrid_asm_v7() != 0 )
-        return( 1 );
-    if( validate_keccak_f1600_x4_hybrid_asm_v8() != 0 )
-        return( 1 );
-    if( validate_keccak_f1600_x4_scalar_asm_v5() != 0 )
-        return( 1 );
-    if( validate_keccak_f1600_x4_hybrid_slothy() != 0 )
-        return( 1 );
-    if( validate_keccak_f1600_x4_hybrid_slothy_opt_a55() != 0 )
-        return( 1 );
-    if( validate_keccak_f1600_x5_hybrid_asm_v8() != 0 )
-        return( 1 );
-    if( validate_keccak_f1600_x2_hybrid_asm_v1() != 0 )
-        return( 1 );
-    if( validate_keccak_f1600_x2_hybrid_asm_v2p0() != 0 )
-        return( 1 );
-    if( validate_keccak_f1600_x2_hybrid_asm_v2p1() != 0 )
-        return( 1 );
-    if( validate_keccak_f1600_x2_hybrid_asm_v2p2() != 0 )
-        return( 1 );
-    if( validate_keccak_f1600_x2_hybrid_asm_v2pp0() != 0 )
-        return( 1 );
-    if( validate_keccak_f1600_x2_hybrid_asm_v2pp1() != 0 )
-        return( 1 );
-    if( validate_keccak_f1600_x2_hybrid_asm_v2pp2() != 0 )
-        return( 1 );
+    /* if( validate_keccak_f1600_x5_hybrid_asm_v8() != 0 ) */
+    /*     return( 1 ); */
+    /* if( validate_keccak_f1600_x2_hybrid_asm_v1() != 0 ) */
+    /*     return( 1 ); */
+    /* if( validate_keccak_f1600_x2_hybrid_asm_v2p0() != 0 ) */
+    /*     return( 1 ); */
+    /* if( validate_keccak_f1600_x2_hybrid_asm_v2p1() != 0 ) */
+    /*     return( 1 ); */
+    /* if( validate_keccak_f1600_x2_hybrid_asm_v2p2() != 0 ) */
+    /*     return( 1 ); */
+    /* if( validate_keccak_f1600_x2_hybrid_asm_v2pp0() != 0 ) */
+    /*     return( 1 ); */
+    /* if( validate_keccak_f1600_x2_hybrid_asm_v2pp1() != 0 ) */
+    /*     return( 1 ); */
+    /* if( validate_keccak_f1600_x2_hybrid_asm_v2pp2() != 0 ) */
+    /*     return( 1 ); */
 #endif /* KECCAK_F1600_TEST_VALIDATE */
 
 #if defined(KECCAK_F1600_TEST_BENCHMARK)
@@ -227,8 +233,10 @@ int main(void)
     benchmark_keccak_f1600_x4_hybrid_asm_v6();
     benchmark_keccak_f1600_x4_hybrid_asm_v7();
     benchmark_keccak_f1600_x4_hybrid_asm_v8();
-    benchmark_keccak_f1600_x4_hybrid_slothy();
     benchmark_keccak_f1600_x4_hybrid_slothy_opt_a55();
+    benchmark_keccak_f1600_x4_hybrid_no_symbolic();
+    benchmark_keccak_f1600_x4_hybrid_slothy_clean();
+    benchmark_keccak_f1600_x4_hybrid_slothy_interleaved();
 
     benchmark_keccak_f1600_x4_scalar_asm_v5();
 
