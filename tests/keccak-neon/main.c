@@ -145,15 +145,17 @@ int main(void)
     /*     return( 1 ); */
     /* if( validate_keccak_f1600_x4_scalar_asm_v5() != 0 ) */
     /*     return( 1 ); */
-    /* if( validate_keccak_f1600_x4_hybrid_slothy() != 0 ) */
-    /*     return( 1 ); */
-    /* if( validate_keccak_f1600_x4_hybrid_slothy_opt_a55() != 0 ) */
-    /*     return( 1 ); */
-    if( validate_keccak_f1600_x4_hybrid_no_symbolic() != 0 )
+    if( validate_keccak_f1600_x4_v84a_hybrid_slothy_clean() != 0 )
         return( 1 );
-    if( validate_keccak_f1600_x4_hybrid_slothy_clean() != 0 )
+    if( validate_keccak_f1600_x4_v84a_hybrid_slothy_interleaved() != 0 )
         return( 1 );
-    if( validate_keccak_f1600_x4_hybrid_slothy_interleaved() != 0 )
+    if( validate_keccak_f1600_x4_v8a_hybrid_slothy_clean() != 0 )
+        return( 1 );
+    if( validate_keccak_f1600_x4_v8a_hybrid_slothy_interleaved() != 0 )
+        return( 1 );
+    if( validate_keccak_f1600_x4_v8a_v84a_hybrid_slothy_clean() != 0 )
+        return( 1 );
+    if( validate_keccak_f1600_x4_v8a_v84a_hybrid_slothy_interleaved() != 0 )
         return( 1 );
     /* if( validate_keccak_f1600_x5_hybrid_asm_v8() != 0 ) */
     /*     return( 1 ); */
@@ -233,10 +235,13 @@ int main(void)
     benchmark_keccak_f1600_x4_hybrid_asm_v6();
     benchmark_keccak_f1600_x4_hybrid_asm_v7();
     benchmark_keccak_f1600_x4_hybrid_asm_v8();
-    benchmark_keccak_f1600_x4_hybrid_slothy_opt_a55();
-    benchmark_keccak_f1600_x4_hybrid_no_symbolic();
-    benchmark_keccak_f1600_x4_hybrid_slothy_clean();
-    benchmark_keccak_f1600_x4_hybrid_slothy_interleaved();
+
+    benchmark_keccak_f1600_x4_v8a_hybrid_slothy_clean();
+    benchmark_keccak_f1600_x4_v8a_hybrid_slothy_interleaved();
+    benchmark_keccak_f1600_x4_v84a_hybrid_slothy_clean();
+    benchmark_keccak_f1600_x4_v84a_hybrid_slothy_interleaved();
+    benchmark_keccak_f1600_x4_v8a_v84a_hybrid_slothy_clean();
+    benchmark_keccak_f1600_x4_v8a_v84a_hybrid_slothy_interleaved();
 
     benchmark_keccak_f1600_x4_scalar_asm_v5();
 

@@ -1,0 +1,1 @@
+../../../slothy/examples/naive/aarch64/keccak_f1600_x4_v84a_hybrid_slothy_interleaved.s

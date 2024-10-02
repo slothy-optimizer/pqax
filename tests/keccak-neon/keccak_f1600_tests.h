@@ -71,11 +71,13 @@ int validate_keccak_f1600_x4_hybrid_asm_v5p(void);
 int validate_keccak_f1600_x4_hybrid_asm_v6(void);
 int validate_keccak_f1600_x4_hybrid_asm_v7(void);
 int validate_keccak_f1600_x4_hybrid_asm_v8(void);
-int validate_keccak_f1600_x4_hybrid_slothy(void);
-int validate_keccak_f1600_x4_hybrid_slothy_opt_a55(void);
-int validate_keccak_f1600_x4_hybrid_no_symbolic(void);
-int validate_keccak_f1600_x4_hybrid_slothy_clean(void);
-int validate_keccak_f1600_x4_hybrid_slothy_interleaved(void);
+
+int validate_keccak_f1600_x4_v8a_hybrid_slothy_clean(void);
+int validate_keccak_f1600_x4_v8a_hybrid_slothy_interleaved(void);
+int validate_keccak_f1600_x4_v8a_v84a_hybrid_slothy_clean(void);
+int validate_keccak_f1600_x4_v8a_v84a_hybrid_slothy_interleaved(void);
+int validate_keccak_f1600_x4_v84a_hybrid_slothy_clean(void);
+int validate_keccak_f1600_x4_v84a_hybrid_slothy_interleaved(void);
 
 int validate_keccak_f1600_x4_scalar_asm_v5(void);
 
@@ -162,12 +164,14 @@ int benchmark_keccak_f1600_x4_hybrid_asm_v5p(void);
 int benchmark_keccak_f1600_x4_hybrid_asm_v6(void);
 int benchmark_keccak_f1600_x4_hybrid_asm_v7(void);
 int benchmark_keccak_f1600_x4_hybrid_asm_v8(void);
-int benchmark_keccak_f1600_x4_hybrid_slothy(void);
-int benchmark_keccak_f1600_x4_hybrid_slothy_opt_a55(void);
-int benchmark_keccak_f1600_x4_hybrid_no_symbolic(void);
-int benchmark_keccak_f1600_x4_hybrid_slothy_clean(void);
-int benchmark_keccak_f1600_x4_hybrid_slothy_interleaved(void);
 int benchmark_keccak_f1600_x4_scalar_asm_v5(void);
+
+int benchmark_keccak_f1600_x4_v8a_hybrid_slothy_clean(void);
+int benchmark_keccak_f1600_x4_v8a_hybrid_slothy_interleaved(void);
+int benchmark_keccak_f1600_x4_v84a_hybrid_slothy_clean(void);
+int benchmark_keccak_f1600_x4_v84a_hybrid_slothy_interleaved(void);
+int benchmark_keccak_f1600_x4_v8a_v84a_hybrid_slothy_clean(void);
+int benchmark_keccak_f1600_x4_v8a_v84a_hybrid_slothy_interleaved(void);
 
 int benchmark_keccak_f1600_x5_hybrid_asm_v8(void);
 int benchmark_keccak_f1600_x5_hybrid_asm_v8p(void);
