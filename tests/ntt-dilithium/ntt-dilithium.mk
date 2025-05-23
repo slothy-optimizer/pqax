@@ -25,7 +25,6 @@ NTT_DILITHIUM_SLOTHY_ASM_PAPER_OPT = $(NTT_DILITHIUM_SLOTHY_DIR)/paper/opt/neon
 NTT_DILITHIUM_SLOTHY_ASM_PAPER_CLEAN = $(NTT_DILITHIUM_SLOTHY_DIR)/paper/clean/neon
 
 
-NTT_DILITHIUM_ASM_DIR = ../../asm/manual/ntt_dilithium
 NTT_DILITHIUM_ASMS += pqclean_asm.s
 NTT_DILITHIUM_ASMS += neonntt_asm.s
 
