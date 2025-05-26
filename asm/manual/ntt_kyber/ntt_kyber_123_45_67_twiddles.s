@@ -1,1 +1,0 @@
-../../../slothy/paper/clean/neon/ntt_kyber_123_45_67_twiddles.s

@@ -1,1 +1,0 @@
-../../../slothy/examples/opt/aarch64/intt_dilithium_1234_5678_opt_m1_icestorm.s

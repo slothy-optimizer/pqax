@@ -1,1 +1,0 @@
-../../../slothy/examples/opt/aarch64/intt_dilithium_123_45678_opt_m1_firestorm.s

@@ -1,1 +1,0 @@
-../../../slothy/paper/opt/neon/ntt_kyber_1234_567_opt_a72.s

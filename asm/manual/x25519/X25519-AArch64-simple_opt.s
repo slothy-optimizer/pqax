@@ -1,1 +1,0 @@
-../../../slothy/examples/opt/aarch64/X25519-AArch64-simple_opt.s

@@ -1,1 +1,0 @@
-../../../slothy/paper/opt/neon/ntt_dilithium_123_45678_opt_a55.s

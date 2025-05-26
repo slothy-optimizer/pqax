@@ -13,7 +13,14 @@ X25519_PLATFORMS += native-mac
 # C sources required for this test
 X25519_SOURCES += main.c
 
+
+
+
+X25519_SLOTHY_DIR = ../../slothy/
+X25519_SLOTHY_ASM_OPT = $(X25519_SLOTHY_DIR)/examples/opt/aarch64/x25519
+
+
 # Assembly sources required for this test
 X25519_ASMS += ../../asm/manual/x25519/X25519-AArch64.s
-X25519_ASMS += ../../asm/manual/x25519/X25519-AArch64-simple_opt.s
+X25519_ASMS += $(X25519_SLOTHY_ASM_OPT)/X25519-AArch64-simple_opt.s
 

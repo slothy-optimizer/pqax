@@ -1,1 +1,0 @@
-../../../slothy/examples/naive/aarch64/intt_kyber_123_4567_manual_ld4.s
