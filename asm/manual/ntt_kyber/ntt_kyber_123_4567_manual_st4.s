@@ -1,1 +1,0 @@
-../../../slothy/paper/clean/neon/ntt_kyber_123_4567_manual_st4.s

@@ -1,1 +1,0 @@
-../../../slothy/examples/naive/aarch64/intt_kyber_123_45_67_twiddles.s

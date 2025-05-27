@@ -1,1 +1,0 @@
-../../../slothy/paper/opt/neon/ntt_kyber_123_4567_opt_a55.s

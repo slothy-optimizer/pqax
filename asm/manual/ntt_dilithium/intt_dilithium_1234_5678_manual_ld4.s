@@ -1,1 +1,0 @@
-../../../slothy/examples/naive/aarch64/intt_dilithium_1234_5678_manual_ld4.s
