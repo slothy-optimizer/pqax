@@ -159,6 +159,14 @@ int main(void)
         return( 1 );
     if( validate_keccak_f1600_x2_hybrid_asm_v2pp2() != 0 )
         return( 1 );
+
+    // TODO: Disable on Apple Silicon
+    if( validate_keccak_f1600_x4_v8a_hybrid_slothy_symbolic_clean() != 0)
+        return ( 1 );
+    if( validate_keccak_f1600_x4_v8a_hybrid_slothy_symbolic_clean_interleaved() != 0)
+        return ( 1 );
+    if( validate_keccak_f1600_x4_v8a_hybrid_slothy_symbolic_clean_interleaved_opt_a55() != 0)
+        return ( 1 );
 #endif /* KECCAK_F1600_TEST_VALIDATE */
 
 #if defined(KECCAK_F1600_TEST_BENCHMARK)
@@ -225,6 +233,10 @@ int main(void)
 
     benchmark_keccak_f1600_x5_hybrid_asm_v8();
     benchmark_keccak_f1600_x5_hybrid_asm_v8p();
+
+    benchmark_keccak_f1600_x4_v8a_hybrid_slothy_symbolic_clean();
+    benchmark_keccak_f1600_x4_v8a_hybrid_slothy_symbolic_clean_interleaved();
+    benchmark_keccak_f1600_x4_v8a_hybrid_slothy_symbolic_clean_interleaved_opt_a55();
 #endif /* KECCAK_F1600_TEST_BENCHMARK */
 
     disable_cyclecounter();

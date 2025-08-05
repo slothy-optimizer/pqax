@@ -113,4 +113,8 @@ void keccak_f1600_x2_hybrid_asm_v2pp0 ( uint64_t state[2*KECCAK_F1600_X1_STATE_S
 void keccak_f1600_x2_hybrid_asm_v2pp1 ( uint64_t state[2*KECCAK_F1600_X1_STATE_SIZE_UINT64] );
 void keccak_f1600_x2_hybrid_asm_v2pp2 ( uint64_t state[2*KECCAK_F1600_X1_STATE_SIZE_UINT64] );
 
+void keccak_f1600_x4_v8a_hybrid_slothy_symbolic_clean(uint64_t state[4*KECCAK_F1600_X1_STATE_SIZE_UINT64]);
+void keccak_f1600_x4_v8a_hybrid_slothy_symbolic_clean_interleaved(uint64_t state[4*KECCAK_F1600_X1_STATE_SIZE_UINT64]);
+void keccak_f1600_x4_v8a_hybrid_slothy_symbolic_clean_interleaved_opt_a55(uint64_t state[4*KECCAK_F1600_X1_STATE_SIZE_UINT64]);
+
 #endif
