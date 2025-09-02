@@ -12,7 +12,8 @@ SRC_DIR=./src
 BUILD_DIR=./build/$(TARGET)
 
 
-CFLAGS+= -Ofast \
+CFLAGS+= -O3 \
+	-ffast-math \
 	-I$(COMMON_INC) \
 	-I$(ENV_INC) \
 	-I$(SRC_DIR) \
