@@ -10,7 +10,8 @@ BUILD_DIR=./build/$(TARGET)
 CFLAGS += -fpic -Wall -Wextra -Werror -Wshadow -Wno-unused-parameter
 CFLAGS += $(CFLAGS_EXTRA)
 
-CFLAGS+= -Ofast \
+CFLAGS+= -O3\
+	-ffast-math \
 	-I$(COMMON_INC) \
 	-I$(ENV_INC) \
 	-I$(SRC_DIR) \
