@@ -102,41 +102,34 @@ int main(void)
         return( 1 );
     if( validate_keccak_f1600_x2_bas() != 0 )
         return( 1 );
+        
+    #ifndef __APPLE__
     if( validate_keccak_f1600_x3_hybrid_asm_v3p() != 0 )
         return( 1 );
     if( validate_keccak_f1600_x3_hybrid_asm_v6() != 0 )
-        return( 1 );
-
-    #ifndef __APPLE__
+            return( 1 );
     if( validate_keccak_f1600_x3_hybrid_asm_v7() != 0 )
         return( 1 );
-    #endif
+    if( validate_keccak_f1600_x4_hybrid_asm_v3() != 0 )
+        return( 1 );
     if( validate_keccak_f1600_x4_hybrid_asm_v1() != 0 )
         return( 1 );
     if( validate_keccak_f1600_x4_hybrid_asm_v2() != 0 )
         return( 1 );
-    if( validate_keccak_f1600_x4_hybrid_asm_v3() != 0 )
-        return( 1 );
     if( validate_keccak_f1600_x4_hybrid_asm_v3p() != 0 )
         return( 1 );
-    #ifndef __APPLE__
     if( validate_keccak_f1600_x4_hybrid_asm_v3pp() != 0 )
         return( 1 );
-    #endif
     if( validate_keccak_f1600_x4_hybrid_asm_v4() != 0 )
         return( 1 );
     if( validate_keccak_f1600_x4_hybrid_asm_v4p() != 0 )
         return( 1 );
-    #ifndef __APPLE__
     if( validate_keccak_f1600_x4_hybrid_asm_v5() != 0 )
         return( 1 );
-    #endif
     if( validate_keccak_f1600_x4_hybrid_asm_v5p() != 0 )
         return( 1 );
-    #ifndef __APPLE__
     if( validate_keccak_f1600_x4_hybrid_asm_v6() != 0 )
         return( 1 );
-    #endif
     if( validate_keccak_f1600_x4_hybrid_asm_v7() != 0 )
         return( 1 );
     if( validate_keccak_f1600_x4_hybrid_asm_v8() != 0 )
@@ -145,6 +138,7 @@ int main(void)
         return( 1 );
     if( validate_keccak_f1600_x5_hybrid_asm_v8() != 0 )
         return( 1 );
+    #endif
     if( validate_keccak_f1600_x2_hybrid_asm_v1() != 0 )
         return( 1 );
     if( validate_keccak_f1600_x2_hybrid_asm_v2p0() != 0 )
